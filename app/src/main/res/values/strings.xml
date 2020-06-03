@@ -1,25 +1,22 @@
 <resources>
     <string name="app_name">PetCare</string>
+
+    <!-- Strings used for action bar menu -->
     <string name="action_search">Buscar</string>
     <string name="action_settings">Ajustes</string>
     <string name="action_privacity">Privacidad</string>
+
+
+    <!-- Strings used for fragments for navigation -->
     <string name="title_search">Búsqueda</string>
     <string name="title_difusion">Difusión</string>
     <string name="title_config">Configuración</string>
+
+    <!-- Strings used for tabs difusion -->
     <string name="tab_text_1">Mascotas Perdidas</string>
     <string name="tab_text_2">Mascotas Encontradas</string>
     <string name="tab_text_3">Mascotas en Adopción</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_pestanas">Pestanas</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_mapa">Mapa</string>
 </resources>
