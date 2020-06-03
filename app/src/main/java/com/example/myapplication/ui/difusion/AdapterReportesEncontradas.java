@@ -52,7 +52,8 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
             etizona = (TextView) itemView.findViewById(R.id.idZonaME);
             etifecha = (TextView) itemView.findViewById(R.id.idFechaME);
             etidescripcion = (TextView) itemView.findViewById(R.id.idDescripcionME);
-            foto = (ImageView) itemView.findViewById(R.id.idImagenME);
+            foto = (ImageView) itemView.findViewById(R.id.idImagenME
+            );
         }
 
     }
