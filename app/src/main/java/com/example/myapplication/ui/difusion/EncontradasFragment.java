@@ -78,7 +78,7 @@ public class EncontradasFragment extends Fragment {
 
     private void llenarReportes() {
         for(int i = 0; i<=15; i++){
-            listReportesEncontradas.add(new ReporteEncontradas("Fecha", "Zona", "Nombre (opcional)", "Descripcion", R.drawable.ic_gato));
+            listReportesEncontradas.add(new ReporteEncontradas("Zona", "Fecha", "Nombre (opcional)", "Descripcion", R.drawable.ic_gato));
         }
     }
 

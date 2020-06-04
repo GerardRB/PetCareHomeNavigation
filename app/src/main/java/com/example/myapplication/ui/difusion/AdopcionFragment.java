@@ -2,13 +2,20 @@ package com.example.myapplication.ui.difusion;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.R;
+
+import java.util.ArrayList;
+
+import static com.example.myapplication.R.drawable.ic_perro;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,49 +25,61 @@ import com.example.myapplication.R;
 public class AdopcionFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_SECTION_NUMBER = "section_number";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //private DifusionTabViewModel difusionTabViewModel;
+    ArrayList<ReporteAdopcion> listReportesAdopcion;
+    RecyclerView recycler;
 
-    public AdopcionFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AdopcionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AdopcionFragment newInstance(String param1, String param2) {
+    public static AdopcionFragment newInstance(int index) {
         AdopcionFragment fragment = new AdopcionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_SECTION_NUMBER, index);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //difusionTabViewModel = ViewModelProviders.of(this).get(DifusionTabViewModel.class);
+        int index = 2;
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+        //difusionTabViewModel.setIndex(index);
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_adopcion, container, false);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_adopcion, container, false);
+        listReportesAdopcion = new ArrayList<>();
+        recycler = root.findViewById(R.id.recyclerAdopcionId);
+        recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
+
+        llenarReportes();
+
+
+
+        AdapterReportesAdopcion adapter = new AdapterReportesAdopcion(listReportesAdopcion);
+        recycler.setAdapter(adapter);
+        //final TextView textView = root.findViewById(R.id.section_label);
+        /*difusionTabViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textView.setText(s);
+            }
+        });*/
+        return root;
+    }
+
+    private void llenarReportes() {
+        for(int i = 0; i<=15; i++){
+            listReportesAdopcion.add(new ReporteAdopcion("Tipo", "Edad", "Cantidad", "Descripcion", R.drawable.ic_gato));
+        }
     }
 
     public interface OnFragmentInteractionListener {

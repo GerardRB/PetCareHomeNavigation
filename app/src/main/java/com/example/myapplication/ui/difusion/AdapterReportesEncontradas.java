@@ -25,7 +25,7 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
     @Override
     public AdapterReportesEncontradas.ViewHolderReportesEncontradas onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_encontradas_list, null, false);
-        return new AdapterReportesEncontradas.ViewHolderReportesEncontradas(view);
+        return new ViewHolderReportesEncontradas(view);
     }
 
     @Override
