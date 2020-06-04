@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.difusion;
+package com.example.myapplication.ui.difusion.adopcion;
 
 import android.view.LayoutInflater;
 import android.view.View;

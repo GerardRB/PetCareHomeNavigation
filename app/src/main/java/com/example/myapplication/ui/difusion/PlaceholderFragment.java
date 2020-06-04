@@ -2,6 +2,10 @@ package com.example.myapplication.ui.difusion;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.ui.difusion.adopcion.AdopcionFragment;
+import com.example.myapplication.ui.difusion.encontradas.EncontradasFragment;
+import com.example.myapplication.ui.difusion.perdidas.PerdidasFragment;
+
 public class PlaceholderFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";

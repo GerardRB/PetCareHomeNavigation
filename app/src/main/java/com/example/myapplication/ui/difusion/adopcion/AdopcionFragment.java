@@ -1,35 +1,36 @@
-package com.example.myapplication.ui.difusion;
+package com.example.myapplication.ui.difusion.adopcion;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
-import static com.example.myapplication.R.drawable.*;
-
-
 /**
- * A placeholder fragment containing a simple view.
+ * A simple {@link Fragment} subclass.
+ * Use the {@link AdopcionFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class PerdidasFragment extends Fragment {
-
+public class AdopcionFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     //private DifusionTabViewModel difusionTabViewModel;
-    ArrayList<ReportePerdidas> listReportes;
+    ArrayList<ReporteAdopcion> listReportesAdopcion;
     RecyclerView recycler;
 
-    public static PerdidasFragment newInstance(int index) {
-        PerdidasFragment fragment = new PerdidasFragment();
+    public static AdopcionFragment newInstance(int index) {
+        AdopcionFragment fragment = new AdopcionFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
@@ -52,16 +53,16 @@ public class PerdidasFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_perdidas, container, false);
-        listReportes = new ArrayList<>();
-        recycler = root.findViewById(R.id.recyclerPerdidasId);
+        View root = inflater.inflate(R.layout.fragment_adopcion, container, false);
+        listReportesAdopcion = new ArrayList<>();
+        recycler = root.findViewById(R.id.recyclerAdopcionId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
         llenarReportes();
 
 
 
-        AdapterReportesPerdidas adapter = new AdapterReportesPerdidas(listReportes);
+        AdapterReportesAdopcion adapter = new AdapterReportesAdopcion(listReportesAdopcion);
         recycler.setAdapter(adapter);
         //final TextView textView = root.findViewById(R.id.section_label);
         /*difusionTabViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -75,7 +76,7 @@ public class PerdidasFragment extends Fragment {
 
     private void llenarReportes() {
         for(int i = 0; i<=15; i++){
-            listReportes.add(new ReportePerdidas("Zona", "Fecha", "Nombre", "Descripcion", ic_perro));
+            listReportesAdopcion.add(new ReporteAdopcion("Tipo", "Edad", "Cantidad", "Descripcion", R.drawable.ic_gato));
         }
     }
 

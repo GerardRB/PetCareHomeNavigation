@@ -15,5 +15,9 @@
         android:id="@+id/navigation_config"
         android:icon="@drawable/config_selector"
         android:title="Configuración" />
+    <item
+        android:id="@+id/navigation_petfriendly"
+        android:icon="@drawable/config_selector"
+        android:title="Pet Friendly" />
 
 </menu>

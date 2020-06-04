@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.difusion;
+package com.example.myapplication.ui.difusion.perdidas;
 
 public class ReportePerdidas {
     private String zona;

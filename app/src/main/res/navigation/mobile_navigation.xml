@@ -22,4 +22,9 @@
         android:name="com.example.myapplication.ui.config.ConfigFragment"
         android:label="@string/title_config"
         tools:layout="@layout/fragment_config" />
+    <fragment
+        android:id="@+id/navigation_petfriendly"
+        android:name="com.example.myapplication.ui.petfriendly.PetfriendlyFragment"
+        android:label="@string/title_petfriendly"
+        tools:layout="@layout/fragment_petfriendly" />
 </navigation>

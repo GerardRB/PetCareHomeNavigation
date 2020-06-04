@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.difusion;
+package com.example.myapplication.ui.difusion.encontradas;
 
 import android.os.Bundle;
 
@@ -15,24 +15,22 @@ import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
-import static com.example.myapplication.R.drawable.ic_perro;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AdopcionFragment#newInstance} factory method to
+ * Use the {@link EncontradasFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AdopcionFragment extends Fragment {
+public class EncontradasFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     //private DifusionTabViewModel difusionTabViewModel;
-    ArrayList<ReporteAdopcion> listReportesAdopcion;
+    ArrayList<ReporteEncontradas> listReportesEncontradas;
     RecyclerView recycler;
 
-    public static AdopcionFragment newInstance(int index) {
-        AdopcionFragment fragment = new AdopcionFragment();
+    public static EncontradasFragment newInstance(int index) {
+        EncontradasFragment fragment = new EncontradasFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
         fragment.setArguments(bundle);
@@ -55,16 +53,16 @@ public class AdopcionFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_adopcion, container, false);
-        listReportesAdopcion = new ArrayList<>();
-        recycler = root.findViewById(R.id.recyclerAdopcionId);
+        View root = inflater.inflate(R.layout.fragment_encontradas, container, false);
+        listReportesEncontradas = new ArrayList<>();
+        recycler = root.findViewById(R.id.recyclerEncontradasId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
         llenarReportes();
 
 
 
-        AdapterReportesAdopcion adapter = new AdapterReportesAdopcion(listReportesAdopcion);
+        AdapterReportesEncontradas adapter = new AdapterReportesEncontradas(listReportesEncontradas);
         recycler.setAdapter(adapter);
         //final TextView textView = root.findViewById(R.id.section_label);
         /*difusionTabViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -78,7 +76,7 @@ public class AdopcionFragment extends Fragment {
 
     private void llenarReportes() {
         for(int i = 0; i<=15; i++){
-            listReportesAdopcion.add(new ReporteAdopcion("Tipo", "Edad", "Cantidad", "Descripcion", R.drawable.ic_gato));
+            listReportesEncontradas.add(new ReporteEncontradas("Zona", "Fecha", "Nombre (opcional)", "Descripcion", R.drawable.ic_gato));
         }
     }
 
