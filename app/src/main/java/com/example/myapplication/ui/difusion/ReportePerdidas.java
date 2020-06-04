@@ -1,9 +1,9 @@
 package com.example.myapplication.ui.difusion;
 
 public class ReportePerdidas {
-    private String nombre;
-    private String fecha;
     private String zona;
+    private String fecha;
+    private String nombre;
     private String descripcion;
     private int foto;
 
@@ -11,21 +11,20 @@ public class ReportePerdidas {
 
     }
 
-    public ReportePerdidas(String nombre, String fecha, String zona, String descripcion, int foto) {
-        this.nombre = nombre;
-        this.fecha = fecha;
+    public ReportePerdidas(String zona, String fecha, String nombre, String descripcion, int foto) {
         this.zona = zona;
+        this.fecha = fecha;
+        this.nombre = nombre;
         this.descripcion = descripcion;
         this.foto = foto;
     }
 
-
-    public String getNombre() {
-        return nombre;
+    public String getZona() {
+        return zona;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setZona(String zona) {
+        this.zona = zona;
     }
 
     public String getFecha() {
@@ -36,12 +35,12 @@ public class ReportePerdidas {
         this.fecha = fecha;
     }
 
-    public String getZona() {
-        return zona;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setZona(String zona) {
-        this.zona = zona;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {

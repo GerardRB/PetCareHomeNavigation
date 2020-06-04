@@ -75,7 +75,7 @@ public class PerdidasFragment extends Fragment {
 
     private void llenarReportes() {
         for(int i = 0; i<=15; i++){
-            listReportes.add(new ReportePerdidas("Nombre", "Fecha", "Zona", "Descripcion", ic_perro));
+            listReportes.add(new ReportePerdidas("Zona", "Fecha", "Nombre", "Descripcion", ic_perro));
         }
     }
 

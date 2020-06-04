@@ -30,8 +30,9 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderReportesPerdidas holder, int position) {
-        holder.etinombre.setText(listReportesPerdidas.get(position).getNombre());
+        holder.etizona.setText(listReportesPerdidas.get(position).getZona());
         holder.etifecha.setText(listReportesPerdidas.get(position).getFecha());
+        holder.etinombre.setText(listReportesPerdidas.get(position).getNombre());
         holder.etidescripcion.setText(listReportesPerdidas.get(position).getDescripcion());
         holder.foto.setImageResource(listReportesPerdidas.get(position).getFoto());
 
@@ -49,9 +50,9 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
 
         public ViewHolderReportesPerdidas(@NonNull View itemView) {
             super(itemView);
-            etinombre = (TextView) itemView.findViewById(R.id.idNombreMP);
-            etifecha = (TextView) itemView.findViewById(R.id.idFechaMP);
             etizona = (TextView) itemView.findViewById(R.id.idZonaMP);
+            etifecha = (TextView) itemView.findViewById(R.id.idFechaMP);
+            etinombre = (TextView) itemView.findViewById(R.id.idNombreMP);
             etidescripcion = (TextView) itemView.findViewById(R.id.idDescripcionMP);
             foto = (ImageView) itemView.findViewById(R.id.idImagenMP);
         }

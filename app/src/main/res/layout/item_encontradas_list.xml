@@ -7,17 +7,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:orientation="horizontal"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/idImagenME"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
             app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
         <LinearLayout
@@ -27,44 +27,50 @@
             android:layout_marginLeft="10dp">
 
             <TextView
-                android:id="@+id/idFechaME"
+                android:id="@+id/idZonaME"
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fecha"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/idZonaME"
+                android:id="@+id/idFechaME"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Zona"
-                android:textSize="15sp"
+                android:textSize="11sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/idNombreME"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/idDescripcionME"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Descripción"
-                android:textSize="15sp"/>
+                android:textSize="11sp"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="165dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="bottom"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/idVerMas"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:text="Ver más"
+                android:textColor="@color/colorAccent" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/idVerMas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Ver más"
-            android:textColor="@color/colorAccent" />
+
 
 
     </LinearLayout>
