@@ -13,8 +13,8 @@
         android:title="Difusión" />
     <item
         android:id="@+id/navigation_petfriendly"
-        android:icon="@drawable/config_selector"
-        android:title="Pet Friendly" />
+        android:icon="@drawable/petfriendly_selector"
+        android:title="PetFriendly" />
     <item
         android:id="@+id/navigation_config"
         android:icon="@drawable/config_selector"
