@@ -28,18 +28,59 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabadd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:layout_marginEnd="355dp"
         android:layout_marginBottom="619dp"
+        android:text="@string/text_fab_add"
+        android:textColor="#ffffff"
         app:backgroundTint="@color/colorAccent"
+        app:icon="@drawable/ic_add"
+        app:iconTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="?attr/actionModePasteDrawable" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/id_add_perdida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/text_add_perdida"
+        android:textColor="#ffffff"
+        app:backgroundTint="@color/colorAccentDark"
+        app:layout_constraintBottom_toTopOf="@id/id_add_encontrada"
+        app:layout_constraintEnd_toEndOf="@id/fabadd"
+        tools:ignore="MissingConstraints"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/id_add_encontrada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/text_add_encontrada"
+        android:textColor="#ffffff"
+        app:backgroundTint="@color/colorAccentDark"
+        app:layout_constraintBottom_toTopOf="@id/id_add_adopcion"
+        app:layout_constraintEnd_toEndOf="@id/fabadd"
+        tools:ignore="MissingConstraints"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/id_add_adopcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/text_add_adopción"
+        android:textColor="#ffffff"
+        app:backgroundTint="@color/colorAccentDark"
+        app:layout_constraintBottom_toTopOf="@id/fabadd"
+        app:layout_constraintEnd_toEndOf="@id/fabadd"
+        tools:ignore="MissingConstraints" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
