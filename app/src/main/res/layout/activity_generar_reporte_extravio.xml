@@ -10,4 +10,129 @@
 
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/id_input_imageRMP"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                android:layout_gravity="center_horizontal"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/id_input_nombreRMP"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:hint="Nombre de la mascota"
+                android:textColor="@color/colorPrimary"
+                android:textColorHighlight="@color/colorPrimary"
+                android:textColorLink="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/id_input_fechaRMP"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:hint="Fecha de extravío"
+                android:textColor="@color/colorPrimary"
+                android:textColorHighlight="@color/colorPrimary"
+                android:textColorLink="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text=" Zona de extravío:"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text=" Alcaldía"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_alcaldia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:hint="Colonia"
+                android:textColor="@color/colorPrimary"
+                android:textColorLink="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:hint="Calle"
+                android:textColor="@color/colorPrimary"
+                android:textColorLink="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:hint="Descripción"
+                android:textColor="@color/colorPrimary"
+                android:textColorHighlight="@color/colorPrimary"
+                android:textColorLink="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Generar"
+                android:textStyle="bold"
+                android:background="@color/colorAccent"
+                android:textColor="#ffffff"
+                />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
