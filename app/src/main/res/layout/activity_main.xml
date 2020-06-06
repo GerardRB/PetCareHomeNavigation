@@ -21,7 +21,6 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:titleTextColor="#ffffff" />
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
 

@@ -24,4 +24,5 @@
     <string name="text_add_encontrada">Encontrada</string>
     <string name="text_add_adopción">Adopción</string>
     <string name="text_fab_add">Gererar reporte</string>
+    <string name="action_back">Back</string>
 </resources>
