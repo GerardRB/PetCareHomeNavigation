@@ -30,4 +30,10 @@
         <item>MiniPig</item>
     </string-array>
 
+    <string-array name="combo_sino">
+        <item></item>
+        <item>Si</item>
+        <item>No</item>
+    </string-array>
+
 </resources>

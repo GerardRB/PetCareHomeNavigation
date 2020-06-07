@@ -2,7 +2,6 @@ package com.example.myapplication.ui.difusion;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Trace;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 
-import com.example.myapplication.HomeActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.difusion.adopcion.AdopcionFragment;
+import com.example.myapplication.ui.difusion.adopcion.GenerarReporteAdopcionActivity;
 import com.example.myapplication.ui.difusion.encontradas.EncontradasFragment;
+import com.example.myapplication.ui.difusion.encontradas.GenerarReporteEncontradaActivity;
+import com.example.myapplication.ui.difusion.perdidas.GenerarReporteExtravioActivity;
 import com.example.myapplication.ui.difusion.perdidas.PerdidasFragment;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 public class DifusionFragment extends Fragment implements PerdidasFragment.OnFragmentInteractionListener,
@@ -95,8 +94,8 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
                 fabadopcion.hide();
                 fabadd.shrink();
                 isOpen[0] = true;
-                /*Intent intentReportePerdidas = new Intent(getActivity(), GenerarReporteExtravioActivity. class);
-                startActivity(intentReportePerdidas);*/
+                Intent intentReporteEncontradas = new Intent(getContext(), GenerarReporteEncontradaActivity. class);
+                startActivity(intentReporteEncontradas);
             }
         });
 
@@ -109,8 +108,8 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
                 fabadopcion.hide();
                 fabadd.shrink();
                 isOpen[0] = true;
-                /*Intent intentReportePerdidas = new Intent(getActivity(), GenerarReporteExtravioActivity. class);
-                startActivity(intentReportePerdidas);*/
+                Intent intentReporteAdopcion = new Intent(getContext(), GenerarReporteAdopcionActivity. class);
+                startActivity(intentReporteAdopcion);
             }
         });
 

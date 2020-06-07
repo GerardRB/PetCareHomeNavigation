@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.difusion.perdidas.GenerarReporteExtravioActivity">
-
+    tools:context=".ui.difusion.adopcion.GenerarReporteAdopcionActivity">
 
 
     <ScrollView
@@ -22,28 +21,16 @@
 
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/id_input_imageRMP"
+                android:id="@+id/id_input_imageRMA"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 app:srcCompat="@android:drawable/ic_menu_gallery"
                 android:layout_gravity="center_horizontal"
-                tools:ignore="MissingConstraints"
+                tools:ignore="MissingConstraints,OnClick"
                 android:onClick="onClick"/>
 
-
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/id_input_nombreRMP"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="15dp"
-                android:hint="@string/hint_nombre_mascota"
-                android:textColor="@color/colorPrimary" />
-
             <TextView
-                android:id="@+id/label_tipoRMP"
+                android:id="@+id/label_tipoRMA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -53,7 +40,7 @@
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinner_tipoRMP"
+                android:id="@+id/spinner_tipoRMA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -62,7 +49,17 @@
                 android:theme="@style/Spinner" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/id_input_edadRMP"
+                android:id="@+id/id_input_razaRMA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:hint="@string/hint_raza"
+                android:textColor="@color/colorPrimary" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/id_input_edadRMA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
@@ -71,40 +68,58 @@
                 android:hint="@string/hint_edad_mascota"
                 android:textColor="@color/colorPrimary" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/id_input_fechaRMP"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="15dp"
-                android:hint="@string/hint_fecha_extravio"
-                android:textColor="@color/colorPrimary"/>
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/id_input_horaRMP"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="15dp"
-                android:hint="@string/hint_hora_extravio"
-                android:textColor="@color/colorPrimary"/>
-
-
             <TextView
-                android:id="@+id/label_zona_extravioRMP"
+                android:id="@+id/label_vacunasRMA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/label_zona_extravio"
+                android:text="@string/label_vacunas"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_vacunasRMA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp"
+                android:theme="@style/Spinner" />
+
+            <TextView
+                android:id="@+id/label_esterilizacionRMA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/label_esterilizacion"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_esterilizacionRMA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp"
+                android:theme="@style/Spinner" />
+
+
+            <TextView
+                android:id="@+id/label_zona_adopcionRMA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/label_zona_adopcion"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/label_alcaldiaRMP"
+                android:id="@+id/label_alcaldiaRMA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -114,7 +129,7 @@
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinner_alcaldiaRMP"
+                android:id="@+id/spinner_alcaldiaRMA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -123,7 +138,7 @@
                 android:theme="@style/Spinner" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/id_input_coloniaRMP"
+                android:id="@+id/id_input_coloniaRMA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
@@ -133,7 +148,7 @@
                 android:textColor="@color/colorPrimary"/>
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/id_input_calleRMP"
+                android:id="@+id/id_input_calleRMA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
@@ -143,7 +158,7 @@
                 android:textColor="@color/colorPrimary" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/id_input_descripcionRMP"
+                android:id="@+id/id_input_descripcionRMA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
@@ -153,7 +168,7 @@
                 android:textColor="@color/colorPrimary" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/id_btn_generarRMP"
+                android:id="@+id/id_btn_generarRMA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

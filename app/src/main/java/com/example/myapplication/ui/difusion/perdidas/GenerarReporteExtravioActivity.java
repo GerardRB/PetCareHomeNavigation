@@ -1,13 +1,10 @@
-package com.example.myapplication.ui.difusion;
+package com.example.myapplication.ui.difusion.perdidas;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -17,17 +14,14 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.Calendar;
 
@@ -36,7 +30,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     private static final int COD_SELECCIONA = 10;
     //private static final int COD_SELECCIONA = 10;
 
-    private Spinner comboAlcaldias, comboTipoMascota, comboHorario;
+    private Spinner comboAlcaldias, comboTipoMascota;
     private EditText fecha, hora;
     private DatePickerDialog.OnDateSetListener fechaSetListener;
     private TimePickerDialog.OnTimeSetListener horaSetListener;

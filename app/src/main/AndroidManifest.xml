@@ -7,9 +7,9 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,11 +18,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
+
         <activity
-            android:name=".ui.difusion.GenerarReporteExtravioActivity"
+            android:name=".ui.difusion.adopcion.GenerarReporteAdopcionActivity"
+            android:label="Reporte mascota en adopción"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".ui.difusion.encontradas.GenerarReporteEncontradaActivity"
+            android:label="Reporte mascota encontrada"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".ui.difusion.perdidas.GenerarReporteExtravioActivity"
             android:label="Reporte mascota extraviada"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".HomeActivity"></activity>
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
