@@ -49,5 +49,13 @@
 
     <style name="MaterialAppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
+    <!-- Tema letras azules spinner  -->
+    <style name="Spinner" parent="Widget.AppCompat.Light.DropDownItem.Spinner">
+        <item name="android:paddingStart">2dp</item>
+        <item name="android:paddingEnd">2dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 
 </resources>

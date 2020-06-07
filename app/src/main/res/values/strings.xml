@@ -25,4 +25,14 @@
     <string name="text_add_adopción">Adopción</string>
     <string name="text_fab_add">Gererar reporte</string>
     <string name="action_back">Back</string>
+    <string name="hint_nombre_mascota">Nombre de la mascota</string>
+    <string name="hint_fecha_extravio">Fecha de extravío</string>
+    <string name="label_zona_extravio">Zona de extravío:</string>
+    <string name="label_alcaldia">Alcaldía</string>
+    <string name="hint_colonia">Colonia</string>
+    <string name="hint_calle">Calle</string>
+    <string name="hint_descripcion">Descripción</string>
+    <string name="label_tipo">Tipo de mascota:</string>
+    <string name="title_btn_generar">Generar</string>
+    <string name="hint_edad_mascota">Edad de la mascota</string>
 </resources>

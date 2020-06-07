@@ -8,8 +8,6 @@
 
 
 
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +29,8 @@
                 android:layout_gravity="center_horizontal"
                 tools:ignore="MissingConstraints" />
 
+
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/id_input_nombreRMP"
                 android:layout_width="match_parent"
@@ -38,10 +38,37 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="15dp"
-                android:hint="Nombre de la mascota"
-                android:textColor="@color/colorPrimary"
-                android:textColorHighlight="@color/colorPrimary"
-                android:textColorLink="@color/colorPrimary" />
+                android:hint="@string/hint_nombre_mascota"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/label_tipoRMP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/label_tipo"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_tipoRMP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp"
+                android:theme="@style/Spinner" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/id_input_edadRMP"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:hint="@string/hint_edad_mascota"
+                android:textColor="@color/colorPrimary" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/id_input_fechaRMP"
@@ -50,89 +77,90 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="15dp"
-                android:hint="Fecha de extravío"
-                android:textColor="@color/colorPrimary"
-                android:textColorHighlight="@color/colorPrimary"
-                android:textColorLink="@color/colorPrimary" />
+                android:hint="@string/hint_fecha_extravio"
+                android:textColor="@color/colorPrimary"/>
 
             <TextView
+                android:id="@+id/label_zona_extravioRMP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:text=" Zona de extravío:"
+                android:text="@string/label_zona_extravio"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"/>
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/label_alcaldiaRMP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:text=" Alcaldía"
-                android:textSize="20sp"
-                android:textColor="@color/colorPrimary"/>
+                android:text="@string/label_alcaldia"
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinner_alcaldia"
+                android:id="@+id/spinner_alcaldiaRMP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp"
+                android:theme="@style/Spinner" />
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/id_input_coloniaRMP"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:hint="Colonia"
-                android:textColor="@color/colorPrimary"
-                android:textColorLink="@color/colorPrimary" />
+                android:hint="@string/hint_colonia"
+                android:textColor="@color/colorPrimary"/>
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/id_input_calleRMP"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:hint="Calle"
-                android:textColor="@color/colorPrimary"
-                android:textColorLink="@color/colorPrimary" />
+                android:hint="@string/hint_calle"
+                android:textColor="@color/colorPrimary" />
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/id_input_descripcionRMP"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:hint="Descripción"
-                android:textColor="@color/colorPrimary"
-                android:textColorHighlight="@color/colorPrimary"
-                android:textColorLink="@color/colorPrimary" />
+                android:hint="@string/hint_descripcion"
+                android:textColor="@color/colorPrimary" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/id_btn_generarRMP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:text="Generar"
+                android:text="@string/title_btn_generar"
                 android:textStyle="bold"
-                android:background="@color/colorAccent"
-                android:textColor="#ffffff"
-                />
+                android:background="@drawable/btn_curve"
+                android:textColor="#ffffff" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
+
     </ScrollView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,4 +19,13 @@
         <item>Venustiano Carranza</item>
         <item>Xochimilco</item>
     </string-array>
+
+    <string-array name="combo_tipoRMP">
+        <item>Seleccionar</item>
+        <item>Perro</item>
+        <item>Gato</item>
+        <item>Conejo</item>
+        <item>MiniPig</item>
+    </string-array>
+
 </resources>
