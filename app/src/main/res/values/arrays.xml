@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Spinner Alcaldias       -->
     <string-array name="combo_alcaldia">
         <item>Seleccione</item>
         <item>Álvaro Obregón</item>
@@ -20,6 +21,7 @@
         <item>Xochimilco</item>
     </string-array>
 
+    <!-- Spinner Tipo de Mascota       -->
     <string-array name="combo_tipoRMP">
         <item>Seleccionar</item>
         <item>Perro</item>

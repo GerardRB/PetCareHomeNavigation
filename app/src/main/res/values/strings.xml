@@ -28,11 +28,12 @@
     <string name="hint_nombre_mascota">Nombre de la mascota</string>
     <string name="hint_fecha_extravio">Fecha de extravío</string>
     <string name="label_zona_extravio">Zona de extravío:</string>
-    <string name="label_alcaldia">Alcaldía</string>
+    <string name="label_alcaldia">Alcaldía:</string>
     <string name="hint_colonia">Colonia</string>
     <string name="hint_calle">Calle</string>
     <string name="hint_descripcion">Descripción</string>
     <string name="label_tipo">Tipo de mascota:</string>
     <string name="title_btn_generar">Generar</string>
     <string name="hint_edad_mascota">Edad de la mascota</string>
+    <string name="hint_hora_extravio">Hora de extravío</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
@@ -34,9 +36,10 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     private static final int COD_SELECCIONA = 10;
     //private static final int COD_SELECCIONA = 10;
 
-    private Spinner comboAlcaldias, comboTipoMascota;
-    private EditText fecha;
+    private Spinner comboAlcaldias, comboTipoMascota, comboHorario;
+    private EditText fecha, hora;
     private DatePickerDialog.OnDateSetListener fechaSetListener;
+    private TimePickerDialog.OnTimeSetListener horaSetListener;
     private ImageView imageView;
     private Button button;
 
@@ -46,16 +49,13 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_generar_reporte_extravio);
 
 
-        //Cargar imagen desde la galeria
+        //Referencia al componente ImageView en xml
         imageView = findViewById(R.id.id_input_imageRMP);
         imageView.setOnClickListener(this);
 
-        //Boton generar reporte
+        //Referencia al Boton generar reporte en xml
         button = findViewById(R.id.id_btn_generarRMP);
         button.setOnClickListener(this);
-
-
-
 
         //spinner de alcaldias
         comboAlcaldias = findViewById(R.id.spinner_alcaldiaRMP);
@@ -66,6 +66,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         comboTipoMascota = findViewById(R.id.spinner_tipoRMP);
         ArrayAdapter<CharSequence> adapterTipoMascota = ArrayAdapter.createFromResource(this, R.array.combo_tipoRMP, android.R.layout.simple_spinner_item);
         comboTipoMascota.setAdapter(adapterTipoMascota);
+
 
         //fecha con dialogo date picker
         fecha = (EditText) findViewById(R.id.id_input_fechaRMP);
@@ -141,6 +142,126 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
             }
         };
+
+
+        //hora con dialogo time picker
+        hora = (EditText) findViewById(R.id.id_input_horaRMP);
+        hora.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    Calendar cal = Calendar.getInstance();
+                    int mhour = cal.get(Calendar.HOUR);
+                    int mminute = cal.get(Calendar.MINUTE);
+
+                    TimePickerDialog dialog = new TimePickerDialog(GenerarReporteExtravioActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, horaSetListener, mhour, mminute, android.text.format.DateFormat.is24HourFormat(GenerarReporteExtravioActivity.this));
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
+
+                }
+            }
+        });
+        //Obtener la hora, darle fomrato 12hrs am-pm y mostrarla en el editText
+        horaSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String ampm, horas, minuto, datetime;
+                if (hourOfDay < 12) {
+                    ampm = " am";
+                }
+                else{
+                    ampm = " pm";
+                }
+                if (minute <= 9){
+                    minuto = ":0" + minute;
+                }
+                else{
+                    minuto = ":" + minute;
+                }
+
+                switch (hourOfDay){
+                    case 0:
+                        horas = "12";
+                        break;
+                    case 1:
+                        horas = "01";
+                        break;
+                    case 2:
+                        horas = "02";
+                        break;
+                    case 3:
+                        horas = "03";
+                        break;
+                    case 4:
+                        horas = "04";
+                        break;
+                    case 5:
+                        horas = "05";
+                        break;
+                    case 6:
+                        horas = "06";
+                        break;
+                    case 7:
+                        horas = "07";
+                        break;
+                    case 8:
+                        horas = "08";
+                        break;
+                    case 9:
+                        horas = "09";
+                        break;
+                    case 10:
+                        horas = "10";
+                        break;
+                    case 11:
+                        horas = "11";
+                        break;
+                    case 12:
+                        horas = "12";
+                        break;
+                    case 13:
+                        horas = "01";
+                        break;
+                    case 14:
+                        horas = "02";
+                        break;
+                    case 15:
+                        horas = "03";
+                        break;
+                    case 16:
+                        horas = "04";
+                        break;
+                    case 17:
+                        horas = "05";
+                        break;
+                    case 18:
+                        horas = "06";
+                        break;
+                    case 19:
+                        horas = "07";
+                        break;
+                    case 20:
+                        horas = "08";
+                        break;
+                    case 21:
+                        horas = "09";
+                        break;
+                    case 22:
+                        horas = "10";
+                        break;
+                    case 23:
+                        horas = "11";
+                        break;
+                    default:
+                        horas = " ";
+                }
+
+                datetime = horas + minuto + ampm;
+                hora.setText(datetime);
+
+
+            }
+        };
     }
 
 
@@ -150,7 +271,6 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         intent.setType("image/");
         startActivityForResult(intent.createChooser(intent, "Seleccione la Aplicación"), 10);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

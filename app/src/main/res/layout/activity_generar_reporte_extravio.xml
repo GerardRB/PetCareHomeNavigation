@@ -27,7 +27,8 @@
                 android:layout_height="250dp"
                 app:srcCompat="@android:drawable/ic_menu_gallery"
                 android:layout_gravity="center_horizontal"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:onClick="onClick"/>
 
 
 
@@ -79,6 +80,17 @@
                 android:layout_marginRight="15dp"
                 android:hint="@string/hint_fecha_extravio"
                 android:textColor="@color/colorPrimary"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/id_input_horaRMP"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:hint="@string/hint_hora_extravio"
+                android:textColor="@color/colorPrimary"/>
+
 
             <TextView
                 android:id="@+id/label_zona_extravioRMP"
@@ -151,7 +163,9 @@
                 android:text="@string/title_btn_generar"
                 android:textStyle="bold"
                 android:background="@drawable/btn_curve"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:onClick="onClick"
+                tools:ignore="OnClick" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>
