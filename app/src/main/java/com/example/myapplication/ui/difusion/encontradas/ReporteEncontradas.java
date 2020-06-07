@@ -6,16 +6,18 @@ public class ReporteEncontradas {
     private String nombre;
     private String descripcion;
     private int foto;
+    private int id;
 
     public ReporteEncontradas(){
     }
 
-    public ReporteEncontradas(String zona, String fecha, String nombre, String descripcion, int foto) {
+    public ReporteEncontradas(String zona, String fecha, String nombre, String descripcion, int foto, int id) {
         this.zona = zona;
         this.fecha = fecha;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.foto = foto;
+        this.id = id;
     }
 
     public String getZona() {
@@ -56,5 +58,13 @@ public class ReporteEncontradas {
 
     public void setFoto(int foto) {
         this.foto = foto;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

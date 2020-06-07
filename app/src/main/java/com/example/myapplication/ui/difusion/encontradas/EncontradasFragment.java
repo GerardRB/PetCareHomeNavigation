@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 
@@ -64,19 +65,18 @@ public class EncontradasFragment extends Fragment {
 
         AdapterReportesEncontradas adapter = new AdapterReportesEncontradas(listReportesEncontradas);
         recycler.setAdapter(adapter);
-        //final TextView textView = root.findViewById(R.id.section_label);
-        /*difusionTabViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        adapter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Selección: Reporte #" + listReportesEncontradas.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
         return root;
     }
 
     private void llenarReportes() {
         for(int i = 0; i<=15; i++){
-            listReportesEncontradas.add(new ReporteEncontradas("Zona", "Fecha", "Nombre (opcional)", "Descripcion", R.drawable.ic_gato));
+            listReportesEncontradas.add(new ReporteEncontradas("Zona", "Fecha", "Nombre (opcional)", "Descripcion", R.drawable.ic_gato, i));
         }
     }
 

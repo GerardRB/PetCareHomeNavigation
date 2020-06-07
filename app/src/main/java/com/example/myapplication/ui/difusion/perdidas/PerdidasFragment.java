@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -53,29 +54,29 @@ public class PerdidasFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_perdidas, container, false);
+
+        //Construir Recycler
         listReportes = new ArrayList<>();
         recycler = root.findViewById(R.id.recyclerPerdidasId);
-        recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
+        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         llenarReportes();
 
-
-
         AdapterReportesPerdidas adapter = new AdapterReportesPerdidas(listReportes);
         recycler.setAdapter(adapter);
-        //final TextView textView = root.findViewById(R.id.section_label);
-        /*difusionTabViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        adapter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Selección: Reporte #" + listReportes.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
+
         return root;
     }
 
     private void llenarReportes() {
         for(int i = 0; i<=15; i++){
-            listReportes.add(new ReportePerdidas("Zona", "Fecha", "Nombre", "Descripcion", ic_perro));
+            listReportes.add(new ReportePerdidas("Zona", "Fecha", "Nombre", "Descripcion", ic_perro, i));
         }
     }
 

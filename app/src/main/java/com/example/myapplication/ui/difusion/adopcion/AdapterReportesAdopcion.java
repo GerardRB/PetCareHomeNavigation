@@ -13,8 +13,10 @@ import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
-public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReportesAdopcion.ViewHolderReportesAdopcion>{
+public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReportesAdopcion.ViewHolderReportesAdopcion> implements  View.OnClickListener{
+
     ArrayList<ReporteAdopcion> listReportesAdopcion;
+    private View.OnClickListener listener;
 
     public AdapterReportesAdopcion(ArrayList<ReporteAdopcion> listReportesAdopcion) {
         this.listReportesAdopcion = listReportesAdopcion;
@@ -24,7 +26,8 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
     @Override
     public AdapterReportesAdopcion.ViewHolderReportesAdopcion onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_adopcion_list, null, false);
-        return new AdapterReportesAdopcion.ViewHolderReportesAdopcion(view);
+        view.setOnClickListener(this);
+        return new ViewHolderReportesAdopcion(view);
     }
 
     @Override
@@ -40,6 +43,18 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
     @Override
     public int getItemCount() {
         return listReportesAdopcion.size();
+    }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(listener != null){
+            listener.onClick(v);
+        }
+
     }
 
     public class ViewHolderReportesAdopcion extends RecyclerView.ViewHolder {
