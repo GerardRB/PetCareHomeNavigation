@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.difusion.adopcion;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.difusion.perdidas.DetalleReportePerdidasActivity;
 
 import java.util.ArrayList;
 
@@ -68,7 +70,9 @@ public class AdopcionFragment extends Fragment {
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Selección: Reporte #" + listReportesAdopcion.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Selección: Reporte #" + listReportesAdopcion.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
+                Intent intentDetalleRMA = new Intent(getContext(), DetalleReporteAdopcionActivity.class);
+                startActivity(intentDetalleRMA);
             }
         });
         return root;

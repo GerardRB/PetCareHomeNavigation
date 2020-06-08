@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.difusion.perdidas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.difusion.adopcion.GenerarReporteAdopcionActivity;
 
 import java.util.ArrayList;
-
-import static com.example.myapplication.R.drawable.*;
 
 
 /**
@@ -23,11 +23,12 @@ import static com.example.myapplication.R.drawable.*;
  */
 public class PerdidasFragment extends Fragment {
 
+
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    //private DifusionTabViewModel difusionTabViewModel;
     ArrayList<ReportePerdidas> listReportes;
-    RecyclerView recycler;
+    RecyclerView recyclerPerdidas;
+
 
     public static PerdidasFragment newInstance(int index) {
         PerdidasFragment fragment = new PerdidasFragment();
@@ -40,13 +41,10 @@ public class PerdidasFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //difusionTabViewModel = ViewModelProviders.of(this).get(DifusionTabViewModel.class);
         int index = 2;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        //difusionTabViewModel.setIndex(index);
-
     }
 
     @Override
@@ -57,17 +55,20 @@ public class PerdidasFragment extends Fragment {
 
         //Construir Recycler
         listReportes = new ArrayList<>();
-        recycler = root.findViewById(R.id.recyclerPerdidasId);
-        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerPerdidas = root.findViewById(R.id.recyclerPerdidasId);
+        recyclerPerdidas.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         llenarReportes();
 
         AdapterReportesPerdidas adapter = new AdapterReportesPerdidas(listReportes);
-        recycler.setAdapter(adapter);
+        recyclerPerdidas.setAdapter(adapter);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Selección: Reporte #" + listReportes.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Selección: Reporte #" + listReportes.get(recyclerPerdidas.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
+                Intent intentDetalleRMP = new Intent(getContext(), DetalleReportePerdidasActivity.class);
+                startActivity(intentDetalleRMP);
             }
         });
 
@@ -76,9 +77,10 @@ public class PerdidasFragment extends Fragment {
 
     private void llenarReportes() {
         for(int i = 0; i<=15; i++){
-            listReportes.add(new ReportePerdidas("Zona", "Fecha", "Nombre", "Descripcion", ic_perro, i));
+            listReportes.add(new ReportePerdidas("Zona", "Fecha", "Nombre", "Descripcion", R.drawable.ic_perro, i));
         }
     }
+
 
     public interface OnFragmentInteractionListener {
     }

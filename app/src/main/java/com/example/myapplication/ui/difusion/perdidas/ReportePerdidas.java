@@ -1,6 +1,8 @@
 package com.example.myapplication.ui.difusion.perdidas;
 
-public class ReportePerdidas {
+import java.io.Serializable;
+
+public class ReportePerdidas implements Serializable {
     private String zona;
     private String fecha;
     private String nombre;

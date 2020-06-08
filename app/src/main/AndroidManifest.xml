@@ -18,19 +18,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
-
+        <activity
+            android:name=".ui.difusion.adopcion.DetalleReporteAdopcionActivity"
+            android:label="Mascota en Adopción"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".ui.difusion.encontradas.DetalleReporteEncontradaActivity"
+            android:label="Mascota Encontrada"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.difusion.perdidas.DetalleReportePerdidasActivity"
+            android:label="Mascota Extraviada"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.difusion.adopcion.GenerarReporteAdopcionActivity"
             android:label="Reporte mascota en adopción"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".ui.difusion.encontradas.GenerarReporteEncontradaActivity"
             android:label="Reporte mascota encontrada"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".ui.difusion.perdidas.GenerarReporteExtravioActivity"
             android:label="Reporte mascota extraviada"

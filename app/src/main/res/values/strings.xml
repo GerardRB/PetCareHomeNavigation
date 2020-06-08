@@ -44,4 +44,24 @@
     <string name="label_zona_adopcion">Zona</string>
     <string name="label_vacunas">Vacunas:</string>
     <string name="label_esterilizacion">Esterilización:</string>
+    <string name="label_nombre_DRMP">Nombre:</string>
+    <string name="label_idDRMP">ID reporte:</string>
+    <string name="label_tipoDRMP">Tipo de mascota:</string>
+    <string name="label_edadDRMP">Edad:</string>
+    <string name="label_fecha_extravio_DRMP">Fecha de extravío:</string>
+    <string name="label_hora_extravio_DRMP">Hora de extravío:</string>
+    <string name="label_zona_extravio_DRMP">Zona de Extravío</string>
+    <string name="label_alcaldia_DRMP">Alcaldía:</string>
+    <string name="label_colonia_DRMP">Colonia:</string>
+    <string name="label_calle_DRMP">Calle:</string>
+    <string name="label_descripcion_DRMP">Descripción:</string>
+    <string name="label_id_user">ID Usuario:</string>
+    <string name="label_telefono_user">Teléfono:</string>
+    <string name="label_domicilio_user">Domicilio:</string>
+    <string name="label_fecha_encontrada_DRME">Fecha en que fue encontrada:</string>
+    <string name="label_hora_encontrada_DRME">Hora en que fue encontrada:</string>
+    <string name="label_zona_encontrada_DRME">Zona donde fue encontrada</string>
+    <string name="label_razaDRMA">Raza:</string>
+    <string name="label_vacunas_DRMA">Vacunas:</string>
+    <string name="label_zona_DRMA">Zona</string>
 </resources>

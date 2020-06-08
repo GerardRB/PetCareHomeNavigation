@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.difusion.encontradas;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.difusion.perdidas.DetalleReportePerdidasActivity;
 
 import java.util.ArrayList;
 
@@ -68,7 +70,9 @@ public class EncontradasFragment extends Fragment {
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Selección: Reporte #" + listReportesEncontradas.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Selección: Reporte #" + listReportesEncontradas.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
+                Intent intentDetalleRME = new Intent(getContext(), DetalleReporteEncontradaActivity.class);
+                startActivity(intentDetalleRME);
             }
         });
         return root;
