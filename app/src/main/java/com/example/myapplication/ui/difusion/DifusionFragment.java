@@ -22,7 +22,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.tabs.TabLayout;
 
 public class DifusionFragment extends Fragment implements PerdidasFragment.OnFragmentInteractionListener,
-        EncontradasFragment.OnFragmentInteractionListener , AdopcionFragment.OnFragmentInteractionListener {
+        EncontradasFragment.OnFragmentInteractionListener , AdopcionFragment.OnFragmentInteractionListener{
 
 
     TabLayout tabs;
@@ -67,7 +67,8 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
                     fabperdidas.hide();
                     fabencontradas.hide();
                     fabadopcion.hide();
-                    isOpen[0] = true; }
+                    isOpen[0] = true;
+                }
             }
         });
 
@@ -116,4 +117,5 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
         return root;
 
     }
+
 }

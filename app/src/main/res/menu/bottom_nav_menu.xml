@@ -18,5 +18,5 @@
     <item
         android:id="@+id/navigation_config"
         android:icon="@drawable/config_selector"
-        android:title="Configuración" />
+        android:title="@string/title_config" />
 </menu>

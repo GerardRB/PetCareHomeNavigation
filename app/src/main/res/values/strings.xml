@@ -11,7 +11,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="title_search">Búsqueda</string>
     <string name="title_difusion">Difusión</string>
-    <string name="title_config">Configuración</string>
+    <string name="title_config">Perfil</string>
 
     <!-- Strings used for tabs difusion -->
     <string name="tab_text_1">Mascotas Perdidas</string>
@@ -64,4 +64,9 @@
     <string name="label_razaDRMA">Raza:</string>
     <string name="label_vacunas_DRMA">Vacunas:</string>
     <string name="label_zona_DRMA">Zona</string>
+    <string name="fab_busqueda">Buscar un cuidador</string>
+    <string name="dialog_ubicacion">Ubicación</string>
+    <string name="label_dialog_tipo_cuidado">Tipo de cuidado:</string>
+    <string name="label_dialog_distancia">Distancia máxima:</string>
+    <string name="text_dialog_distancia">0Km</string>
 </resources>
