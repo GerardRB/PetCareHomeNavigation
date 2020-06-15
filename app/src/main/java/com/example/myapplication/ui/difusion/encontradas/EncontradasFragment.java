@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,8 +58,15 @@ public class EncontradasFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_encontradas, container, false);
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         listReportesEncontradas = new ArrayList<>();
-        recycler = root.findViewById(R.id.recyclerEncontradasId);
+        recycler = view.findViewById(R.id.recyclerEncontradasId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
         llenarReportes();
@@ -75,7 +83,6 @@ public class EncontradasFragment extends Fragment {
                 startActivity(intentDetalleRME);
             }
         });
-        return root;
     }
 
     private void llenarReportes() {

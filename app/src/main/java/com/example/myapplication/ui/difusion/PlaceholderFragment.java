@@ -8,15 +8,14 @@ import com.example.myapplication.ui.difusion.perdidas.PerdidasFragment;
 
 public class PlaceholderFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    //private static final String ARG_SECTION_NUMBER = "section_number";
 
-    public PlaceholderFragment(){
-    }
-
+    /*public PlaceholderFragment(){
+    }*/
 
     //Seleccion del fragmento
     public static Fragment newInstance(int index) {
-        Fragment fragment = null;
+        Fragment fragment;
         switch (index){
             case 1: fragment = new PerdidasFragment();
                 break;

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,7 @@ public class PerdidasFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int index = 2;
+        int index = 1;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
@@ -52,10 +53,16 @@ public class PerdidasFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_perdidas, container, false);
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         //Construir Recycler
         listReportes = new ArrayList<>();
-        recyclerPerdidas = root.findViewById(R.id.recyclerPerdidasId);
+        recyclerPerdidas = view.findViewById(R.id.recyclerPerdidasId);
         recyclerPerdidas.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
@@ -72,7 +79,6 @@ public class PerdidasFragment extends Fragment {
             }
         });
 
-        return root;
     }
 
     private void llenarReportes() {

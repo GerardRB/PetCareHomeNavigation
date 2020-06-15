@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +45,7 @@ public class AdopcionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //difusionTabViewModel = ViewModelProviders.of(this).get(DifusionTabViewModel.class);
-        int index = 2;
+        int index = 3;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
@@ -57,13 +58,18 @@ public class AdopcionFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_adopcion, container, false);
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         listReportesAdopcion = new ArrayList<>();
-        recycler = root.findViewById(R.id.recyclerAdopcionId);
+        recycler = view.findViewById(R.id.recyclerAdopcionId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
         llenarReportes();
-
-
 
         AdapterReportesAdopcion adapter = new AdapterReportesAdopcion(listReportesAdopcion);
         recycler.setAdapter(adapter);
@@ -75,7 +81,6 @@ public class AdopcionFragment extends Fragment {
                 startActivity(intentDetalleRMA);
             }
         });
-        return root;
     }
 
     private void llenarReportes() {
