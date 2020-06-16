@@ -2,42 +2,45 @@ package com.example.myapplication.ui.difusion;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+
+    private final List<Fragment> listaFragments = new ArrayList<>();
+    private final List<String> listaTitulos = new ArrayList<>();
 
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm) {
+    public SectionsPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 
-    @Override
-    public Fragment getItem(int position) {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1);
+    public void addFragment(Fragment fragment, String titulo){
+        listaFragments.add(fragment);
+        listaTitulos.add(titulo);
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position){
-            case 0:
-                return "Mascotas perdidas";
-            case 1:
-                return "Mascotas encontradas";
-            case 2:
-                return "Mascotas en adopción";
-        }
-        return null;
+        return listaTitulos.get(position);
+    }
+
+    @NonNull
+    @Override
+    public Fragment getItem(int position) {
+        return listaFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        // Show 2 total pages.
-        return 3;
+        return listaFragments.size();
     }
 }

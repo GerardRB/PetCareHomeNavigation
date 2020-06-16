@@ -19,6 +19,7 @@ import com.example.myapplication.ui.difusion.encontradas.EncontradasFragment;
 import com.example.myapplication.ui.difusion.encontradas.GenerarReporteEncontradaActivity;
 import com.example.myapplication.ui.difusion.perdidas.GenerarReporteExtravioActivity;
 import com.example.myapplication.ui.difusion.perdidas.PerdidasFragment;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -30,6 +31,7 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
     private View root;
     private ViewPager viewPager;
     private SectionsPagerAdapter sectionsPagerAdapter;
+    private AppBarLayout appBar;
     final boolean[] isOpen = {true};
 
     private ExtendedFloatingActionButton fabadd, fabperdidas, fabencontradas, fabadopcion;
@@ -45,14 +47,26 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
         //Referencia a los componentes del adaptador de pestañas
-        viewPager = view.findViewById(R.id.view_pager);
         tabs = view.findViewById(R.id.tabs);
+        //tabs = new TabLayout(getActivity());
+        viewPager = view.findViewById(R.id.view_pager);
+        llenarViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+        });
+        tabs.setupWithViewPager(viewPager);
+
 
         //Implementacion del metodo para adaptar pestañas de reportes
-        sectionsPagerAdapter = new SectionsPagerAdapter( this.getContext(), getFragmentManager());
-        viewPager.setAdapter(sectionsPagerAdapter);
-        tabs.setupWithViewPager(viewPager);
+
+
+        //tabs.setupWithViewPager(viewPager);
 
         //Referencias a los fabs del xml y habilitar el escuchador de cada fab
         fabadd = view.findViewById(R.id.fabadd);
@@ -69,6 +83,14 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
         fabperdidas.hide();
         fabencontradas.hide();
         fabadopcion.hide();
+    }
+
+    private void llenarViewPager(ViewPager viewPager) {
+        sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        sectionsPagerAdapter.addFragment(new PerdidasFragment(), "Mascotas perdidas");
+        sectionsPagerAdapter.addFragment(new EncontradasFragment(), "Mascotas encontradas");
+        sectionsPagerAdapter.addFragment(new AdopcionFragment(), "Mascotas en adopción");
+        viewPager.setAdapter(sectionsPagerAdapter);
     }
 
     @Override
