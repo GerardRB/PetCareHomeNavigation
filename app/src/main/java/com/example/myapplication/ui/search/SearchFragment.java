@@ -33,12 +33,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements View.OnClickListener{
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private boolean requestingLocationUpdates;
-    LocationRequest locationRequest;
+    private LocationRequest locationRequest;
+    private ExtendedFloatingActionButton fabbusqueda, fablocation;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -66,10 +67,28 @@ public class SearchFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_search, container, false);
+        return root;
+    }
 
-        final ExtendedFloatingActionButton fabbusqueda = root.findViewById(R.id.fab_busqueda);
-        final ExtendedFloatingActionButton fablocation = root.findViewById(R.id.fab_location);
-        /*final ToggleButton switchEstado = root.findViewById(R.id.switch1);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //mapfragment
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
+
+        //Botones flotates referencias y escuchador
+        fabbusqueda = view.findViewById(R.id.fab_busqueda);
+        fablocation = view.findViewById(R.id.fab_location);
+
+        fabbusqueda.setOnClickListener(this);
+        fablocation.setOnClickListener(this);
+
+        /*Boton estado cuidador
+        final ToggleButton switchEstado = root.findViewById(R.id.switch1);
         switchEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,13 +99,6 @@ public class SearchFragment extends Fragment {
                 }
             }
         });*/
-
-        fabbusqueda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
 
         /*
         //Obtener ubicacion actual
@@ -107,8 +119,19 @@ public class SearchFragment extends Fragment {
             }
         });
         */
+    }
 
-        return root;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fab_busqueda:
+                openDialog();
+                break;
+            case R.id.fab_location:
+                //getCurrentLocation();
+                Toast.makeText(getContext(),"Actualizando ubicación", Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     private void openDialog() {
@@ -159,15 +182,9 @@ public class SearchFragment extends Fragment {
         });
     }*/
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
-        }
-    }
+
+
+
     /*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
