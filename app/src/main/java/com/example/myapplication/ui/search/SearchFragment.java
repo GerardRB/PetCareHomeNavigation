@@ -100,25 +100,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
             }
         });*/
 
-        /*
-        //Obtener ubicacion actual
-
-        fablocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
-                //Permiso para la ubicación
-                if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    //Cuando el permiso se dio, llamar al metodo
-                    getCurrentLocation();
-                } else{
-                    //Cuando el permiso no se dio, pedir permiso
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-                }
-            }
-        });
-        */
     }
 
     @Override
@@ -129,8 +110,26 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.fab_location:
                 //getCurrentLocation();
-                Toast.makeText(getContext(),"Actualizando ubicación", Toast.LENGTH_LONG).show();
-                break;
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+                //Permiso para la ubicación
+                /* DUDA: Una vez que accedes al permiso imprime Actualizando ubicacion,
+                pero al momento de preguntar y confirmar, imprime el mensaje de negativa y para que actualice la ubicacion es necesario volver a apretar el boton*/
+                if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    //Cuando el permiso se dio, llamar al metodo
+                    Toast.makeText(getContext(),"Actualizando ubicación", Toast.LENGTH_LONG).show();
+                    //getCurrentLocation();
+                    break;
+                } else{
+                    //Cuando el permiso no se dio, pedir permiso
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+                    /*Dependiendo de la respuesta al permiso:
+                    1.- Permite: Imprime Actualizando ubicacion y ejecuta getcurrentLocation
+                    2.- Rechaza: Imprime Debes conceder el permiso para acceder a tu ubicación actual
+                    */
+                    //Toast.makeText(getContext(),"Debes conceder el permiso para acceder a tu ubicación actual", Toast.LENGTH_LONG).show();
+                    break;
+                }
         }
     }
 
@@ -139,8 +138,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
         searchDialog.show(getChildFragmentManager(), "Buscar un cuidador");
     }
 
-    /*
-    private void getCurrentLocation() {
+
+    /*private void getCurrentLocation() {
         Task<Location> task = fusedLocationClient.getLastLocation();*/
 /*
         locationRequest.setInterval(10000);
@@ -150,8 +149,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                 locationCallback,
                 Looper.getMainLooper());
     */
-        /*
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+
+        /*task.addOnSuccessListener(new OnSuccessListener<Location>() {
 
             @Override
             public void onSuccess(final Location location) {
@@ -182,17 +181,4 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
         });
     }*/
 
-
-
-
-    /*
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==44){
-            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
-                //Cuando se da el permiso, llamar al metodo
-                getCurrentLocation();
-            }
-        }
-    }*/
 }
