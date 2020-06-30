@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,17 +30,24 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
+import java.util.concurrent.Executor;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class SearchFragment extends Fragment implements View.OnClickListener{
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
-    private boolean requestingLocationUpdates;
+    private boolean requestingLocationUpdates, mLocationPermissionGranted;
     private LocationRequest locationRequest;
     private ExtendedFloatingActionButton fabbusqueda, fablocation;
+    private GoogleMap mMap;
+    private Location  mLastKnownLocation;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -54,10 +62,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng cdmx = new LatLng(19.515626, -99.140994);
-            googleMap.addMarker(new MarkerOptions().position(cdmx).title("CDMX"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(cdmx));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cdmx,15));
+            LatLng cdmx = new LatLng(19.504803, -99.146900);
+            //googleMap.addMarker(new MarkerOptions().position(cdmx).title("CDMX"));
+            mMap = googleMap;
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(cdmx));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cdmx,15));
+
         }
     };
 
@@ -67,6 +77,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_search, container, false);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         return root;
     }
 
@@ -79,6 +90,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+
+
 
         //Botones flotates referencias y escuchador
         fabbusqueda = view.findViewById(R.id.fab_busqueda);
@@ -109,27 +123,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                 openDialog();
                 break;
             case R.id.fab_location:
-                //getCurrentLocation();
-                fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+                getLocationPermission();
 
-                //Permiso para la ubicación
-                /* DUDA: Una vez que accedes al permiso imprime Actualizando ubicacion,
-                pero al momento de preguntar y confirmar, imprime el mensaje de negativa y para que actualice la ubicacion es necesario volver a apretar el boton*/
-                if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    //Cuando el permiso se dio, llamar al metodo
-                    Toast.makeText(getContext(),"Actualizando ubicación", Toast.LENGTH_LONG).show();
-                    //getCurrentLocation();
-                    break;
-                } else{
-                    //Cuando el permiso no se dio, pedir permiso
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-                    /*Dependiendo de la respuesta al permiso:
-                    1.- Permite: Imprime Actualizando ubicacion y ejecuta getcurrentLocation
-                    2.- Rechaza: Imprime Debes conceder el permiso para acceder a tu ubicación actual
-                    */
-                    //Toast.makeText(getContext(),"Debes conceder el permiso para acceder a tu ubicación actual", Toast.LENGTH_LONG).show();
-                    break;
-                }
         }
     }
 
@@ -139,46 +134,57 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    /*private void getCurrentLocation() {
-        Task<Location> task = fusedLocationClient.getLastLocation();*/
-/*
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        fusedLocationClient.requestLocationUpdates(locationRequest,
-                locationCallback,
-                Looper.getMainLooper());
-    */
+    private void getLocationPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        if (ActivityCompat.checkSelfPermission(this.getContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+            getDeviceLocation();
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    44);
+        }
+    }
 
-        /*task.addOnSuccessListener(new OnSuccessListener<Location>() {
+    private void getDeviceLocation() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
+        try {
+            if (mLocationPermissionGranted) {
+                Task locationResult = fusedLocationClient.getLastLocation();
+                locationResult.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            // Set the map's camera position to the current location of the device.
+                            Toast.makeText(getContext(),"Actualizando ubicación", Toast.LENGTH_LONG).show();
+                            mLastKnownLocation = (Location) task.getResult();
+                            LatLng current = new LatLng(mLastKnownLocation.getLatitude(),
+                                    mLastKnownLocation.getLongitude());
+                            mMap.addMarker(new MarkerOptions().position(current).title("Mi ubicación"));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current,15));
 
-            @Override
-            public void onSuccess(final Location location) {
-                //Cuando se logra obtener la ubicación
-                if(location != null){
-                    //Sincronizar el mapa
-                    SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
-                            .findFragmentById(R.id.map);
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            //Inicializar latitud y longitud
-                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            //Crear opciones para el marcador
-                            MarkerOptions options = new MarkerOptions().position(latLng)
-                                    .title("Mi ubicación");
-                            //Zoom en el mapa
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                            //Añadir marcador en el mapa
-                            googleMap.addMarker(options);
+                        } else {
+                            Log.d(TAG, "Current location is null. Using defaults.");
+                            Log.e(TAG, "Exception: %s", task.getException());
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 10));
+                            //mMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
-                    });
-                }
-
+                    }
+                });
             }
-
-        });
-    }*/
+        } catch(SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
 
 }
