@@ -145,6 +145,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
             getDeviceLocation();
+            //getCurrentLocation();
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -170,14 +171,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                             LatLng current = new LatLng(mLastKnownLocation.getLatitude(),
                                     mLastKnownLocation.getLongitude());
                             mMap.addMarker(new MarkerOptions().position(current).title("Mi ubicación"));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current,15));
 
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 10));
-                            //mMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
                     }
                 });
@@ -186,5 +185,31 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
             Log.e("Exception: %s", e.getMessage());
         }
     }
+
+    /*
+    private void getCurrentLocation() {
+        //Inicializar la tarea de ubicación.
+        Task<Location> task = fusedLocationClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(final Location location) {
+                //Cuando se logra obtener la ubicación
+                if(location != null){
+
+                            //Inicializar latitud y longitud
+                            LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+                            //Crear opciones para el marcador
+                            MarkerOptions options = new MarkerOptions().position(current)
+                                    .title("Mi ubicación");
+                            //Zoom en el mapa
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+                            //Añadir marcador en el mapa
+                            mMap.addMarker(options);
+                }
+
+            }
+
+        });
+    }*/
 
 }
