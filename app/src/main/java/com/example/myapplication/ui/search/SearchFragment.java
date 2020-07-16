@@ -144,8 +144,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
-            getDeviceLocation();
-            //getCurrentLocation();
+            //getDeviceLocation();
+            getCurrentLocation();
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -153,11 +153,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
+    /*private void getDeviceLocation() {
+        //Get the best and most recent location of the device, which may be null in rare cases when a location is not available.
+
         try {
             if (mLocationPermissionGranted) {
                 Task locationResult = fusedLocationClient.getLastLocation();
@@ -176,7 +174,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 10));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 15));
                         }
                     }
                 });
@@ -184,12 +182,13 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
         } catch(SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
-    }
+    }*/
 
-    /*
+
     private void getCurrentLocation() {
         //Inicializar la tarea de ubicación.
         Task<Location> task = fusedLocationClient.getLastLocation();
+
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(final Location location) {
@@ -206,10 +205,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                             //Añadir marcador en el mapa
                             mMap.addMarker(options);
                 }
-
             }
 
         });
-    }*/
+    }
 
 }
