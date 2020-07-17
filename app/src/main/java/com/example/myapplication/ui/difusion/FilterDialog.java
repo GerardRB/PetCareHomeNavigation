@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -41,7 +42,6 @@ public class FilterDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.dialog_filter, null);
 
         fecha1 = view.findViewById(R.id.id_dialog_fecha1);
-        fecha1.setEnabled(false);
         fecha1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -116,7 +116,6 @@ public class FilterDialog extends AppCompatDialogFragment {
 
 
         fecha2 = view.findViewById(R.id.id_dialog_fecha2);
-        fecha2.setEnabled(false);
         fecha2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -191,16 +190,37 @@ public class FilterDialog extends AppCompatDialogFragment {
 
 
         spinnerMascota = view.findViewById(R.id.dialog_filter_tipo_mascota);
-        spinnerMascota.setEnabled(false);
         ArrayAdapter<CharSequence> adapterTipoMascota = ArrayAdapter.createFromResource(getContext(), R.array.combo_tipoRMP, android.R.layout.simple_spinner_item);
         spinnerMascota.setAdapter(adapterTipoMascota);
 
         spinnerZona = view.findViewById(R.id.dialog_filter_zona);
-        spinnerZona.setEnabled(false);
         ArrayAdapter<CharSequence> adapterTipoCuidado = ArrayAdapter.createFromResource(getContext(), R.array.combo_alcaldia, android.R.layout.simple_spinner_item);
         spinnerZona.setAdapter(adapterTipoCuidado);
 
 
+        checkBoxZona = view.findViewById(R.id.checkBox_zona);
+
+        /*if (checkBoxZona.isChecked() == false){
+            spinnerZona.setEnabled(false);
+        } else{
+            spinnerZona.setEnabled(true);
+        }*/
+
+        checkBoxTipo = view.findViewById(R.id.checkBox_tipo_mascota);
+        /*if (checkBoxTipo.isChecked() == false){
+            spinnerMascota.setEnabled(false);
+        } else{
+            spinnerMascota.setEnabled(true);
+        }*/
+
+        checkBoxFecha = view.findViewById(R.id.checkBox_fecha);
+        /*if (checkBoxFecha.isChecked() == false){
+            fecha1.setEnabled(false);
+            fecha2.setEnabled(false);
+        } else{
+            fecha1.setEnabled(true);
+            fecha2.setEnabled(true);
+        }*/
 
 
         builder.setView(view)
@@ -214,13 +234,32 @@ public class FilterDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Filtrar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(),"Aplicando filtros...", Toast.LENGTH_LONG).show();
+                        Filtrar();
                     }
                 });
 
 
         AlertDialog alert = builder.create();
         return alert;
+
+    }
+
+    private void Filtrar() {
+        String cad = "Aplicando filtros...";
+
+        if (checkBoxZona.isChecked() == true){
+            cad += "\nZona: " + spinnerZona.getSelectedItem();
+        }
+
+        if (checkBoxTipo.isChecked() == true){
+            cad += "\nTipo: " + spinnerMascota.getSelectedItem();
+        }
+
+        if (checkBoxFecha.isChecked() == true){
+            cad += "\nDel: " + fecha1.getText() + " Al: " + fecha2.getText();
+        }
+
+        Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
 
     }
 }
