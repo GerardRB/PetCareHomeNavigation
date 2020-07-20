@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +36,7 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
     final boolean[] isOpen = {true};
 
     private ExtendedFloatingActionButton fabadd, fabperdidas, fabencontradas, fabadopcion;
+    private ImageButton fltrbtn;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +79,8 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
         fabencontradas.setOnClickListener(this);
         fabadopcion = view.findViewById(R.id.id_add_adopcion);
         fabadopcion.setOnClickListener(this);
+        fltrbtn = view.findViewById(R.id.btn_filter);
+        fltrbtn.setOnClickListener(this);
 
         //Ocultar los fabs y efecto de extender el fab add
         fabadd.shrink();
@@ -88,7 +92,7 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
     private void llenarViewPager(ViewPager viewPager) {
         sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         sectionsPagerAdapter.addFragment(new PerdidasFragment(), "Mascotas perdidas");
-        sectionsPagerAdapter.addFragment(new EncontradasFragment(), "Mascotas encontradas");
+        sectionsPagerAdapter.addFragment(new EncontradasFragment(), "Mascotas   encontradas");
         sectionsPagerAdapter.addFragment(new AdopcionFragment(), "Mascotas en adopción");
         viewPager.setAdapter(sectionsPagerAdapter);
     }
@@ -139,9 +143,16 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
                 Intent intentReporteAdopcion = new Intent(getContext(), GenerarReporteAdopcionActivity. class);
                 startActivity(intentReporteAdopcion);
                 break;
-
+            case R.id.btn_filter:
+                openFilterDialog();
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
+    }
+
+    private void openFilterDialog() {
+        FilterDialog filterDialog = new FilterDialog();
+        filterDialog.show(getChildFragmentManager(), "Filtrar");
     }
 }
