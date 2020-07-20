@@ -34,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 //Este es un comentario para ver si jaló el GIT
+    //Este es otro comentario para ver si jala el git
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
