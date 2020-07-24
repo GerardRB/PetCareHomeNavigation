@@ -338,20 +338,20 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
 
 
-        if(nombreM.isEmpty() || tipoM == "Seleccionar" || edadM.isEmpty() || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE == "Seleccione" || descripcionE.isEmpty()){
-            if(nombreM.isEmpty());
+        if(nombreM.isEmpty() || tipoM.equals("Seleccionar") || edadM.isEmpty() || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE.equals("Seleccionar") || descripcionE.isEmpty()){
+            if(nombreM.isEmpty())
                 nombre.setError("Obligatorio");
-            if (tipoM.equals("Seleccionar"));
+            if (tipoM.equals("Seleccionar"))
                 mensaje += "\nSeleccione un tipo de mascota";
-            if (edadM.isEmpty());
+            if (edadM.isEmpty())
                 edad.setError("Obligatorio");
-            if (fechaE.isEmpty());
+            if (fechaE.isEmpty())
                 fecha.setError("Obligatorio");
-            if (horaE.isEmpty());
+            if (horaE.isEmpty())
                 hora.setError("Obligatorio");
-            if (alcaldiaE == "Seleccione");
+            if (alcaldiaE.equals("Seleccionar"))
                 mensaje += "\nSeleccione una alcaldía";
-            if (descripcionE.isEmpty());
+            if (descripcionE.isEmpty())
                 descripcion.setError("Obligatorio");
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {

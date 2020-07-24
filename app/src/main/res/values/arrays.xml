@@ -2,7 +2,7 @@
 <resources>
     <!-- Spinner Alcaldias       -->
     <string-array name="combo_alcaldia">
-        <item>Seleccione</item>
+        <item>Seleccionar</item>
         <item>Álvaro Obregón</item>
         <item>Azcapotzalco</item>
         <item>Benito Juárez</item>
