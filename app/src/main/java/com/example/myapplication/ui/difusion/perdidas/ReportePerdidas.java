@@ -3,10 +3,7 @@ package com.example.myapplication.ui.difusion.perdidas;
 import java.io.Serializable;
 
 public class ReportePerdidas implements Serializable {
-    private String zona;
-    private String fecha;
-    private String nombre;
-    private String descripcion;
+    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion;
     private int foto;
     private int id;
 
@@ -14,21 +11,43 @@ public class ReportePerdidas implements Serializable {
 
     }
 
-    public ReportePerdidas(String zona, String fecha, String nombre, String descripcion, int foto, int id) {
-        this.zona = zona;
-        this.fecha = fecha;
+    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, int foto, int id) {
         this.nombre = nombre;
+        this.tipo = tipo;
+        this.edad = edad;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.alcaldia = alcaldia;
+        this.colonia = colonia;
+        this.calle = calle;
         this.descripcion = descripcion;
         this.foto = foto;
         this.id = id;
     }
 
-    public String getZona() {
-        return zona;
+
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setZona(String zona) {
-        this.zona = zona;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getEdad() {
+        return edad;
+    }
+
+    public void setEdad(String edad) {
+        this.edad = edad;
     }
 
     public String getFecha() {
@@ -39,12 +58,36 @@ public class ReportePerdidas implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getHora() {
+        return hora;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    public String getAlcaldia() {
+        return alcaldia;
+    }
+
+    public void setAlcaldia(String alcaldia) {
+        this.alcaldia = alcaldia;
+    }
+
+    public String getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(String colonia) {
+        this.colonia = colonia;
+    }
+
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
     }
 
     public String getDescripcion() {
@@ -70,6 +113,7 @@ public class ReportePerdidas implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
 }
 
 

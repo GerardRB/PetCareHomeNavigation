@@ -22,8 +22,12 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 public class GenerarReporteExtravioActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -31,25 +35,36 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     //private static final int COD_SELECCIONA = 10;
 
     private Spinner comboAlcaldias, comboTipoMascota;
-    private EditText fecha, hora;
+    private EditText fecha, hora, nombre, edad, colonia, calle, descripcion;
     private DatePickerDialog.OnDateSetListener fechaSetListener;
     private TimePickerDialog.OnTimeSetListener horaSetListener;
     private ImageView imageView;
-    private Button button;
+    private Button buttonGenerar;
+
+    //FirebaseDatabase firebaseDatabase;
+    //DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generar_reporte_extravio);
 
+        //startFirebase();
+
+        //
+        nombre = findViewById(R.id.id_input_nombreRMP);
+        edad = findViewById(R.id.id_input_edadRMP);
+        colonia = findViewById(R.id.id_input_coloniaRMP);
+        calle = findViewById(R.id.id_input_calleRMP);
+        descripcion = findViewById(R.id.id_input_descripcionRMP);
 
         //Referencia al componente ImageView en xml
         imageView = findViewById(R.id.id_input_imageRMP);
         imageView.setOnClickListener(this);
 
         //Referencia al Boton generar reporte en xml
-        button = findViewById(R.id.id_btn_generarRMP);
-        button.setOnClickListener(this);
+        buttonGenerar = findViewById(R.id.id_btn_generarRMP);
+        buttonGenerar.setOnClickListener(this);
 
         //spinner de alcaldias
         comboAlcaldias = findViewById(R.id.spinner_alcaldiaRMP);
@@ -101,6 +116,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                         break;
                     case 4:
                         mes = "ABR";
+                        break;
                     case 5:
                         mes = "MAY";
                         break;
@@ -109,6 +125,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                         break;
                     case 7:
                         mes = "JUL";
+                        break;
                     case 8:
                         mes = "AGO";
                         break;
@@ -248,6 +265,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                         break;
                     default:
                         horas = " ";
+                        break;
                 }
 
                 datetime = horas + minuto + ampm;
@@ -257,6 +275,12 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             }
         };
     }
+
+    /*private void startFirebase() {
+        FirebaseApp.initializeApp(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+    }*/
 
 
     //Acceso a la galería
@@ -285,13 +309,72 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     //Eventos Onclick dentro de la actividad
     @Override
     public void onClick(View v) {
-        if (v.getId()==button.getId()){
-            Toast.makeText(getApplicationContext(), "Reporte generado exitosamente", Toast.LENGTH_LONG).show();
+        switch(v.getId()){
+            case R.id.id_btn_generarRMP:
+                //Toast.makeText(getApplicationContext(), "Reporte generado exitosamente", Toast.LENGTH_LONG).show();
+                ValidarCampos();
+                break;
+            case R.id.id_input_imageRMP:
+                cargarImagen();
+                break;
+        }
+
+
+    }
+
+    private void ValidarCampos() {
+        String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE;
+        String mensaje = "Faltan campos por ingresar";
+        String reporte = "";
+        nombreM = nombre.getText().toString();
+        tipoM = comboTipoMascota.getSelectedItem().toString();
+        edadM = edad.getText().toString();
+        fechaE = fecha.getText().toString();
+        horaE = hora.getText().toString();
+        alcaldiaE = comboAlcaldias.getSelectedItem().toString();
+        coloniaE = colonia.getText().toString();
+        calleE = calle.getText().toString();
+        descripcionE = descripcion.getText().toString();
+
+
+
+        if(nombreM.isEmpty() || tipoM == "Seleccionar" || edadM.isEmpty() || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE == "Seleccione" || descripcionE.isEmpty()){
+            if(nombreM.isEmpty());
+                nombre.setError("Obligatorio");
+            if (tipoM.equals("Seleccionar"));
+                mensaje += "\nSeleccione un tipo de mascota";
+            if (edadM.isEmpty());
+                edad.setError("Obligatorio");
+            if (fechaE.isEmpty());
+                fecha.setError("Obligatorio");
+            if (horaE.isEmpty());
+                hora.setError("Obligatorio");
+            if (alcaldiaE == "Seleccione");
+                mensaje += "\nSeleccione una alcaldía";
+            if (descripcionE.isEmpty());
+                descripcion.setError("Obligatorio");
+            Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+        } else {
+            ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, 10, 1);
+            reporte = "Reporte generado: \nID: " + reporteP.getId() +
+                    "\nNombre: " + reporteP.getNombre() +
+                    "\nTipo: " + reporteP.getTipo() +
+                    "\nEdad: " + reporteP.getEdad() +
+                    "\nFecha: " + reporteP.getFecha() +
+                    "\nHora: " + reporteP.getHora() +
+                    "\nZona: " + reporteP.getAlcaldia() +
+                    ", col. " + reporteP.getColonia() +
+                    ", calle " + reporteP.getCalle() +
+                    "\nDescripción: " + reporteP.getDescripcion();
+            Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
             onBackPressed();
         }
-        if(v.getId()==imageView.getId()){
-            cargarImagen();
-        }
+
+
+
+
+
+
 
 
     }

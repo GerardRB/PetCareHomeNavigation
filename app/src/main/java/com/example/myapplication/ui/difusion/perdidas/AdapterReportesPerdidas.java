@@ -32,7 +32,7 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderReportesPerdidas holder, int position) {
-        holder.etizona.setText(listReportesPerdidas.get(position).getZona());
+        holder.etizona.setText(listReportesPerdidas.get(position).getAlcaldia());
         holder.etifecha.setText(listReportesPerdidas.get(position).getFecha());
         holder.etinombre.setText(listReportesPerdidas.get(position).getNombre());
         holder.etidescripcion.setText(listReportesPerdidas.get(position).getDescripcion());
