@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context=".ui.inicio.cuidadorRegistro">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:paddingTop="5dp"
+        android:text="Registro"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:text="Datos generales "
+        android:textColor="@color/textogris"
+        android:textStyle="bold"></TextView>
+
+    <EditText
+        android:id="@+id/nombre_cuidador"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Nombre"
+        android:paddingTop="20dp" />
+
+    <EditText
+        android:id="@+id/apellidop_cuidador"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Apellido Paterno" />
+
+    <EditText
+        android:id="@+id/apellidom_cuidador"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Apellido Materno" />
+
+    <EditText
+        android:id="@+id/contraseña2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Contraseña"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/contraseñaconfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Confirmar contraseña" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:text="Domicilio "
+        android:textColor="@color/textogris"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/calle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Calle" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/ColorLinea"
+            android:paddingRight="50dp"
+            android:text="No. Exterior"
+            android:textColor="@color/textogris"></EditText>
+
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/ColorLinea"
+            android:paddingRight="50dp"
+            android:text="No. Interior"
+            android:textColor="@color/textogris"></EditText>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="11dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alcaldía"
+            android:textColor="@color/textogris"
+            android:textStyle="bold"></TextView>
+
+        <Spinner
+            android:id="@+id/delegacion_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            ></Spinner>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Datos de contacto"
+        android:textColor="@color/textogris"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/correo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Correo Electrónico" />
+
+
+    <EditText
+        android:id="@+id/tel_cuidador"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Teléfono celular" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Añadir foto de perfil"
+            android:paddingRight="10dp"
+            />
+
+        <Button
+            android:id="@+id/fotografia"
+            android:layout_width="30dp"
+           android:background="@drawable/ic_anadir"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+           />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="70dp"
+            />
+        <Button
+            android:id="@+id/registrarse2"
+
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/miboton"
+            android:text="Registrarse"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
