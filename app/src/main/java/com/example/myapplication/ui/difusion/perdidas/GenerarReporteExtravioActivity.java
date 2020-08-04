@@ -26,6 +26,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -40,6 +41,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     private TimePickerDialog.OnTimeSetListener horaSetListener;
     private ImageView imageView;
     private Button buttonGenerar;
+    private ArrayList<ReportePerdidas> listReportes;
 
     //FirebaseDatabase firebaseDatabase;
     //DatabaseReference databaseReference;
@@ -355,7 +357,16 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                 descripcion.setError("Obligatorio");
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
-            ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, 10, 1);
+            ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, R.drawable.ic_perro, 1);
+
+            Intent intent = new Intent(GenerarReporteExtravioActivity.this, PerdidasFragment.class);
+
+            Bundle  bundle = new Bundle();
+            bundle.putSerializable("reportePerdida", reporteP);
+
+            intent.putExtras(bundle);
+            //startActivity(intent);
+
             reporte = "Reporte generado: \nID: " + reporteP.getId() +
                     "\nNombre: " + reporteP.getNombre() +
                     "\nTipo: " + reporteP.getTipo() +

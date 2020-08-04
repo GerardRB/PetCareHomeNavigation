@@ -9,12 +9,20 @@
     tools:context=".ui.difusion.DifusionFragment"
     android:layout_marginBottom="?attr/actionBarSize">
 
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerPerdidasId"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshPerdidas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPerdidasId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 
 
