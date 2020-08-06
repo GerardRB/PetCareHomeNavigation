@@ -73,7 +73,7 @@
                         tools:ignore="MissingConstraints">
 
                         <TextView
-                            android:id="@+id/label_tipo_DRMP"
+                            android:id="@+id/label_tipo_DRME"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
@@ -83,7 +83,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold"/>
                         <TextView
-                            android:id="@+id/text_tipo_DRMP"
+                            android:id="@+id/text_tipo_DRME"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
@@ -100,7 +100,7 @@
                         tools:ignore="MissingConstraints">
 
                         <TextView
-                            android:id="@+id/label_fecha_extravio_DRME"
+                            android:id="@+id/label_fecha_encontrada_DRME"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
@@ -110,7 +110,7 @@
                             android:textSize="17sp"
                             android:textStyle="bold"/>
                         <TextView
-                            android:id="@+id/text_fecha_extravio_DRME"
+                            android:id="@+id/text_fecha_encontrada_DRME"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
@@ -127,7 +127,7 @@
                         tools:ignore="MissingConstraints">
 
                         <TextView
-                            android:id="@+id/label_hora_extravio_DRME"
+                            android:id="@+id/label_hora_encontrada_DRME"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
@@ -137,7 +137,7 @@
                             android:textSize="17sp"
                             android:textStyle="bold"/>
                         <TextView
-                            android:id="@+id/text_hora_Extravio_DRME"
+                            android:id="@+id/text_hora_encontrada_DRME"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
@@ -148,7 +148,7 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <TextView
-                        android:id="@+id/label_zona_extravio_DRME"
+                        android:id="@+id/label_zona_encontrada_DRM"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"

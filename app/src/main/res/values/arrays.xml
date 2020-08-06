@@ -31,13 +31,13 @@
     </string-array>
 
     <string-array name="combo_sino">
-        <item></item>
+        <item>Seleccionar</item>
         <item>Si</item>
         <item>No</item>
     </string-array>
 
     <string-array name="combo_cuidados">
-        <item></item>
+        <item>Seleccionar</item>
         <item>Paseo</item>
         <item>Hospedaje</item>
     </string-array>

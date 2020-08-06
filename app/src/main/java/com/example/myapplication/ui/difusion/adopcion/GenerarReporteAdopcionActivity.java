@@ -25,6 +25,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     //private static final int COD_SELECCIONA = 10;
 
     private Spinner comboAlcaldias, comboTipoMascota, comboVacunas, comboEsterilizacion;
+    private EditText raza, edad, colonia, calle, descripcion;
     private ImageView imageView;
     private Button button;
 
@@ -32,6 +33,13 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generar_reporte_adopcion);
+
+        //Referencia a editTexts
+        raza = findViewById(R.id.id_input_razaRMA);
+        edad = findViewById(R.id.id_input_edadRMA);
+        colonia = findViewById(R.id.id_input_coloniaRMA);
+        calle = findViewById(R.id.id_input_calleRMA);
+        descripcion = findViewById(R.id.id_input_descripcionRMA);
 
         //Referencia al componente ImageView en xml
         imageView = findViewById(R.id.id_input_imageRMA);
@@ -89,12 +97,73 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         if (v.getId()==button.getId()){
-            Toast.makeText(getApplicationContext(), "Reporte generado exitosamente", Toast.LENGTH_LONG).show();
-            onBackPressed();
+            validarCampos();
         }
         if(v.getId()==imageView.getId()){
             cargarImagen();
         }
+
+    }
+
+    private void validarCampos() {
+        String tipoM, razaM, edadM, vacunas, esterilizacion, alcaldiaE, coloniaE, calleE, descripcionE;
+        String mensaje = "Faltan campos por ingresar";
+        String reporte = "";
+
+        //Obtener valores ingresados
+        tipoM = comboTipoMascota.getSelectedItem().toString();
+        razaM = raza.getText().toString();
+        edadM = edad.getText().toString();
+        vacunas = comboVacunas.getSelectedItem().toString();
+        esterilizacion = comboEsterilizacion.getSelectedItem().toString();
+        alcaldiaE = comboAlcaldias.getSelectedItem().toString();
+        coloniaE = colonia.getText().toString();
+        calleE = calle.getText().toString();
+        descripcionE = descripcion.getText().toString();
+
+        //validacion
+        if(tipoM.equals("Seleccionar") || razaM.isEmpty() || edadM.isEmpty() || vacunas.equals("Seleccionar") || esterilizacion.equals("Seleccionar") || alcaldiaE.equals("Seleccionar") || descripcionE.isEmpty()){
+            if (tipoM.equals("Seleccionar"))
+                mensaje += "\nSeleccione un tipo de mascota";
+            if (razaM.isEmpty())
+                raza.setError("Obligatorio");
+            if (edadM.isEmpty())
+                edad.setError("Obligatorio");
+            if (vacunas.equals("Seleccionar"))
+                mensaje += "\nSeleccione si o no está vacunada la mascota";
+            if (esterilizacion.equals("Seleccionar"))
+                mensaje += "\nSeleccione si o no está esterilizada la mascota";
+            if (alcaldiaE.equals("Seleccionar"))
+                mensaje += "\nSeleccione una alcaldía";
+            if (descripcionE.isEmpty())
+                descripcion.setError("Obligatorio");
+            Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+        } else {
+            ReporteAdopcion reporteA = new ReporteAdopcion(tipoM, razaM, edadM, vacunas, esterilizacion, alcaldiaE, coloniaE, calleE, descripcionE, R.drawable.ic_perro, 1);
+
+            Intent intent = new Intent(GenerarReporteAdopcionActivity.this, AdopcionFragment.class);
+
+            Bundle  bundle = new Bundle();
+            bundle.putSerializable("reporteAdopcion", reporteA);
+
+            intent.putExtras(bundle);
+            //startActivity(intent);
+
+            reporte = "Reporte generado: \nID: " + reporteA.getId() +
+                    "\nTipo: " + reporteA.getTipo() +
+                    "\nRaza: " + reporteA.getRaza() +
+                    "\nEdad: " + reporteA.getEdad() +
+                    "\nVacunado: " + reporteA.getVacunas() +
+                    "\nEsterilizado: " + reporteA.getEsterilizacion() +
+                    "\nZona: " + reporteA.getAlcaldia() +
+                    ", col. " + reporteA.getColonia() +
+                    ", calle " + reporteA.getCalle() +
+                    "\nDescripción: " + reporteA.getDescripcion();
+            Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
+            onBackPressed();
+        }
+
+
 
     }
 

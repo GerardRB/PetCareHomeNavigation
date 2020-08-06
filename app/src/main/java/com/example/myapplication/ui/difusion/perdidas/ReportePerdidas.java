@@ -4,8 +4,7 @@ import java.io.Serializable;
 
 public class ReportePerdidas implements Serializable {
     private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion;
-    private int foto;
-    private int id;
+    private int foto, id;
 
     public ReportePerdidas(){
 

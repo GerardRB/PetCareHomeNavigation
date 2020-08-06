@@ -34,7 +34,7 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
     public void onBindViewHolder(@NonNull AdapterReportesAdopcion.ViewHolderReportesAdopcion holder, int position) {
         holder.etitipo.setText(listReportesAdopcion.get(position).getTipo());
         holder.etiedad.setText(listReportesAdopcion.get(position).getEdad());
-        holder.eticantidad.setText(listReportesAdopcion.get(position).getCantidad());
+        holder.etiRaza.setText(listReportesAdopcion.get(position).getRaza());
         holder.etidescripcion.setText(listReportesAdopcion.get(position).getDescripcion());
         holder.foto.setImageResource(listReportesAdopcion.get(position).getFoto());
 
@@ -59,14 +59,14 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
 
     public class ViewHolderReportesAdopcion extends RecyclerView.ViewHolder {
 
-        TextView etitipo, etiedad, eticantidad, etidescripcion;
+        TextView etitipo, etiedad, etiRaza, etidescripcion;
         ImageView foto;
 
         public ViewHolderReportesAdopcion(@NonNull View itemView) {
             super(itemView);
             etitipo = (TextView) itemView.findViewById(R.id.idTipoMA);
             etiedad = (TextView) itemView.findViewById(R.id.idEdadMA);
-            eticantidad = (TextView) itemView.findViewById(R.id.idCantidadMA);
+            etiRaza = (TextView) itemView.findViewById(R.id.idRazaMA);
             etidescripcion = (TextView) itemView.findViewById(R.id.idDescripcionMA);
             foto = (ImageView) itemView.findViewById(R.id.idImagenMA);
         }

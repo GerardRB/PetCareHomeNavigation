@@ -1,20 +1,23 @@
 package com.example.myapplication.ui.difusion.adopcion;
 
-public class ReporteAdopcion {
-    private String tipo;
-    private String edad;
-    private String cantidad;
-    private String descripcion;
-    private int foto;
-    private int id;
+import java.io.Serializable;
+
+public class ReporteAdopcion implements Serializable {
+    private String tipo, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion;
+    private int foto, id;
 
     public ReporteAdopcion(){
     }
 
-    public ReporteAdopcion(String tipo, String edad, String cantidad, String descripcion, int foto, int id) {
+    public ReporteAdopcion(String tipo, String raza, String edad, String vacunas, String esterilizacion, String alcaldia, String colonia, String calle, String descripcion, int foto, int id) {
         this.tipo = tipo;
+        this.raza = raza;
         this.edad = edad;
-        this.cantidad = cantidad;
+        this.vacunas = vacunas;
+        this.esterilizacion = esterilizacion;
+        this.alcaldia = alcaldia;
+        this.colonia = colonia;
+        this.calle = calle;
         this.descripcion = descripcion;
         this.foto = foto;
         this.id = id;
@@ -28,6 +31,14 @@ public class ReporteAdopcion {
         this.tipo = tipo;
     }
 
+    public String getRaza() {
+        return raza;
+    }
+
+    public void setRaza(String raza) {
+        this.raza = raza;
+    }
+
     public String getEdad() {
         return edad;
     }
@@ -36,12 +47,44 @@ public class ReporteAdopcion {
         this.edad = edad;
     }
 
-    public String getCantidad() {
-        return cantidad;
+    public String getVacunas() {
+        return vacunas;
     }
 
-    public void setCantidad(String cantidad) {
-        this.cantidad = cantidad;
+    public void setVacunas(String vacunas) {
+        this.vacunas = vacunas;
+    }
+
+    public String getEsterilizacion() {
+        return esterilizacion;
+    }
+
+    public void setEsterilizacion(String esterilizacion) {
+        this.esterilizacion = esterilizacion;
+    }
+
+    public String getAlcaldia() {
+        return alcaldia;
+    }
+
+    public void setAlcaldia(String alcaldia) {
+        this.alcaldia = alcaldia;
+    }
+
+    public String getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(String colonia) {
+        this.colonia = colonia;
+    }
+
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
     }
 
     public String getDescripcion() {

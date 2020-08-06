@@ -5,9 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.difusion.encontradas.EncontradasFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerEncontradasId"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshEncontradas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerEncontradasId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

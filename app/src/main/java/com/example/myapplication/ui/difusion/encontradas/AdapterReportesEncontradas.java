@@ -32,9 +32,9 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
 
     @Override
     public void onBindViewHolder(@NonNull AdapterReportesEncontradas.ViewHolderReportesEncontradas holder, int position) {
-        holder.etizona.setText(listReportesEncontradas.get(position).getZona());
+        holder.etizona.setText(listReportesEncontradas.get(position).getAlcaldia());
         holder.etifecha.setText(listReportesEncontradas.get(position).getFecha());
-        holder.etinombre.setText(listReportesEncontradas.get(position).getNombre());
+        holder.etitipo.setText(listReportesEncontradas.get(position).getTipo());
         holder.etidescripcion.setText(listReportesEncontradas.get(position).getDescripcion());
         holder.foto.setImageResource(listReportesEncontradas.get(position).getFoto());
 
@@ -59,14 +59,14 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
 
     public class ViewHolderReportesEncontradas extends RecyclerView.ViewHolder {
 
-        TextView etizona, etifecha, etinombre, etidescripcion;
+        TextView etizona, etifecha, etitipo, etidescripcion;
         ImageView foto;
 
         public ViewHolderReportesEncontradas(@NonNull View itemView) {
             super(itemView);
             etizona = (TextView) itemView.findViewById(R.id.idZonaME);
             etifecha = (TextView) itemView.findViewById(R.id.idFechaME);
-            etinombre = (TextView) itemView.findViewById(R.id.idNombreME);
+            etitipo = (TextView) itemView.findViewById(R.id.idTipoME);
             etidescripcion = (TextView) itemView.findViewById(R.id.idDescripcionME);
             foto = (ImageView) itemView.findViewById(R.id.idImagenME);
         }

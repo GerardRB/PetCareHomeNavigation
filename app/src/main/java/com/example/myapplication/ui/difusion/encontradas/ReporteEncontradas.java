@@ -1,31 +1,32 @@
 package com.example.myapplication.ui.difusion.encontradas;
 
-public class ReporteEncontradas {
-    private String zona;
-    private String fecha;
-    private String nombre;
-    private String descripcion;
-    private int foto;
-    private int id;
+import java.io.Serializable;
+
+public class ReporteEncontradas implements Serializable {
+    private String tipo, fecha, hora, alcaldia, colonia, calle, descripcion;
+    private int foto, id;
 
     public ReporteEncontradas(){
     }
 
-    public ReporteEncontradas(String zona, String fecha, String nombre, String descripcion, int foto, int id) {
-        this.zona = zona;
+    public ReporteEncontradas(String tipo, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, int foto, int id) {
+        this.tipo = tipo;
         this.fecha = fecha;
-        this.nombre = nombre;
+        this.hora = hora;
+        this.alcaldia = alcaldia;
+        this.colonia = colonia;
+        this.calle = calle;
         this.descripcion = descripcion;
         this.foto = foto;
         this.id = id;
     }
 
-    public String getZona() {
-        return zona;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setZona(String zona) {
-        this.zona = zona;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public String getFecha() {
@@ -36,12 +37,36 @@ public class ReporteEncontradas {
         this.fecha = fecha;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getHora() {
+        return hora;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    public String getAlcaldia() {
+        return alcaldia;
+    }
+
+    public void setAlcaldia(String alcaldia) {
+        this.alcaldia = alcaldia;
+    }
+
+    public String getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(String colonia) {
+        this.colonia = colonia;
+    }
+
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
     }
 
     public String getDescripcion() {

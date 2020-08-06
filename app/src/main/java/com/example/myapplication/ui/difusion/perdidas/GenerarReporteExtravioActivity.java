@@ -50,7 +50,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
         //startFirebase();
 
-        //
+        //Referencia a elementos
         nombre = findViewById(R.id.id_input_nombreRMP);
         edad = findViewById(R.id.id_input_edadRMP);
         colonia = findViewById(R.id.id_input_coloniaRMP);

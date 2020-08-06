@@ -51,6 +51,7 @@ public class PerdidasFragment extends Fragment {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
 
+
     }
 
     @Override
@@ -59,6 +60,7 @@ public class PerdidasFragment extends Fragment {
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_perdidas, container, false);
         return root;
+
     }
 
 
@@ -109,8 +111,11 @@ public class PerdidasFragment extends Fragment {
                 if (reporteP != null){
                     listReportes.add(reporteP);
                     adapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
                 }*/
-                listReportes.add(new ReportePerdidas("Sirius", "Perro", "1 año", "03/AGO/2020", "2:43 pm", "Gustavo A. Madero", "Ticoman", "Escuadron", "Perrito Bello", R.drawable.ic_perro, 10));
+                listReportes.add(0, new ReportePerdidas("Sirius", "Perro", "1 año", "03/AGO/2020", "2:43 pm", "Gustavo A. Madero", "Ticoman", "Escuadron", "Perrito Bello", R.drawable.ic_perro, 10));
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -120,7 +125,7 @@ public class PerdidasFragment extends Fragment {
 
     private void llenarReportes() {
         for(int i = 0; i<=5; i++){
-            listReportes.add(new ReportePerdidas("Nombre", "Tipo", "Edad", "Fecha", "Hora", "Alcaldía", "Colonia", "Calle", "Descripción", R.drawable.ic_perro, i));
+            listReportes.add(0, new ReportePerdidas("Nombre", "Tipo", "Edad", "Fecha", "Hora", "Alcaldía", "Colonia", "Calle", "Descripción", R.drawable.ic_perro, i));
         }
     }
 

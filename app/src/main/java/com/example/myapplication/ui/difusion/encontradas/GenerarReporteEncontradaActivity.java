@@ -32,7 +32,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     //private static final int COD_SELECCIONA = 10;
 
     private Spinner comboAlcaldias, comboTipoMascota;
-    private EditText fecha, hora;
+    private EditText fecha, hora, colonia, calle, descripcion;
     private DatePickerDialog.OnDateSetListener fechaSetListener;
     private TimePickerDialog.OnTimeSetListener horaSetListener;
     private ImageView imageView;
@@ -42,6 +42,11 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generar_reporte_encontrada);
+
+        //Referencia a elementos
+        colonia = findViewById(R.id.id_input_coloniaRME);
+        calle = findViewById(R.id.id_input_calleRME);
+        descripcion = findViewById(R.id.id_input_descripcionRME);
 
         //Referencia al componente ImageView en xml
         imageView = findViewById(R.id.id_input_imageRME);
@@ -100,6 +105,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                         break;
                     case 4:
                         mes = "ABR";
+                        break;
                     case 5:
                         mes = "MAY";
                         break;
@@ -108,6 +114,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                         break;
                     case 7:
                         mes = "JUL";
+                        break;
                     case 8:
                         mes = "AGO";
                         break;
@@ -284,12 +291,61 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     @Override
     public void onClick(View v) {
         if (v.getId()==button.getId()){
-            Toast.makeText(getApplicationContext(), "Reporte generado exitosamente", Toast.LENGTH_LONG).show();
-            onBackPressed();
+            validarCampos();
         }
         if(v.getId()==imageView.getId()){
             cargarImagen();
         }
 
     }
+
+    private void validarCampos() {
+        String tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE;
+        String mensaje = "Faltan campos por ingresar";
+        String reporte = "";
+        tipoM = comboTipoMascota.getSelectedItem().toString();
+        fechaE = fecha.getText().toString();
+        horaE = hora.getText().toString();
+        alcaldiaE = comboAlcaldias.getSelectedItem().toString();
+        coloniaE = colonia.getText().toString();
+        calleE = calle.getText().toString();
+        descripcionE = descripcion.getText().toString();
+
+        if(tipoM.equals("Seleccionar") || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE.equals("Seleccionar") || descripcionE.isEmpty()){
+            if (tipoM.equals("Seleccionar"))
+                mensaje += "\nSeleccione un tipo de mascota";
+            if (fechaE.isEmpty())
+                fecha.setError("Obligatorio");
+            if (horaE.isEmpty())
+                hora.setError("Obligatorio");
+            if (alcaldiaE.equals("Seleccionar"))
+                mensaje += "\nSeleccione una alcaldía";
+            if (descripcionE.isEmpty())
+                descripcion.setError("Obligatorio");
+            Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+        } else {
+            ReporteEncontradas reporteE = new ReporteEncontradas(tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, R.drawable.ic_perro, 1);
+
+            Intent intent = new Intent(GenerarReporteEncontradaActivity.this, EncontradasFragment.class);
+
+            Bundle  bundle = new Bundle();
+            bundle.putSerializable("reporteEncontrada", reporteE);
+
+            intent.putExtras(bundle);
+            //startActivity(intent);
+
+            reporte = "Reporte generado: \nID: " + reporteE.getId() +
+                    "\nTipo: " + reporteE.getTipo() +
+                    "\nFecha: " + reporteE.getFecha() +
+                    "\nHora: " + reporteE.getHora() +
+                    "\nZona: " + reporteE.getAlcaldia() +
+                    ", col. " + reporteE.getColonia() +
+                    ", calle " + reporteE.getCalle() +
+                    "\nDescripción: " + reporteE.getDescripcion();
+            Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
+            onBackPressed();
+        }
+
+    }
+
 }

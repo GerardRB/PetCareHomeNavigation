@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.ui.difusion.perdidas.DetalleReportePerdidasActivity;
+import com.example.myapplication.ui.difusion.perdidas.ReportePerdidas;
 
 import java.util.ArrayList;
 
@@ -25,13 +27,15 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class EncontradasFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     //private DifusionTabViewModel difusionTabViewModel;
     ArrayList<ReporteEncontradas> listReportesEncontradas;
     RecyclerView recycler;
+    AdapterReportesEncontradas adapter;
+    ReporteEncontradas reporteE;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public static EncontradasFragment newInstance(int index) {
         EncontradasFragment fragment = new EncontradasFragment();
@@ -73,21 +77,50 @@ public class EncontradasFragment extends Fragment {
 
 
 
-        AdapterReportesEncontradas adapter = new AdapterReportesEncontradas(listReportesEncontradas);
+        adapter = new AdapterReportesEncontradas(listReportesEncontradas);
         recycler.setAdapter(adapter);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(getContext(), "Selección: Reporte #" + listReportesEncontradas.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
                 Intent intentDetalleRME = new Intent(getContext(), DetalleReporteEncontradaActivity.class);
+                Bundle  bundle = new Bundle();
+                bundle.putSerializable("reporteEncontrada", listReportesEncontradas.get(recycler.getChildAdapterPosition(v)));
+                intentDetalleRME.putExtras(bundle);
                 startActivity(intentDetalleRME);
+            }
+        });
+
+        //SwipeRefresh
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshEncontradas);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /*//Recibir objeto reporte perdida generado desde su actividad
+                Bundle objetoEnviado = getActivity().getIntent().getExtras();
+                reporteE = null;
+
+                if (objetoEnviado != null){
+                    reporteE = (ReporteEncontradas) objetoEnviado.getSerializable("reporteEncontrada");
+                }
+
+                if (reporteE != null){
+                    listReportesEncontradas.add(reporteE);
+                    adapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                }*/
+                listReportesEncontradas.add(0, new ReporteEncontradas("Perro", "03/AGO/2020", "2:43 pm", "Gustavo A. Madero", "Ticoman", "Escuadron", "Perrito Bello", R.drawable.ic_perro, 10));
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
     private void llenarReportes() {
-        for(int i = 0; i<=15; i++){
-            listReportesEncontradas.add(new ReporteEncontradas("Zona", "Fecha", "Nombre (opcional)", "Descripcion", R.drawable.ic_gato, i));
+        for(int i = 0; i<=5; i++){
+            listReportesEncontradas.add(0, new ReporteEncontradas("Tipo", "Fecha", "Hora", "Alcaldía", "Colonia", "Calle", "Descripcion", R.drawable.ic_gato, i));
         }
     }
 
