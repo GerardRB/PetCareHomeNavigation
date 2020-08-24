@@ -1,65 +1,42 @@
 {
   "project_info": {
-<<<<<<< HEAD
     "project_number": "899099779299",
     "firebase_url": "https://petcarehome.firebaseio.com",
     "project_id": "petcarehome",
     "storage_bucket": "petcarehome.appspot.com"
-=======
-    "project_number": "120621938889",
-    "firebase_url": "https://petcare-18823.firebaseio.com",
-    "project_id": "petcare-18823",
-    "storage_bucket": "petcare-18823.appspot.com"
->>>>>>> origin/master
   },
   "client": [
     {
       "client_info": {
-<<<<<<< HEAD
         "mobilesdk_app_id": "1:899099779299:android:6c2d5aee3a16cc648a25d6",
-=======
-        "mobilesdk_app_id": "1:120621938889:android:11cab6b8a2f68606ddf518",
->>>>>>> origin/master
         "android_client_info": {
           "package_name": "com.example.myapplication"
         }
       },
       "oauth_client": [
         {
-<<<<<<< HEAD
-          "client_id": "899099779299-8k5e5okijrsvb4sg0g20tke1eumke8tl.apps.googleusercontent.com",
-=======
-          "client_id": "120621938889-3b255os81vk7703fk9npmoiikpdfci38.apps.googleusercontent.com",
+          "client_id": "899099779299-uoqtruorh95at0rd42105a5anld68dh4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.myapplication",
-            "certificate_hash": "ca5dffb722943e12013c3d0d56f050b26cb122d8"
+            "certificate_hash": "134d83291eb0b7502404e3ed93a8058c5d23432a"
           }
         },
         {
-          "client_id": "120621938889-fs88hkrc97nmgtvi7needovk7cgoqpme.apps.googleusercontent.com",
->>>>>>> origin/master
+          "client_id": "899099779299-8k5e5okijrsvb4sg0g20tke1eumke8tl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-<<<<<<< HEAD
           "current_key": "AIzaSyDOcC92s67rbblNnvNKc8V1Httop92BD9Q"
-=======
-          "current_key": "AIzaSyBEYiQxwY9CnQ1XHrDuqvOknn46q0YOVYM"
->>>>>>> origin/master
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-<<<<<<< HEAD
               "client_id": "899099779299-8k5e5okijrsvb4sg0g20tke1eumke8tl.apps.googleusercontent.com",
-=======
-              "client_id": "120621938889-fs88hkrc97nmgtvi7needovk7cgoqpme.apps.googleusercontent.com",
->>>>>>> origin/master
               "client_type": 3
             }
           ]
