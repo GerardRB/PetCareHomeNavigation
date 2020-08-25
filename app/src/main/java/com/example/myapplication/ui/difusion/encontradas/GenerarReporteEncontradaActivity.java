@@ -21,8 +21,11 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.myapplication.Objetos.FirebaseReferences;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.difusion.perdidas.GenerarReporteExtravioActivity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -37,6 +40,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     private TimePickerDialog.OnTimeSetListener horaSetListener;
     private ImageView imageView;
     private Button button;
+    private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -325,6 +329,11 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
             ReporteEncontradas reporteE = new ReporteEncontradas(tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, R.drawable.ic_perro, 1);
+
+            //Guardar en base de datos
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.PETCARE_REFERENCE);
+            petCareReference.child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE).push().setValue(reporteE);
 
             Intent intent = new Intent(GenerarReporteEncontradaActivity.this, EncontradasFragment.class);
 

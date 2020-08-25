@@ -21,7 +21,10 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.myapplication.Objetos.FirebaseReferences;
 import com.example.myapplication.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,15 +43,14 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     private Button buttonGenerar;
     private ArrayList<ReportePerdidas> listReportes;
 
-    //FirebaseDatabase firebaseDatabase;
-    //DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generar_reporte_extravio);
 
-        //startFirebase();
+
 
         //Referencia a elementos
         nombre = findViewById(R.id.id_input_nombreRMP);
@@ -355,6 +357,12 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
             ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, R.drawable.ic_perro, 1);
+
+            //Guardar en base de datos
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.PETCARE_REFERENCE);
+            petCareReference.child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push().setValue(reporteP);
+
 
             Intent intent = new Intent(GenerarReporteExtravioActivity.this, PerdidasFragment.class);
 
