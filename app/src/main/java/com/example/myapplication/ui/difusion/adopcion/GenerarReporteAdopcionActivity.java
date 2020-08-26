@@ -17,7 +17,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.myapplication.Objetos.FirebaseReferences;
 import com.example.myapplication.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class GenerarReporteAdopcionActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -28,6 +31,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     private EditText raza, edad, colonia, calle, descripcion;
     private ImageView imageView;
     private Button button;
+    private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +144,11 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
             ReporteAdopcion reporteA = new ReporteAdopcion(tipoM, razaM, edadM, vacunas, esterilizacion, alcaldiaE, coloniaE, calleE, descripcionE, R.drawable.ic_perro, 1);
+
+            //Guardar en base de datos
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.PETCARE_REFERENCE);
+            petCareReference.child(FirebaseReferences.REPORTEADOPCION_REFERENCE).push().setValue(reporteA);
 
             Intent intent = new Intent(GenerarReporteAdopcionActivity.this, AdopcionFragment.class);
 

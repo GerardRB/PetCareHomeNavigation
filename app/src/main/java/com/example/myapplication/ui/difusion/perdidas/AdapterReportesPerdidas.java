@@ -27,7 +27,8 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
     public ViewHolderReportesPerdidas onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_perdidas_list, null, false);
         view.setOnClickListener(this);
-        return new ViewHolderReportesPerdidas(view);
+        ViewHolderReportesPerdidas holder = new ViewHolderReportesPerdidas(view);
+        return holder;
     }
 
     @Override

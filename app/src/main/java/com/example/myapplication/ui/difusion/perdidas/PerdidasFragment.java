@@ -14,8 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.myapplication.Objetos.FirebaseReferences;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.difusion.adopcion.GenerarReporteAdopcionActivity;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -28,11 +35,12 @@ public class PerdidasFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    ArrayList<ReportePerdidas> listReportes;
-    RecyclerView recyclerPerdidas;
-    ReportePerdidas reporteP;
-    AdapterReportesPerdidas adapter;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private ArrayList<ReportePerdidas> listReportes;
+    private RecyclerView recyclerPerdidas;
+    private ReportePerdidas reporteP;
+    private AdapterReportesPerdidas adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private FirebaseDatabase firebaseDatabase;
 
 
     public static PerdidasFragment newInstance(int index) {
@@ -69,20 +77,40 @@ public class PerdidasFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-
-
         //Construir Recycler
         listReportes = new ArrayList<>();
         recyclerPerdidas = view.findViewById(R.id.recyclerPerdidasId);
         recyclerPerdidas.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-
-
-        llenarReportes();
-
         adapter = new AdapterReportesPerdidas(listReportes);
         recyclerPerdidas.setAdapter(adapter);
+
+        //Instanciar la base de datos y referenciarla
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
+
+        reportePerdidaReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listReportes.removeAll(listReportes);
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+                    ReportePerdidas reporte = snapshot.getValue(ReportePerdidas.class);
+                    listReportes.add(reporte);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        //llenarReportes();
+
+
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,24 +128,63 @@ public class PerdidasFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                /*//Recibir objeto reporte perdida generado desde su actividad
-                Bundle objetoEnviado = getActivity().getIntent().getExtras();
-                reporteP = null;
 
-                if (objetoEnviado != null){
-                    reporteP = (ReportePerdidas) objetoEnviado.getSerializable("reportePerdida");
-                }
+                reportePerdidaReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listReportes.removeAll(listReportes);
+                        for (DataSnapshot snapshot:
+                                dataSnapshot.getChildren()) {
+                            ReportePerdidas reporte = snapshot.getValue(ReportePerdidas.class);
+                            listReportes.add(reporte);
+                        }
+                        adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
 
-                if (reporteP != null){
-                    listReportes.add(reporteP);
-                    adapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    swipeRefreshLayout.setRefreshing(false);
-                }*/
-                listReportes.add(0, new ReportePerdidas("Sirius", "Perro", "1 año", "03/AGO/2020", "2:43 pm", "Gustavo A. Madero", "Ticoman", "Escuadron", "Perrito Bello", R.drawable.ic_perro, 10));
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                /*reportePerdidaReference.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        listReportes.removeAll(listReportes);
+                        for (DataSnapshot snapshot:
+                                dataSnapshot.getChildren()) {
+                            ReportePerdidas reporte = dataSnapshot.getValue(ReportePerdidas.class);
+                            listReportes.add(reporte);
+                        }
+                        adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });*/
+
+                //listReportes.add(0, new ReportePerdidas("Sirius", "Perro", "1 año", "03/AGO/2020", "2:43 pm", "Gustavo A. Madero", "Ticoman", "Escuadron", "Perrito Bello", R.drawable.ic_perro, 10));
+                //adapter.notifyDataSetChanged();
+                //swipeRefreshLayout.setRefreshing(false);
             }
         });
 
