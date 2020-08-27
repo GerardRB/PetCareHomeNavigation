@@ -15,9 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.myapplication.Objetos.FirebaseReferences;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.difusion.perdidas.DetalleReportePerdidasActivity;
 import com.example.myapplication.ui.difusion.perdidas.ReportePerdidas;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -30,12 +36,12 @@ public class EncontradasFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    //private DifusionTabViewModel difusionTabViewModel;
-    ArrayList<ReporteEncontradas> listReportesEncontradas;
-    RecyclerView recycler;
-    AdapterReportesEncontradas adapter;
-    ReporteEncontradas reporteE;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private ArrayList<ReporteEncontradas> listReportesEncontradas;
+    private RecyclerView recycler;
+    private AdapterReportesEncontradas adapter;
+    private ReporteEncontradas reporteE;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private FirebaseDatabase firebaseDatabase;
 
     public static EncontradasFragment newInstance(int index) {
         EncontradasFragment fragment = new EncontradasFragment();
@@ -48,12 +54,10 @@ public class EncontradasFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //difusionTabViewModel = ViewModelProviders.of(this).get(DifusionTabViewModel.class);
         int index = 2;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        //difusionTabViewModel.setIndex(index);
 
     }
 
@@ -69,16 +73,43 @@ public class EncontradasFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Construir Recycler
         listReportesEncontradas = new ArrayList<>();
         recycler = view.findViewById(R.id.recyclerEncontradasId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
-        llenarReportes();
-
-
-
         adapter = new AdapterReportesEncontradas(listReportesEncontradas);
         recycler.setAdapter(adapter);
+
+        //Instanciar la base de datos y referenciarla
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference reporteEncontradaReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE);
+
+        //Llenar list desde la base
+        reporteEncontradaReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listReportesEncontradas.removeAll(listReportesEncontradas);
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+                    reporteE = snapshot.getValue(ReporteEncontradas.class);
+                    listReportesEncontradas.add(0,reporteE);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        //llenarReportes();
+
+
+
+        //Abrir detalle del reporte
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,33 +127,35 @@ public class EncontradasFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                /*//Recibir objeto reporte perdida generado desde su actividad
-                Bundle objetoEnviado = getActivity().getIntent().getExtras();
-                reporteE = null;
 
-                if (objetoEnviado != null){
-                    reporteE = (ReporteEncontradas) objetoEnviado.getSerializable("reporteEncontrada");
-                }
+                reporteEncontradaReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listReportesEncontradas.removeAll(listReportesEncontradas);
+                        for (DataSnapshot snapshot:
+                                dataSnapshot.getChildren()) {
+                            reporteE = snapshot.getValue(ReporteEncontradas.class);
+                            listReportesEncontradas.add(0,reporteE);
+                        }
+                        adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
 
-                if (reporteE != null){
-                    listReportesEncontradas.add(reporteE);
-                    adapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    swipeRefreshLayout.setRefreshing(false);
-                }*/
-                listReportesEncontradas.add(0, new ReporteEncontradas("Perro", "03/AGO/2020", "2:43 pm", "Gustavo A. Madero", "Ticoman", "Escuadron", "Perrito Bello", R.drawable.ic_perro, 10));
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
     }
-
+    /*
     private void llenarReportes() {
         for(int i = 0; i<=5; i++){
             listReportesEncontradas.add(0, new ReporteEncontradas("Tipo", "Fecha", "Hora", "Alcaldía", "Colonia", "Calle", "Descripcion", R.drawable.ic_gato, i));
         }
-    }
+    }*/
 
     public interface OnFragmentInteractionListener {
     }

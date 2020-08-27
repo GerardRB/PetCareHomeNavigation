@@ -15,9 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.myapplication.Objetos.FirebaseReferences;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.difusion.perdidas.DetalleReportePerdidasActivity;
 import com.example.myapplication.ui.difusion.perdidas.ReportePerdidas;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -30,12 +36,12 @@ public class AdopcionFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    //private DifusionTabViewModel difusionTabViewModel;
-    ArrayList<ReporteAdopcion> listReportesAdopcion;
-    RecyclerView recycler;
-    AdapterReportesAdopcion adapter;
-    ReporteAdopcion reporteA;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private ArrayList<ReporteAdopcion> listReportesAdopcion;
+    private RecyclerView recycler;
+    private AdapterReportesAdopcion adapter;
+    private ReporteAdopcion reporteA;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private FirebaseDatabase firebaseDatabase;
 
     public static AdopcionFragment newInstance(int index) {
         AdopcionFragment fragment = new AdopcionFragment();
@@ -48,12 +54,10 @@ public class AdopcionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //difusionTabViewModel = ViewModelProviders.of(this).get(DifusionTabViewModel.class);
         int index = 3;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-        //difusionTabViewModel.setIndex(index);
 
     }
 
@@ -69,14 +73,40 @@ public class AdopcionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Construir el recycler
         listReportesAdopcion = new ArrayList<>();
         recycler = view.findViewById(R.id.recyclerAdopcionId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
-        llenarReportes();
-
         adapter = new AdapterReportesAdopcion(listReportesAdopcion);
         recycler.setAdapter(adapter);
+
+        //Instanciar la base de datos y referenciarla
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference reporteAdopcionReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE);
+
+        //Llenar list desde la base
+        reporteAdopcionReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listReportesAdopcion.removeAll(listReportesAdopcion);
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+                    reporteA = snapshot.getValue(ReporteAdopcion.class);
+                    listReportesAdopcion.add(0,reporteA);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //llenarReportes();
+
+        //Abrir detalle del reporte
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,33 +124,36 @@ public class AdopcionFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                /*//Recibir objeto reporte perdida generado desde su actividad
-                Bundle objetoEnviado = getActivity().getIntent().getExtras();
-                reporteA = null;
 
-                if (objetoEnviado != null){
-                    reporteA = (ReporteAdopcion) objetoEnviado.getSerializable("reporteAdopcion");
-                }
+                reporteAdopcionReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listReportesAdopcion.removeAll(listReportesAdopcion);
+                        for (DataSnapshot snapshot:
+                                dataSnapshot.getChildren()) {
+                            reporteA = snapshot.getValue(ReporteAdopcion.class);
+                            listReportesAdopcion.add(0,reporteA);
+                        }
+                        adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
 
-                if (reporteA != null){
-                    listReportesAdopcion.add(reporteA);
-                    adapter.notifyDataSetChanged();
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    swipeRefreshLayout.setRefreshing(false);
-                }*/
-                listReportesAdopcion.add(0, new ReporteAdopcion("Perro", "Mestizo", "1año", "Si", "No", "Gustavo A. Madero", "Ticoman", "Escuadron", "Perrito Bello", R.drawable.ic_perro, 10));
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
     }
 
+    /*
     private void llenarReportes() {
         for(int i = 0; i<=5; i++){
             listReportesAdopcion.add(0, new ReporteAdopcion("Tipo", "Raza", "Edad", "Vacunas", "Esterilización", "Alcaldía", "Colonia", "Calle", "Descripción", R.drawable.ic_gato, i));
         }
-    }
+    }*/
 
     public interface OnFragmentInteractionListener {
     }

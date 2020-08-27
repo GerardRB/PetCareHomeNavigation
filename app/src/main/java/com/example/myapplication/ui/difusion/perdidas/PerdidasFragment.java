@@ -89,14 +89,15 @@ public class PerdidasFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
 
+        //Llenar lista desde la base
         reportePerdidaReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listReportes.removeAll(listReportes);
                 for (DataSnapshot snapshot:
                         dataSnapshot.getChildren()) {
-                    ReportePerdidas reporte = snapshot.getValue(ReportePerdidas.class);
-                    listReportes.add(reporte);
+                    reporteP = snapshot.getValue(ReportePerdidas.class);
+                    listReportes.add(0,reporteP);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -135,8 +136,8 @@ public class PerdidasFragment extends Fragment {
                         listReportes.removeAll(listReportes);
                         for (DataSnapshot snapshot:
                                 dataSnapshot.getChildren()) {
-                            ReportePerdidas reporte = snapshot.getValue(ReportePerdidas.class);
-                            listReportes.add(reporte);
+                            reporteP = snapshot.getValue(ReportePerdidas.class);
+                            listReportes.add(0,reporteP);
                         }
                         adapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
@@ -190,11 +191,12 @@ public class PerdidasFragment extends Fragment {
 
     }
 
+    /*
     private void llenarReportes() {
         for(int i = 0; i<=5; i++){
             listReportes.add(0, new ReportePerdidas("Nombre", "Tipo", "Edad", "Fecha", "Hora", "Alcaldía", "Colonia", "Calle", "Descripción", R.drawable.ic_perro, i));
         }
-    }
+    }*/
 
 
     public interface OnFragmentInteractionListener {
