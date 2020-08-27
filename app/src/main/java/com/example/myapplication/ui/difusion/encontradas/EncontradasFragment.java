@@ -13,12 +13,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.myapplication.Objetos.FirebaseReferences;
+import com.example.myapplication.Objetos.ReporteEncontradas;
 import com.example.myapplication.R;
-import com.example.myapplication.ui.difusion.perdidas.DetalleReportePerdidasActivity;
-import com.example.myapplication.ui.difusion.perdidas.ReportePerdidas;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

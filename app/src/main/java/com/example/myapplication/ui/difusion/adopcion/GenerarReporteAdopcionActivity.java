@@ -3,8 +3,6 @@ package com.example.myapplication.ui.difusion.adopcion;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.myapplication.Objetos.FirebaseReferences;
+import com.example.myapplication.Objetos.ReporteAdopcion;
 import com.example.myapplication.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

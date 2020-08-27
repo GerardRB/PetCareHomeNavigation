@@ -22,8 +22,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.myapplication.Objetos.FirebaseReferences;
+import com.example.myapplication.Objetos.ReporteEncontradas;
 import com.example.myapplication.R;
-import com.example.myapplication.ui.difusion.perdidas.GenerarReporteExtravioActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

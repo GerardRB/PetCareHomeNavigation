@@ -1,20 +1,18 @@
-package com.example.myapplication.ui.difusion.adopcion;
+package com.example.myapplication.Objetos;
 
 import java.io.Serializable;
 
-public class ReporteAdopcion implements Serializable {
-    private String tipo, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion;
+public class ReporteEncontradas implements Serializable {
+    private String tipo, fecha, hora, alcaldia, colonia, calle, descripcion;
     private int foto, id;
 
-    public ReporteAdopcion(){
+    public ReporteEncontradas(){
     }
 
-    public ReporteAdopcion(String tipo, String raza, String edad, String vacunas, String esterilizacion, String alcaldia, String colonia, String calle, String descripcion, int foto, int id) {
+    public ReporteEncontradas(String tipo, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, int foto, int id) {
         this.tipo = tipo;
-        this.raza = raza;
-        this.edad = edad;
-        this.vacunas = vacunas;
-        this.esterilizacion = esterilizacion;
+        this.fecha = fecha;
+        this.hora = hora;
         this.alcaldia = alcaldia;
         this.colonia = colonia;
         this.calle = calle;
@@ -31,36 +29,20 @@ public class ReporteAdopcion implements Serializable {
         this.tipo = tipo;
     }
 
-    public String getRaza() {
-        return raza;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setRaza(String raza) {
-        this.raza = raza;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
-    public String getEdad() {
-        return edad;
+    public String getHora() {
+        return hora;
     }
 
-    public void setEdad(String edad) {
-        this.edad = edad;
-    }
-
-    public String getVacunas() {
-        return vacunas;
-    }
-
-    public void setVacunas(String vacunas) {
-        this.vacunas = vacunas;
-    }
-
-    public String getEsterilizacion() {
-        return esterilizacion;
-    }
-
-    public void setEsterilizacion(String esterilizacion) {
-        this.esterilizacion = esterilizacion;
+    public void setHora(String hora) {
+        this.hora = hora;
     }
 
     public String getAlcaldia() {

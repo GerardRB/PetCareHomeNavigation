@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.myapplication.Objetos.ReporteAdopcion;
 import com.example.myapplication.R;
 
 public class DetalleReporteAdopcionActivity extends AppCompatActivity {

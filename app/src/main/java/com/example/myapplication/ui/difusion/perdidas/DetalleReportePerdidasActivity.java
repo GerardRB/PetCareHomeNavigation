@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.myapplication.Objetos.ReportePerdidas;
 import com.example.myapplication.R;
 
 public class DetalleReportePerdidasActivity extends AppCompatActivity {

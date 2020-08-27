@@ -22,13 +22,13 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.myapplication.Objetos.FirebaseReferences;
+import com.example.myapplication.Objetos.ReportePerdidas;
 import com.example.myapplication.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.UUID;
 
 public class GenerarReporteExtravioActivity extends AppCompatActivity implements View.OnClickListener{
 

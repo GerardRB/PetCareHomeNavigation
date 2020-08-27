@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.difusion.perdidas;
+package com.example.myapplication.Objetos;
 
 import java.io.Serializable;
 
