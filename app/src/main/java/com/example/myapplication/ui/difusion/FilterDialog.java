@@ -278,86 +278,66 @@ public class FilterDialog extends AppCompatDialogFragment {
 
     private void Filtrar() {
         String cad = "Aplicando filtros...";
-        String error = "Faltan campos por ingresar";
+        String error = "Faltan campos por ingresar.";
         String tipoF, zonaF, fecha1F, fecha2F;
+        boolean e = false;
+        Filtro filtro = new Filtro();
         tipoF = spinnerMascota.getSelectedItem().toString();
         zonaF = spinnerZona.getSelectedItem().toString();
         fecha1F = fecha1.getText().toString();
         fecha2F = fecha2.getText().toString();
 
-        if (tipoF.equals("Seleccionar") || zonaF.equals("Seleccionar") || fecha1F.isEmpty() || fecha2F.isEmpty()){
-            if (checkBoxZona.isChecked() == true)
-                error += "\nSeleccione una alcaldía";
-            if (checkBoxTipo.isChecked() == true)
-                error += "\nSeleccione un tipo de mascota";
-            if (checkBoxFecha.isChecked() == true){
-                if (fecha1F.isEmpty())
-                    fecha1.setError("Obligatorio");
-                if (fecha2F.isEmpty())
-                    fecha2.setError("Obligatorio");
-                error += "\nIngrese un intervalo de fechas";
-            }
-            AlertDialog.Builder alerta = new AlertDialog.Builder(this.getContext());
-            alerta.setMessage(error);
-        } else {
-            Filtro filtro = new Filtro();
-            if (checkBoxZona.isChecked() == true)
-                filtro.setZona(zonaF);
-            if (checkBoxTipo.isChecked() == true)
-                filtro.setTipoM(tipoF);
-            if (checkBoxFecha.isChecked() == true){
-                filtro.setFecha1(fecha1F);
-                filtro.setFecha2(fecha2F);
-            }
-            cad += "\nZONA: " + filtro.getZona() + "\nTIPO: " + filtro.getTipoM() + "\n Del: " + filtro.getFecha1() + " Al: " + filtro.getFecha2();
-            Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
-
-        }
-
-
-
-
-        /*
-        if (checkBoxZona.isChecked() == true || checkBoxTipo.isChecked() == true || checkBoxFecha.isChecked() == true){
-            Filtro filtro = new Filtro();
-
-            if (checkBoxZona.isChecked() == true){
-                zonaF = spinnerZona.getSelectedItem().toString();
+        if (checkBoxZona.isChecked() || checkBoxTipo.isChecked() || checkBoxFecha.isChecked()){
+            if (checkBoxZona.isChecked()){
                 if (zonaF.equals("Seleccionar")){
-                    error += "\nSeleccione una alcaldía";
+                    error += "\n- Seleccione una alcaldía";
+                    e = true;
                 } else {
                     filtro.setZona(zonaF);
+                    cad += "\n- ZONA: " + zonaF;
                 }
             }
 
-            if (checkBoxTipo.isChecked() == true){
-                tipoF = spinnerMascota.getSelectedItem().toString();
+            if (checkBoxTipo.isChecked()){
                 if (tipoF.equals("Seleccionar")){
-                    error += "\nSeleccione un tipo de mascota";
+                    error += "\n- Seleccione un tipo de mascota";
+                    e = true;
                 } else {
                     filtro.setTipoM(tipoF);
+                    cad += "\n- TIPO DE MASCOTA: " + tipoF;
                 }
             }
 
-            if (checkBoxFecha.isChecked() == true){
-                fecha1F = fecha1.getText().toString();
-                fecha2F = fecha2.getText().toString();
-                if (fecha1F.isEmpty()){
-                    fecha1.setError("Obligatorio");
+            if (checkBoxFecha.isChecked()){
+                if (fecha1F.isEmpty() || fecha2F.isEmpty()){
+                    error += "\n- Ingrese un intervalo de fechas";
+                    e = true;
                 } else {
                     filtro.setFecha1(fecha1F);
-                }
-                if (fecha2F.isEmpty()){
-                    fecha2.setError("Obligatorio");
-                } else {
                     filtro.setFecha2(fecha2F);
+                    cad += "\n- DEL: " + fecha1F + " AL: " + fecha2F;
                 }
             }
-        }*/
 
+            if (e == true){
+                AlertDialog.Builder alerta = new AlertDialog.Builder(this.getContext());
+                alerta.setMessage(error + "\n Por favor intente de nuevo.").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog errorFltr = alerta.create();
+                errorFltr.setTitle("Error");
+                errorFltr.show();
+            } else {
+                //Caso exitoso(Debe generar el filtro)
+                Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "No seleccionó ningún filtro.", Toast.LENGTH_LONG).show();
+        }
 
-
-        //Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
 
     }
 }
