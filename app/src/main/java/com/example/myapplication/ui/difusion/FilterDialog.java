@@ -1,9 +1,11 @@
 package com.example.myapplication.ui.difusion;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -324,7 +326,7 @@ public class FilterDialog extends AppCompatDialogFragment {
                 alerta.setMessage(error + "\n Por favor intente de nuevo.").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                        dialog.dismiss();
                     }
                 });
                 AlertDialog errorFltr = alerta.create();
@@ -332,10 +334,16 @@ public class FilterDialog extends AppCompatDialogFragment {
                 errorFltr.show();
             } else {
                 //Caso exitoso(Debe generar el filtro)
-                Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("filtro", filtro);
+                Intent i = new Intent().putExtras(bundle);
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
+                dismiss();;
             }
         } else {
             Toast.makeText(getContext(), "No seleccionó ningún filtro.", Toast.LENGTH_LONG).show();
+            dismiss();
         }
 
 

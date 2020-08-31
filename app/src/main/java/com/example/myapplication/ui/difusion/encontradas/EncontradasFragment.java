@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.difusion.encontradas;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,7 +14,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.myapplication.Objetos.Filtro;
 import com.example.myapplication.Objetos.FirebaseReferences;
 import com.example.myapplication.Objetos.ReporteEncontradas;
 import com.example.myapplication.R;
@@ -154,6 +157,22 @@ public class EncontradasFragment extends Fragment {
             listReportesEncontradas.add(0, new ReporteEncontradas("Tipo", "Fecha", "Hora", "Alcaldía", "Colonia", "Calle", "Descripcion", R.drawable.ic_gato, i));
         }
     }*/
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 0:
+                if (resultCode == Activity.RESULT_OK){
+                    Bundle bundle = data.getExtras();
+
+                    Filtro filtro = (Filtro) bundle.getSerializable("filtro");
+                    String cad = "Encontradas Filtro: \n- Zona: " + filtro.getZona() + "\n- Tipo: " + filtro.getTipoM() + "\n- Del: " + filtro.getFecha1() + " Al: " + filtro.getFecha2();
+                    Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
 
     public interface OnFragmentInteractionListener {
     }

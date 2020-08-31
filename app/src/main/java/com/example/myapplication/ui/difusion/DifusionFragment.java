@@ -1,11 +1,13 @@
 package com.example.myapplication.ui.difusion;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.example.myapplication.Objetos.Filtro;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.difusion.adopcion.AdopcionFragment;
 import com.example.myapplication.ui.difusion.adopcion.GenerarReporteAdopcionActivity;
@@ -37,6 +40,8 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
 
     private ExtendedFloatingActionButton fabadd, fabperdidas, fabencontradas, fabadopcion;
     private ImageButton fltrbtn;
+
+    public static final int DIFUSION_FRAGMENT = 1;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -151,8 +156,11 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
         }
     }
 
+
+
     private void openFilterDialog() {
         FilterDialog filterDialog = new FilterDialog();
-        filterDialog.show(getChildFragmentManager(), "Filtrar");
+        filterDialog.setTargetFragment(sectionsPagerAdapter.getItem(tabs.getSelectedTabPosition()), 0);
+        filterDialog.show(getFragmentManager().beginTransaction(), "Filtrar");
     }
 }

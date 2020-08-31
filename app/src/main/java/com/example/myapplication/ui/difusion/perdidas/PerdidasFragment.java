@@ -1,10 +1,12 @@
 package com.example.myapplication.ui.difusion.perdidas;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.myapplication.Objetos.Filtro;
 import com.example.myapplication.Objetos.FirebaseReferences;
 import com.example.myapplication.Objetos.ReportePerdidas;
 import com.example.myapplication.R;
@@ -73,6 +76,7 @@ public class PerdidasFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
 
         //Construir Recycler
@@ -196,6 +200,22 @@ public class PerdidasFragment extends Fragment {
         }
     }*/
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 0:
+                if (resultCode == Activity.RESULT_OK){
+                    Bundle bundle = data.getExtras();
+
+                    Filtro filtro = (Filtro) bundle.getSerializable("filtro");
+                    String cad = "Perdidas Filtro: \n- Zona: " + filtro.getZona() + "\n- Tipo: " + filtro.getTipoM() + "\n- Del: " + filtro.getFecha1() + " Al: " + filtro.getFecha2();
+                    Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
 
     public interface OnFragmentInteractionListener {
     }

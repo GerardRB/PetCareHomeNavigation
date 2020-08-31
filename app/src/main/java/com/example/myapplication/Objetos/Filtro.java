@@ -1,6 +1,8 @@
 package com.example.myapplication.Objetos;
 
-public class Filtro {
+import java.io.Serializable;
+
+public class Filtro implements Serializable {
     private String zona, tipoM, fecha1, fecha2;
 
     public Filtro() {
