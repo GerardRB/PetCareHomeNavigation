@@ -41,7 +41,7 @@ public class DifusionFragment extends Fragment implements PerdidasFragment.OnFra
     private ExtendedFloatingActionButton fabadd, fabperdidas, fabencontradas, fabadopcion;
     private ImageButton fltrbtn;
 
-    public static final int DIFUSION_FRAGMENT = 1;
+    //public static final int DIFUSION_FRAGMENT = 1;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {

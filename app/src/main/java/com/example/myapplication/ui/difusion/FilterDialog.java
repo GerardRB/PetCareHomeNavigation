@@ -334,7 +334,7 @@ public class FilterDialog extends AppCompatDialogFragment {
                 errorFltr.show();
             } else {
                 //Caso exitoso(Debe generar el filtro)
-                //Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("filtro", filtro);
                 Intent i = new Intent().putExtras(bundle);

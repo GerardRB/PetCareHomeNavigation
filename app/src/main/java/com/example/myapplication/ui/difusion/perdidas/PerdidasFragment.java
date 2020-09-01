@@ -42,6 +42,7 @@ public class PerdidasFragment extends Fragment {
     private AdapterReportesPerdidas adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private FirebaseDatabase firebaseDatabase;
+    private Filtro filtro;
 
 
     public static PerdidasFragment newInstance(int index) {
@@ -87,31 +88,13 @@ public class PerdidasFragment extends Fragment {
         adapter = new AdapterReportesPerdidas(listReportes);
         recyclerPerdidas.setAdapter(adapter);
 
+        filtro = null;
+
         //Instanciar la base de datos y referenciarla
         firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
 
-        //Llenar lista desde la base
-        reportePerdidaReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listReportes.removeAll(listReportes);
-                for (DataSnapshot snapshot:
-                        dataSnapshot.getChildren()) {
-                    reporteP = snapshot.getValue(ReportePerdidas.class);
-                    listReportes.add(0,reporteP);
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-        //llenarReportes();
+        llenarReportes(filtro, false);
 
 
         adapter.setOnClickListener(new View.OnClickListener() {
@@ -132,73 +115,82 @@ public class PerdidasFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                reportePerdidaReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        listReportes.removeAll(listReportes);
-                        for (DataSnapshot snapshot:
-                                dataSnapshot.getChildren()) {
-                            reporteP = snapshot.getValue(ReportePerdidas.class);
-                            listReportes.add(0,reporteP);
-                        }
-                        adapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
+                if (filtro != null){
+                    llenarReportes(filtro, true);
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    llenarReportes(filtro, false);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                /*reportePerdidaReference.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        listReportes.removeAll(listReportes);
-                        for (DataSnapshot snapshot:
-                                dataSnapshot.getChildren()) {
-                            ReportePerdidas reporte = dataSnapshot.getValue(ReportePerdidas.class);
-                            listReportes.add(reporte);
-                        }
-                        adapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });*/
-
-                //listReportes.add(0, new ReportePerdidas("Sirius", "Perro", "1 año", "03/AGO/2020", "2:43 pm", "Gustavo A. Madero", "Ticoman", "Escuadron", "Perrito Bello", R.drawable.ic_perro, 10));
-                //adapter.notifyDataSetChanged();
-                //swipeRefreshLayout.setRefreshing(false);
             }
         });
 
     }
 
-    /*
-    private void llenarReportes() {
-        for(int i = 0; i<=5; i++){
-            listReportes.add(0, new ReportePerdidas("Nombre", "Tipo", "Edad", "Fecha", "Hora", "Alcaldía", "Colonia", "Calle", "Descripción", R.drawable.ic_perro, i));
+
+    private void llenarReportes(final Filtro filtro, Boolean filtrada) {
+        //Instanciar la base de datos y referenciarla
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
+
+        if (filtrada == true){
+            //Llenar lista desde la base con filtro
+            reportePerdidaReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listReportes.removeAll(listReportes);
+                    for (DataSnapshot snapshot:
+                            dataSnapshot.getChildren()) {
+                        String alcaldia = snapshot.child("alcaldia").getValue(String.class);
+                        String tipo = snapshot.child("tipo").getValue(String.class);
+                        if(filtro.getZona() != null){
+                            if (filtro.getTipoM() != null){
+                                if (alcaldia.equals(filtro.getZona()) && tipo.equals(filtro.getTipoM())){
+                                    reporteP = snapshot.getValue(ReportePerdidas.class);
+                                    listReportes.add(0,reporteP);
+                                }
+                            } else if (alcaldia.equals(filtro.getZona())){
+                                reporteP = snapshot.getValue(ReportePerdidas.class);
+                                listReportes.add(0,reporteP);
+                            }
+                        } else if (filtro.getTipoM() != null){
+                            if (tipo.equals(filtro.getTipoM())){
+                                reporteP = snapshot.getValue(ReportePerdidas.class);
+                                listReportes.add(0,reporteP);
+                            }
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            //Llenar lista desde la base sin filtro
+            reportePerdidaReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listReportes.removeAll(listReportes);
+                    for (DataSnapshot snapshot:
+                            dataSnapshot.getChildren()) {
+                        reporteP = snapshot.getValue(ReportePerdidas.class);
+                        listReportes.add(0,reporteP);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
-    }*/
+
+    }
 
 
     @Override
@@ -208,10 +200,8 @@ public class PerdidasFragment extends Fragment {
             case 0:
                 if (resultCode == Activity.RESULT_OK){
                     Bundle bundle = data.getExtras();
-
-                    Filtro filtro = (Filtro) bundle.getSerializable("filtro");
-                    String cad = "Perdidas Filtro: \n- Zona: " + filtro.getZona() + "\n- Tipo: " + filtro.getTipoM() + "\n- Del: " + filtro.getFecha1() + " Al: " + filtro.getFecha2();
-                    Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                    filtro = (Filtro) bundle.getSerializable("filtro");
+                    llenarReportes(filtro, true);
                 }
                 break;
         }
