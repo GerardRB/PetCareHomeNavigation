@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.myapplication.ui.search.SearchFragment"
+        android:name="com.example.petcarehome.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_difusion"
-        android:name="com.example.myapplication.ui.difusion.DifusionFragment"
+        android:name="com.example.petcarehome.ui.difusion.DifusionFragment"
         android:label="@string/title_difusion"
         tools:layout="@layout/fragment_difusion" />
 
     <fragment
         android:id="@+id/navigation_petfriendly"
-        android:name="com.example.myapplication.ui.petfriendly.PetfriendlyFragment"
+        android:name="com.example.petcarehome.ui.petfriendly.PetfriendlyFragment"
         android:label="@string/title_petfriendly"
         tools:layout="@layout/fragment_petfriendly" />
 
     <fragment
         android:id="@+id/navigation_config"
-        android:name="com.example.myapplication.ui.config.ConfigFragment"
+        android:name="com.example.petcarehome.ui.config.ConfigFragment"
         android:label="@string/title_config"
         tools:layout="@layout/fragment_config" />
 </navigation>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.myapplication">
+    package="com.example.petcarehome">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -19,7 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/MaterialAppTheme">
+        android:theme="@style/MaterialAppTheme"
+        android:forceDarkAllowed="false">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -34,49 +35,49 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.difusion.adopcion.DetalleReporteAdopcionActivity"
+            android:name="com.example.petcarehome.ui.difusion.adopcion.DetalleReporteAdopcionActivity"
             android:label="Mascota en Adopción"
-            android:parentActivityName=".HomeActivity_Cuidador"
+            android:parentActivityName="com.example.petcarehome.HomeActivity_Cuidador"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".ui.difusion.encontradas.DetalleReporteEncontradaActivity"
+            android:name="com.example.petcarehome.ui.difusion.encontradas.DetalleReporteEncontradaActivity"
             android:label="Mascota Encontrada"
-            android:parentActivityName=".HomeActivity_Cuidador"
+            android:parentActivityName="com.example.petcarehome.HomeActivity_Cuidador"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".ui.difusion.perdidas.DetalleReportePerdidasActivity"
+            android:name="com.example.petcarehome.ui.difusion.perdidas.DetalleReportePerdidasActivity"
             android:label="Mascota Extraviada"
-            android:parentActivityName=".HomeActivity_Cuidador"
+            android:parentActivityName="com.example.petcarehome.HomeActivity_Cuidador"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name=".ui.difusion.adopcion.GenerarReporteAdopcionActivity"
+            android:name="com.example.petcarehome.ui.difusion.adopcion.GenerarReporteAdopcionActivity"
             android:label="Reporte mascota en adopción"
-            android:parentActivityName=".HomeActivity_Cuidador"
+            android:parentActivityName="com.example.petcarehome.HomeActivity_Cuidador"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name=".ui.difusion.encontradas.GenerarReporteEncontradaActivity"
+            android:name="com.example.petcarehome.ui.difusion.encontradas.GenerarReporteEncontradaActivity"
             android:label="Reporte mascota encontrada"
-            android:parentActivityName=".HomeActivity_Cuidador"
+            android:parentActivityName="com.example.petcarehome.HomeActivity_Cuidador"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name=".ui.difusion.perdidas.GenerarReporteExtravioActivity"
+            android:name="com.example.petcarehome.ui.difusion.perdidas.GenerarReporteExtravioActivity"
             android:label="Reporte mascota extraviada"
-            android:parentActivityName=".HomeActivity_Cuidador"
+            android:parentActivityName="com.example.petcarehome.HomeActivity_Cuidador"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name=".HomeActivity_Cuidador"
+            android:name="com.example.petcarehome.HomeActivity_Cuidador"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/MaterialAppTheme"
