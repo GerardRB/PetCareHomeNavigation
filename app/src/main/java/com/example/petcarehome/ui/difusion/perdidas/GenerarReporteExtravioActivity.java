@@ -1,13 +1,17 @@
 package com.example.petcarehome.ui.difusion.perdidas;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,11 +28,28 @@ import android.widget.Toast;
 import com.example.petcarehome.Objetos.FirebaseReferences;
 import com.example.petcarehome.Objetos.ReportePerdidas;
 import com.example.petcarehome.R;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
+
+import id.zelory.compressor.Compressor;
 
 public class GenerarReporteExtravioActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -43,7 +64,14 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     private Button buttonGenerar;
     private ArrayList<ReportePerdidas> listReportes;
 
+    private Bitmap thumbBitmap;
+    private byte [] thumb_byte;
+    private Uri downloadUri;
+    private Uri resultUri;
+    private String aleatorio;
+
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseStorage firebaseStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,17 +309,68 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
     //Acceso a la galería
     private void cargarImagen() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/");
-        startActivityForResult(intent.createChooser(intent, "Seleccione la Aplicación"), 10);
+        startActivityForResult(intent.createChooser(intent, "Seleccione la Aplicación"), 10);*/
+
+        CropImage.startPickImageActivity(GenerarReporteExtravioActivity.this);
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
-            Uri path = data.getData();
-            imageView.setImageURI(path);
+
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+
+            //Recortar imagen
+            CropImage.activity(imageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setRequestedSize(1024, 1024)
+                    .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
+            //imageView.setImageURI(imageUri);
         }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK){
+                resultUri = result.getUri();
+                imageView.setImageURI(resultUri);
+                /*
+                //File url = new File(resultUri.getPath());
+                //Comprimir imagen
+                try {
+                    thumbBitmap = new Compressor(this)
+                            .setMaxWidth(1024)
+                            .setMaxHeight(1024)
+                            .setQuality(90)
+                            .compressToBitmap(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                thumbBitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+                thumb_byte = byteArrayOutputStream.toByteArray();
+                //fin del compresor
+
+
+                int p = (int) (Math.random() + 25 + 1);
+                int s = (int) (Math.random() + 25 + 1);
+                int t = (int) (Math.random() + 25 + 1);
+                int c = (int) (Math.random() + 25 + 1);
+                int numero1 = (int) (Math.random() + 1012 + 2111);
+                int numero2 = (int) (Math.random() + 1012 + 2111);
+
+                String [] elementos = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+                                        "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}   ;
+
+                aleatorio = elementos[p] + elementos[s] + numero1 + elementos[t] + elementos[c] + numero2 + "comp.jpg";*/
+
+
+            }
+        }
+
     }
 
     //Regresar a la actividad anterior con la flecha de action bar(por defecto)
@@ -319,9 +398,8 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     }
 
     private void ValidarCampos() {
-        String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE;
+        final String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE;
         String mensaje = "Faltan campos por ingresar";
-        String reporte = "";
         nombreM = nombre.getText().toString();
         tipoM = comboTipoMascota.getSelectedItem().toString();
         edadM = edad.getText().toString();
@@ -331,7 +409,6 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         coloniaE = colonia.getText().toString();
         calleE = calle.getText().toString();
         descripcionE = descripcion.getText().toString();
-
 
 
         if(nombreM.isEmpty() || tipoM.equals("Seleccionar") || edadM.isEmpty() || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE.equals("Seleccionar") || descripcionE.isEmpty()){
@@ -351,34 +428,44 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                 descripcion.setError("Obligatorio");
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
-            ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, R.drawable.ic_perro, 1);
 
-            //Guardar en base de datos
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.PETCARE_REFERENCE);
-            petCareReference.child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push().setValue(reporteP);
+            //Referencia al Storage de reportes
+            firebaseStorage = FirebaseStorage.getInstance();
+            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + ".jpg");
+
+            storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isSuccessful());
+                    downloadUri = uriTask.getResult();
+                    ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString());
+                    //Guardar en base de datos
+                    firebaseDatabase = FirebaseDatabase.getInstance();
+                    final DatabaseReference reportesReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE);
+                    reportesReference.child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push().setValue(reporteP);
+                    final String reporte = "Reporte generado:" +
+                            "\nNombre: " + reporteP.getNombre() +
+                            "\nTipo: " + reporteP.getTipo() +
+                            "\nEdad: " + reporteP.getEdad() +
+                            "\nFecha: " + reporteP.getFecha() +
+                            "\nHora: " + reporteP.getHora() +
+                            "\nZona: " + reporteP.getAlcaldia() +
+                            ", col. " + reporteP.getColonia() +
+                            ", calle " + reporteP.getCalle() +
+                            "\nDescripción: " + reporteP.getDescripcion();
+                    Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                }
+            });
 
 
-            Intent intent = new Intent(GenerarReporteExtravioActivity.this, PerdidasFragment.class);
 
-            Bundle  bundle = new Bundle();
-            bundle.putSerializable("reportePerdida", reporteP);
 
-            intent.putExtras(bundle);
-            //startActivity(intent);
 
-            reporte = "Reporte generado: \nID: " + reporteP.getId() +
-                    "\nNombre: " + reporteP.getNombre() +
-                    "\nTipo: " + reporteP.getTipo() +
-                    "\nEdad: " + reporteP.getEdad() +
-                    "\nFecha: " + reporteP.getFecha() +
-                    "\nHora: " + reporteP.getHora() +
-                    "\nZona: " + reporteP.getAlcaldia() +
-                    ", col. " + reporteP.getColonia() +
-                    ", calle " + reporteP.getCalle() +
-                    "\nDescripción: " + reporteP.getDescripcion();
-            Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
-            onBackPressed();
+
+
+
         }
 
 

@@ -34,6 +34,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
             android:name="com.example.petcarehome.ui.difusion.adopcion.DetalleReporteAdopcionActivity"
             android:label="Mascota en Adopción"
             android:parentActivityName="com.example.petcarehome.HomeActivity_Cuidador"

@@ -84,7 +84,7 @@ public class EncontradasFragment extends Fragment {
 
         //Instanciar la base de datos y referenciarla
         firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference reporteEncontradaReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE);
+        final DatabaseReference reporteEncontradaReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE);
 
         //Llenar list desde la base
         reporteEncontradaReference.addValueEventListener(new ValueEventListener() {

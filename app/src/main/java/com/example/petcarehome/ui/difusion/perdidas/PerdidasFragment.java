@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.petcarehome.Objetos.Filtro;
 import com.example.petcarehome.Objetos.FirebaseReferences;
 import com.example.petcarehome.Objetos.ReportePerdidas;
+import com.example.petcarehome.Objetos.ReportePerdidasID;
 import com.example.petcarehome.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,9 +36,10 @@ public class PerdidasFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private ArrayList<ReportePerdidas> listReportes;
+    private ArrayList<ReportePerdidasID> listReportes;
     private RecyclerView recyclerPerdidas;
     private ReportePerdidas reporteP;
+    private ReportePerdidasID reportePID;
     private AdapterReportesPerdidas adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private FirebaseDatabase firebaseDatabase;
@@ -84,14 +86,14 @@ public class PerdidasFragment extends Fragment {
         recyclerPerdidas = view.findViewById(R.id.recyclerPerdidasId);
         recyclerPerdidas.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new AdapterReportesPerdidas(listReportes);
+        adapter = new AdapterReportesPerdidas(listReportes, getContext());
         recyclerPerdidas.setAdapter(adapter);
 
         filtro = null;
 
         //Instanciar la base de datos y referenciarla
         firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
+        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
 
         llenarReportes(filtro, false);
 
@@ -131,7 +133,7 @@ public class PerdidasFragment extends Fragment {
     private void llenarReportes(final Filtro filtro, Boolean filtrada) {
         //Instanciar la base de datos y referenciarla
         firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
+        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
 
         if (filtrada == true){
             //Llenar lista desde la base con filtro
@@ -146,17 +148,20 @@ public class PerdidasFragment extends Fragment {
                         if(filtro.getZona() != null){
                             if (filtro.getTipoM() != null){
                                 if (alcaldia.equals(filtro.getZona()) && tipo.equals(filtro.getTipoM())){
-                                    reporteP = snapshot.getValue(ReportePerdidas.class);
-                                    listReportes.add(0,reporteP);
+                                    //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                    reportePID = new ReportePerdidasID(snapshot.getKey(), snapshot.getValue(ReportePerdidas.class));
+                                    listReportes.add(0,reportePID);
                                 }
                             } else if (alcaldia.equals(filtro.getZona())){
-                                reporteP = snapshot.getValue(ReportePerdidas.class);
-                                listReportes.add(0,reporteP);
+                                //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                reportePID = new ReportePerdidasID(snapshot.getKey(), snapshot.getValue(ReportePerdidas.class));
+                                listReportes.add(0,reportePID);
                             }
                         } else if (filtro.getTipoM() != null){
                             if (tipo.equals(filtro.getTipoM())){
-                                reporteP = snapshot.getValue(ReportePerdidas.class);
-                                listReportes.add(0,reporteP);
+                                //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                reportePID = new ReportePerdidasID(snapshot.getKey(), snapshot.getValue(ReportePerdidas.class));
+                                listReportes.add(0,reportePID);
                             }
                         }
                     }
@@ -176,8 +181,9 @@ public class PerdidasFragment extends Fragment {
                     listReportes.removeAll(listReportes);
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
-                        reporteP = snapshot.getValue(ReportePerdidas.class);
-                        listReportes.add(0,reporteP);
+                        //reporteP = snapshot.getValue(ReportePerdidas.class);
+                        reportePID = new ReportePerdidasID(snapshot.getKey(), snapshot.getValue(ReportePerdidas.class));
+                        listReportes.add(0,reportePID);
                     }
                     adapter.notifyDataSetChanged();
                 }

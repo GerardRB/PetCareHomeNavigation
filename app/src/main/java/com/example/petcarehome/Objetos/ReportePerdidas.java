@@ -1,16 +1,18 @@
 package com.example.petcarehome.Objetos;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 
 public class ReportePerdidas implements Serializable {
-    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion;
-    private int foto, id;
+    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, foto;
+    //private Uri foto;
 
     public ReportePerdidas(){
 
     }
 
-    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, int foto, int id) {
+    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String foto) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.edad = edad;
@@ -21,9 +23,7 @@ public class ReportePerdidas implements Serializable {
         this.calle = calle;
         this.descripcion = descripcion;
         this.foto = foto;
-        this.id = id;
     }
-
 
     public String getNombre() {
         return nombre;
@@ -97,22 +97,13 @@ public class ReportePerdidas implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
 
 }
 

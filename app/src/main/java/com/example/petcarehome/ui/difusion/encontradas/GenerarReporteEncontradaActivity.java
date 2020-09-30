@@ -332,7 +332,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
 
             //Guardar en base de datos
             firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.PETCARE_REFERENCE);
+            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE);
             petCareReference.child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE).push().setValue(reporteE);
 
             Intent intent = new Intent(GenerarReporteEncontradaActivity.this, EncontradasFragment.class);

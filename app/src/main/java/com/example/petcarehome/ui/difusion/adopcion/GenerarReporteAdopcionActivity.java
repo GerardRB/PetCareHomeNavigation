@@ -146,7 +146,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
 
             //Guardar en base de datos
             firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.PETCARE_REFERENCE);
+            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE);
             petCareReference.child(FirebaseReferences.REPORTEADOPCION_REFERENCE).push().setValue(reporteA);
 
             Intent intent = new Intent(GenerarReporteAdopcionActivity.this, AdopcionFragment.class);

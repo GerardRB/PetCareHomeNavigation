@@ -1,26 +1,34 @@
 package com.example.petcarehome.ui.difusion.perdidas;
 
+import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petcarehome.Objetos.ReportePerdidas;
+import com.example.petcarehome.Objetos.ReportePerdidasID;
 import com.example.petcarehome.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReportesPerdidas.ViewHolderReportesPerdidas> implements  View.OnClickListener{
 
-    ArrayList<ReportePerdidas> listReportesPerdidas;
+    ArrayList<ReportePerdidasID> listReportesPerdidas;
     private View.OnClickListener listener;
+    Context context;
 
-    public AdapterReportesPerdidas(ArrayList<ReportePerdidas> listReportesPerdidas) {
+    public AdapterReportesPerdidas(ArrayList<ReportePerdidasID> listReportesPerdidas, Context context) {
         this.listReportesPerdidas = listReportesPerdidas;
+        this.context = context;
     }
 
     @NonNull
@@ -33,12 +41,23 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolderReportesPerdidas holder, int position) {
-        holder.etizona.setText(listReportesPerdidas.get(position).getAlcaldia());
-        holder.etifecha.setText(listReportesPerdidas.get(position).getFecha());
-        holder.etinombre.setText(listReportesPerdidas.get(position).getNombre());
-        holder.etidescripcion.setText(listReportesPerdidas.get(position).getDescripcion());
-        holder.foto.setImageResource(listReportesPerdidas.get(position).getFoto());
+    public void onBindViewHolder(@NonNull final ViewHolderReportesPerdidas holder, int position) {
+        holder.etizona.setText(listReportesPerdidas.get(position).getReportePerdidas().getAlcaldia());
+        holder.etifecha.setText(listReportesPerdidas.get(position).getReportePerdidas().getFecha());
+        holder.etinombre.setText(listReportesPerdidas.get(position).getReportePerdidas().getNombre());
+        holder.etidescripcion.setText(listReportesPerdidas.get(position).getReportePerdidas().getDescripcion());
+        //holder.foto.setImageURI(Uri.parse(listReportesPerdidas.get(position).getFoto()));
+        Picasso.with(context).load(listReportesPerdidas.get(position).getReportePerdidas().getFoto()).into(holder.foto, new Callback() {
+            @Override
+            public void onSuccess() {
+                holder.foto.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onError() {
+                Toast.makeText(context, "Error al cargar imagenes", Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 

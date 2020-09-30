@@ -84,7 +84,7 @@ public class AdopcionFragment extends Fragment {
 
         //Instanciar la base de datos y referenciarla
         firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference reporteAdopcionReference = firebaseDatabase.getReference().child(FirebaseReferences.PETCARE_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE);
+        final DatabaseReference reporteAdopcionReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE);
 
         //Llenar list desde la base
         reporteAdopcionReference.addValueEventListener(new ValueEventListener() {
