@@ -44,6 +44,11 @@
             </intent-filter>
         </activity>
 
+
+        <!--
+             ACTIVDADES DEL HOME NAVIGATION
+        -->
+
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/AppTheme" />
@@ -95,8 +100,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/MaterialAppTheme"
             tools:ignore="LockedOrientationActivity">
-
         </activity>
+        <!--
+             FIN DE LAS ACTIVDADES DEL HOME NAVIGATION
+        -->
+
+
+
+
     </application>
 
 </manifest>

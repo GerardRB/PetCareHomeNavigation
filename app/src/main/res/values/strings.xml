@@ -2,6 +2,11 @@
     <string name="app_name">PetCare</string>
 
 
+
+    <!--
+             STRINGS DEL HOME NAVIGATION
+        -->
+
     <!-- Strings used for action bar menu -->
     <string name="action_search">Buscar</string>
     <string name="action_settings">Ajustes</string>
@@ -95,4 +100,10 @@
         <item>Venustiano Carranza</item>
         <item>Xochimilco</item>
     </string-array>
+
+    <!--
+             STRINGS DEL HOME NAVIGATION
+        -->
+
+
 </resources>
