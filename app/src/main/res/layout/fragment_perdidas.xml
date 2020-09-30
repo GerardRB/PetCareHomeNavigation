@@ -6,7 +6,7 @@
     android:layout_marginTop="?attr/actionBarSize"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.difusion.DifusionFragment"
+    tools:context=".homenavigation.ui.difusion.DifusionFragment"
     android:layout_marginBottom="?attr/actionBarSize">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
