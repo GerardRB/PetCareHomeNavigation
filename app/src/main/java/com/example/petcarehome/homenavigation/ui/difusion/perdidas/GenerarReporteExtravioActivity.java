@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -57,6 +58,9 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     private Uri downloadUri;
     private Uri resultUri;
     private String aleatorio;
+    private ArrayList<Uri> listImagesRec = new ArrayList<Uri>();;
+    private ArrayList<String> listDwonloadUri;
+
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseStorage firebaseStorage;
@@ -65,6 +69,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generar_reporte_extravio);
+
 
 
 
@@ -301,63 +306,62 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         intent.setType("image/");
         startActivityForResult(intent.createChooser(intent, "Seleccione la Aplicación"), 10);*/
 
-        CropImage.startPickImageActivity(GenerarReporteExtravioActivity.this);
+
+
+        Intent intent = new Intent();
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 10);
+
+        //CropImage.startPickImageActivity(GenerarReporteExtravioActivity.this);
 
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            Uri imageUri = CropImage.getPickImageResultUri(this, data);
 
+
+        if (requestCode == 10 && resultCode == Activity.RESULT_OK){
+
+            if (data.getClipData() != null){
+                for (int i = 0; i < data.getClipData().getItemCount(); i++){
+                    CropImage.activity(data.getClipData().getItemAt(i).getUri())
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .setRequestedSize(1024, 1024)
+                            .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
+                }
+
+            } else {
+                CropImage.activity(data.getData())
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setRequestedSize(1024, 1024)
+                        .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
+            }
+
+            /*
+            //Uri imageUri = CropImage.getPickImageResultUri(this, data);
+            Uri imageUri = data.getData();
             //Recortar imagen
             CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setRequestedSize(1024, 1024)
                     .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
-            //imageView.setImageURI(imageUri);
+            //imageView.setImageURI(imageUri);*/
         }
+
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK){
                 resultUri = result.getUri();
-                imageView.setImageURI(resultUri);
-                /*
-                //File url = new File(resultUri.getPath());
-                //Comprimir imagen
-                try {
-                    thumbBitmap = new Compressor(this)
-                            .setMaxWidth(1024)
-                            .setMaxHeight(1024)
-                            .setQuality(90)
-                            .compressToBitmap(url);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                thumbBitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
-                thumb_byte = byteArrayOutputStream.toByteArray();
-                //fin del compresor
-
-
-                int p = (int) (Math.random() + 25 + 1);
-                int s = (int) (Math.random() + 25 + 1);
-                int t = (int) (Math.random() + 25 + 1);
-                int c = (int) (Math.random() + 25 + 1);
-                int numero1 = (int) (Math.random() + 1012 + 2111);
-                int numero2 = (int) (Math.random() + 1012 + 2111);
-
-                String [] elementos = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-                                        "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}   ;
-
-                aleatorio = elementos[p] + elementos[s] + numero1 + elementos[t] + elementos[c] + numero2 + "comp.jpg";*/
-
-
+                listImagesRec.add(resultUri);
+                imageView.setImageURI(listImagesRec.get(0));
+                //Toast.makeText(getApplicationContext(), "Fotos seleccionadas: " + listImagesRec.size(), Toast.LENGTH_LONG).show();
             }
         }
+
 
     }
 
@@ -387,6 +391,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
     private void ValidarCampos() {
         final String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE;
+        listDwonloadUri = new ArrayList<String>();
         String mensaje = "Faltan campos por ingresar";
         nombreM = nombre.getText().toString();
         tipoM = comboTipoMascota.getSelectedItem().toString();
@@ -419,8 +424,39 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
             //Referencia al Storage de reportes
             firebaseStorage = FirebaseStorage.getInstance();
-            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + ".jpg");
+            //final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + ".jpg");
 
+            for (int i = 0; i < listImagesRec.size(); i++){
+                final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + i + ".jpg");
+                storageReportesReference.putFile(listImagesRec.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful());
+                        downloadUri = uriTask.getResult();
+                        listDwonloadUri.add(downloadUri.toString());
+                        //Toast.makeText(getApplicationContext(), "Fotos subidas: " + listDwonloadUri.size(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+            ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, listDwonloadUri);
+            //Guardar en base de datos
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference reportesReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE);
+            reportesReference.child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push().setValue(reporteP);
+            final String reporte = "Reporte generado:" +
+                    "\nNombre: " + reporteP.getNombre() +
+                    "\nTipo: " + reporteP.getTipo() +
+                    "\nEdad: " + reporteP.getEdad() +
+                    "\nFecha: " + reporteP.getFecha() +
+                    "\nHora: " + reporteP.getHora() +
+                    "\nZona: " + reporteP.getAlcaldia() +
+                    ", col. " + reporteP.getColonia() +
+                    ", calle " + reporteP.getCalle() +
+                    "\nDescripción: " + reporteP.getDescripcion();
+            Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
+            onBackPressed();
+            /*Bien una foto
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -445,7 +481,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }
-            });
+            });*/
 
 
 
