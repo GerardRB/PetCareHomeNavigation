@@ -19,11 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
-        <activity android:name=".homenavigation.InicioYRegistro.registroCuidadorActivity"></activity>
+        <activity android:name=".InicioYRegistro.registroCuidadorActivity"></activity>
         <activity android:name=".homenavigation.HomeActivity_Cuidador" />
-        <activity android:name=".homenavigation.InicioYRegistro.registroDuenoActivity" />
-        <activity android:name=".homenavigation.InicioYRegistro.cuidadorLoginActivity" />
-        <activity android:name=".homenavigation.InicioYRegistro.duenoLoginActivity" />
+        <activity android:name=".InicioYRegistro.registroDuenoActivity" />
+        <activity android:name=".InicioYRegistro.cuidadorLoginActivity" />
+        <activity android:name=".InicioYRegistro.duenoLoginActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,7 +37,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".homenavigation.InicioYRegistro.TipoUserActivity"
+            android:name=".InicioYRegistro.TipoUserActivity"
             android:label="Bienvenido"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"

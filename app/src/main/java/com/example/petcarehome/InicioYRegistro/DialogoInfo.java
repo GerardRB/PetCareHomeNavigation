@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.InicioYRegistro;
+package com.example.petcarehome.InicioYRegistro;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

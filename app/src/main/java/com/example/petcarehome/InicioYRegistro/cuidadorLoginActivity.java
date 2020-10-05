@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.InicioYRegistro;
+package com.example.petcarehome.InicioYRegistro;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.HomeActivity_Cuidador;
-import com.example.petcarehome.homenavigation.HomeActivity_Dueno;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

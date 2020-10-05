@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/colorPrimary"
     android:gravity="center"
-    tools:context=".homenavigation.InicioYRegistro.duenoLoginActivity">
+    tools:context=".InicioYRegistro.duenoLoginActivity">
     <ImageView
         android:layout_width="170dp"
         android:layout_height="170dp"

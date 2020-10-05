@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.InicioYRegistro;
+package com.example.petcarehome.InicioYRegistro;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

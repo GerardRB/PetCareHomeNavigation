@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.InicioYRegistro;
+package com.example.petcarehome.InicioYRegistro;
 
 public class ayudaRegistroDuenoCuidador {
 //7 campos a guardar en la bd
