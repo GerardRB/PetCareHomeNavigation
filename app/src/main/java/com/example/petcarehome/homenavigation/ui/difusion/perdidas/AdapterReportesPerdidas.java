@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.example.petcarehome.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,7 +45,7 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
         holder.etinombre.setText(listReportesPerdidas.get(position).getReportePerdidas().getNombre());
         holder.etidescripcion.setText(listReportesPerdidas.get(position).getReportePerdidas().getDescripcion());
         //holder.foto.setImageURI(Uri.parse(listReportesPerdidas.get(position).getFoto()));
-        /*Picasso.with(context).load(listReportesPerdidas.get(position).getReportePerdidas().getFotos().get(0)).into(holder.foto, new Callback() {
+        Picasso.with(context).load(listReportesPerdidas.get(position).getReportePerdidas().getFoto()).into(holder.foto, new Callback() {
             @Override
             public void onSuccess() {
                 holder.foto.setVisibility(View.VISIBLE);
@@ -52,7 +55,7 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
             public void onError() {
                 Toast.makeText(context, "Error al cargar imagenes", Toast.LENGTH_LONG).show();
             }
-        });*/
+        });
 
     }
 

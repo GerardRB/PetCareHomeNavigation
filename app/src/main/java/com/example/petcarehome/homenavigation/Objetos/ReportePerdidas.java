@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ReportePerdidas implements Serializable {
-    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion;
-    private ArrayList<String> fotos;
+    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, foto;
+    //private ArrayList<String> fotos;
     //private Uri foto;
 
     public ReportePerdidas(){
 
     }
 
-    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, ArrayList<String> fotos) {
+    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String foto) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.edad = edad;
@@ -22,7 +22,7 @@ public class ReportePerdidas implements Serializable {
         this.colonia = colonia;
         this.calle = calle;
         this.descripcion = descripcion;
-        this.fotos = fotos;
+        this.foto = foto;
     }
 
     public String getNombre() {
@@ -97,12 +97,12 @@ public class ReportePerdidas implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public ArrayList<String> getFotos() {
-        return fotos;
+    public String getFoto() {
+        return foto;
     }
 
-    public void setFotos(ArrayList<String> fotos) {
-        this.fotos = fotos;
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }
 

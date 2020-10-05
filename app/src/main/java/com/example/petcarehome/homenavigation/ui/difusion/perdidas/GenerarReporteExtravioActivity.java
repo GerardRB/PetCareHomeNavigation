@@ -423,8 +423,8 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
             //Referencia al Storage de reportes
             firebaseStorage = FirebaseStorage.getInstance();
-            //final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + ".jpg");
-
+            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + ".jpg");
+            /* Varias fotos(error: no sube al realtime el atributo list String fotos
             for (int i = 0; i < listImagesRec.size(); i++){
                 final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + i + ".jpg");
                 storageReportesReference.putFile(listImagesRec.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -454,8 +454,9 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                     ", calle " + reporteP.getCalle() +
                     "\nDescripción: " + reporteP.getDescripcion();
             Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
-            onBackPressed();
-            /*Bien una foto
+            onBackPressed();*/
+
+            //Bien una foto
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -480,7 +481,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
                     onBackPressed();
                 }
-            });*/
+            });
 
 
 
