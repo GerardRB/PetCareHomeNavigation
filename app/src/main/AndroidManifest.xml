@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
-
+        <activity android:name=".homenavigation.InicioYRegistro.registroDuenoActivity"></activity>
+        <activity android:name=".homenavigation.InicioYRegistro.cuidadorLoginActivity" />
+        <activity android:name=".homenavigation.InicioYRegistro.duenoLoginActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -32,7 +34,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".TipoUserActivity"
+        <activity
+            android:name=".homenavigation.InicioYRegistro.TipoUserActivity"
             android:label="Bienvenido"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
@@ -42,73 +45,58 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-
-        <!--
-             ACTIVDADES DEL HOME NAVIGATION
-        -->
-
+        </activity> <!-- ACTIVDADES DEL HOME NAVIGATION -->
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".homenavigation.ui.difusion.adopcion.DetalleReporteAdopcionActivity"
             android:label="Mascota en Adopción"
-            android:parentActivityName=".homenavigation.HomeActivity_Cuidador"
+            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.encontradas.DetalleReporteEncontradaActivity"
             android:label="Mascota Encontrada"
-            android:parentActivityName=".homenavigation.HomeActivity_Cuidador"
+            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.perdidas.DetalleReportePerdidasActivity"
             android:label="Mascota Extraviada"
-            android:parentActivityName=".homenavigation.HomeActivity_Cuidador"
+            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.adopcion.GenerarReporteAdopcionActivity"
             android:label="Reporte mascota en adopción"
-            android:parentActivityName=".homenavigation.HomeActivity_Cuidador"
+            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.encontradas.GenerarReporteEncontradaActivity"
             android:label="Reporte mascota encontrada"
-            android:parentActivityName=".homenavigation.HomeActivity_Cuidador"
+            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.perdidas.GenerarReporteExtravioActivity"
             android:label="Reporte mascota extraviada"
-            android:parentActivityName=".homenavigation.HomeActivity_Cuidador"
+            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".homenavigation.HomeActivity_Cuidador"
+            android:name=".homenavigation.HomeActivity_Dueno"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/MaterialAppTheme"
-            tools:ignore="LockedOrientationActivity">
-
-        </activity>
-        <!--
-             FIN DE LAS ACTIVDADES DEL HOME NAVIGATION
-        -->
-
-
-
-
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>
