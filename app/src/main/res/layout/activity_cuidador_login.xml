@@ -1,9 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    android:gravity="center"
     tools:context=".homenavigation.InicioYRegistro.cuidadorLoginActivity">
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:src="@drawable/cuidadorpc"
+        android:layout_margin="@android:dimen/app_icon_size"
+        >
+    </ImageView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorblanco"
+        android:hint=" Correo Electrónico"
+        android:id="@+id/correo"
+        android:drawableLeft="@drawable/ic_correo"
+        android:drawableTint="@color/colorblanco"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorblanco"
+        android:hint=" Contraseña"
+        android:id="@+id/contraseña"
+        android:drawableLeft="@drawable/ic_llave_inteligente"
+        android:drawableTint="@color/colorblanco"/>
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/miboton"
+        android:textColor="#FFFFFF"
+        android:layout_margin="@android:dimen/app_icon_size"
+        android:text="Iniciar sesión"
+        android:id="@+id/login"
+        />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Registrarse"
+        android:id="@+id/registrarse"
+        android:background="@drawable/miboton"
+        android:textColor="#FFFFFF"
+        />
+</LinearLayout>

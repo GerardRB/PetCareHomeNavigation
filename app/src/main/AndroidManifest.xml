@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
-        <activity android:name=".homenavigation.InicioYRegistro.registroDuenoActivity"></activity>
+        <activity android:name=".homenavigation.InicioYRegistro.registroCuidadorActivity"></activity>
+        <activity android:name=".homenavigation.HomeActivity_Cuidador" />
+        <activity android:name=".homenavigation.InicioYRegistro.registroDuenoActivity" />
         <activity android:name=".homenavigation.InicioYRegistro.cuidadorLoginActivity" />
         <activity android:name=".homenavigation.InicioYRegistro.duenoLoginActivity" />
         <!--

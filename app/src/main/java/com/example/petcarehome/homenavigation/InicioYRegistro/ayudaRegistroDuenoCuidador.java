@@ -1,11 +1,11 @@
 package com.example.petcarehome.homenavigation.InicioYRegistro;
 
-public class ayudaRegistroDueno {
+public class ayudaRegistroDuenoCuidador {
 //7 campos a guardar en la bd
 
 String nombre, apellidos, calle, noext, noint, alcaldia, cel;
 
-    public ayudaRegistroDueno(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String cel) {
+    public ayudaRegistroDuenoCuidador(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String cel) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.calle = calle;
@@ -15,7 +15,7 @@ String nombre, apellidos, calle, noext, noint, alcaldia, cel;
         this.cel = cel;
     }
 
-    public ayudaRegistroDueno(){
+    public ayudaRegistroDuenoCuidador(){
 
     }
 

@@ -16,7 +16,7 @@
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_gravity="center_vertical|center_horizontal"
-     
+
         android:layout_marginTop="-100dp"
         app:srcCompat="@drawable/petcarelogo" />
     -->
