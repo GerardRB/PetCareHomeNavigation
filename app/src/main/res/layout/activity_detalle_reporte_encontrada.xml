@@ -314,7 +314,7 @@
                                         android:layout_marginLeft="15dp"
                                         android:layout_marginTop="10dp"
                                         android:layout_marginRight="15dp"
-                                        android:text="@string/label_id_user"
+                                        android:text="@string/label_email_user"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
 
