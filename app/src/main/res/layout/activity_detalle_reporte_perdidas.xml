@@ -362,18 +362,18 @@
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:id="@+id/label_id_user_DRMP"
+                                        android:id="@+id/label_email_user_DRMP"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="15dp"
                                         android:layout_marginTop="10dp"
                                         android:layout_marginRight="15dp"
-                                        android:text="@string/label_id_user"
+                                        android:text="@string/label_email_user"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
 
                                     <TextView
-                                        android:id="@+id/text_id_user_DRMP"
+                                        android:id="@+id/text_email_user_DRMP"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"

@@ -14,20 +14,23 @@ import com.example.petcarehome.R;
 
 public class ConfigFragment extends Fragment {
 
-    private ConfigViewModel configViewModel;
+    private TextView textView;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        configViewModel =
-                ViewModelProviders.of(this).get(ConfigViewModel.class);
         View root = inflater.inflate(R.layout.fragment_config, container, false);
-        final TextView textView = root.findViewById(R.id.text_config);
-        configViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        textView = view.findViewById(R.id.text_config);
+
+        textView.setText("Fragmento de Configuración");
+
+
     }
 }

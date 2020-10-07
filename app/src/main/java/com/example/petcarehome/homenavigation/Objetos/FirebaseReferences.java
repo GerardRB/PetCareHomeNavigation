@@ -9,4 +9,7 @@ public class FirebaseReferences {
     final public static String STORAGE_REPORTEPERDIDA_REFERENCE = "reportePerdida";
     final public static String STORAGE_ID_RP_REFERENCE = "idReportePerdida";
     final public static String STORAGE_IMG_REFERENCE = "imgReportePerdida";
+    final public static String USERS_REFERENCE = "usuario";
+    final public static String CUIDADOR_REFERENCE = "cuidador";
+    final public static String DUENO_REFERENCE = "dueno";
 }

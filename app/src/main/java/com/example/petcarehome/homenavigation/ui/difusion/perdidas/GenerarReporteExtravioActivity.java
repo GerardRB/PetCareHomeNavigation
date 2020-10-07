@@ -27,6 +27,9 @@ import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
 import com.example.petcarehome.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -389,9 +392,10 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     }
 
     private void ValidarCampos() {
-        final String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE;
+        final String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idRep;
         listDwonloadUri = new ArrayList<String>();
         String mensaje = "Faltan campos por ingresar";
+        String idUser = null;
         nombreM = nombre.getText().toString();
         tipoM = comboTipoMascota.getSelectedItem().toString();
         edadM = edad.getText().toString();
@@ -423,7 +427,14 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
             //Referencia al Storage de reportes
             firebaseStorage = FirebaseStorage.getInstance();
-            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + ".jpg");
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null){
+                idUser = user.getEmail();
+            }
+            final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push();
+            idRep = reportesPReference.getKey();
+            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + ".jpg");
             /* Varias fotos(error: no sube al realtime el atributo list String fotos
             for (int i = 0; i < listImagesRec.size(); i++){
                 final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + i + ".jpg");
@@ -465,9 +476,9 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                     downloadUri = uriTask.getResult();
                     ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString());
                     //Guardar en base de datos
-                    firebaseDatabase = FirebaseDatabase.getInstance();
-                    final DatabaseReference reportesReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE);
-                    reportesReference.child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push().setValue(reporteP);
+
+
+                    reportesPReference.setValue(reporteP);
                     final String reporte = "Reporte generado:" +
                             "\nNombre: " + reporteP.getNombre() +
                             "\nTipo: " + reporteP.getTipo() +

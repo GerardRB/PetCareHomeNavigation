@@ -59,7 +59,7 @@
     <string name="label_colonia_DRMP">Colonia:</string>
     <string name="label_calle_DRMP">Calle:</string>
     <string name="label_descripcion_DRMP">Descripción:</string>
-    <string name="label_id_user">ID Usuario:</string>
+    <string name="label_email_user">E-mail:</string>
     <string name="label_telefono_user">Teléfono:</string>
     <string name="label_domicilio_user">Domicilio:</string>
     <string name="label_fecha_encontrada_DRME">Fecha en que fue encontrada:</string>

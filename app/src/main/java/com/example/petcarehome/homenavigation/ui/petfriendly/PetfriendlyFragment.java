@@ -18,21 +18,23 @@ import com.example.petcarehome.R;
 
 public class PetfriendlyFragment extends Fragment {
 
-    private PetfriendlyViewModel petViewModel;
+    private TextView textView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        petViewModel =
-                ViewModelProviders.of(this).get(PetfriendlyViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_petfriendly, container, false);
-        final TextView textView = root.findViewById(R.id.text_petfriendly);
-        petViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        textView = view.findViewById(R.id.text_petfriendly);
+
+        textView.setText("Fragmento de PetFriendly");
+
+    }
 }
