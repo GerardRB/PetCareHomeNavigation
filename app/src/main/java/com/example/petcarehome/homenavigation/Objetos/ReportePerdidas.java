@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ReportePerdidas implements Serializable {
-    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, foto;
+    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, foto, usuario;
     //private ArrayList<String> fotos;
     //private Uri foto;
 
@@ -12,7 +12,7 @@ public class ReportePerdidas implements Serializable {
 
     }
 
-    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String foto) {
+    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String foto, String usuario) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.edad = edad;
@@ -23,6 +23,7 @@ public class ReportePerdidas implements Serializable {
         this.calle = calle;
         this.descripcion = descripcion;
         this.foto = foto;
+        this.usuario = usuario;
     }
 
     public String getNombre() {
@@ -103,6 +104,14 @@ public class ReportePerdidas implements Serializable {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 }
 

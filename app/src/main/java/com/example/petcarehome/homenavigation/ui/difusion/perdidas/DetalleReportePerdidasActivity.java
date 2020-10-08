@@ -1,5 +1,6 @@
 package com.example.petcarehome.homenavigation.ui.difusion.perdidas;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,11 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.petcarehome.InicioYRegistro.ayudaRegistroDuenoCuidador;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.example.petcarehome.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -22,8 +27,8 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
     private TextView idReporte, nombreMascota, tipoMascota, edad, fechaExtravio, horaExtravio, alcaldia, colonia, calle, descripcion, correoUser, nombreUser, telefonoUser, domicilio;
     private ImageView foto;
 
-    /*private String email, nomUser, telefono, domiUser;
-    private FirebaseDatabase firebaseDatabase;*/
+    private String telefono;
+    private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +42,62 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
             reporteP = (ReportePerdidasID) reporteSeleccionado.getSerializable("reportePerdida");
         }
 
-        /*   Obtener datos del usuario que genero el reporte
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        //final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE).child(reporteP.getReportePerdidas.getUser());
-        email = userReference.getKey();
-        nombreUser = userReference.child("nombre").getValue(String.class) + userReference.child("apellidos").getValue(String.class);
-        telefono = userReference.child("telefono").getValue(String.class);
-        domiUser = userReference.child("calle").getValue(String.class) + userReference.child("noext").getValue(String.class) + userReference.child("noint").getValue(String.class);
+        /*
+        Boolean isDueno = true;
 
-         */
+        if (isDueno){
+            //  Obtener datos del usuario que genero el reporte
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
+            final ayudaRegistroDuenoCuidador[] userRep = {new ayudaRegistroDuenoCuidador()};
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot :
+                            dataSnapshot.getChildren()) {
+                        String email = snapshot.child("email").getValue(String.class);
+                        if (email == reporteP.getReportePerdidas().getUsuario()){
+                            userRep[0] = (ayudaRegistroDuenoCuidador) snapshot.getValue();
+                            telefono = snapshot.getKey();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            if (userRep[0] == null){
+                isDueno = false;
+            }
+        } else {
+            //  Obtener datos del usuario que genero el reporte
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
+            final ayudaRegistroDuenoCuidador[] userRep = {new ayudaRegistroDuenoCuidador()};
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot :
+                            dataSnapshot.getChildren()) {
+                        String email = snapshot.child("email").getValue(String.class);
+                        if (email == reporteP.getReportePerdidas().getUsuario()){
+                            userRep[0] = (ayudaRegistroDuenoCuidador) snapshot.getValue();
+                            telefono = snapshot.getKey();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        */
+
+
 
         //Referencia a textviews
         idReporte = findViewById(R.id.text_id_DRMP);
@@ -64,8 +116,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         telefonoUser = findViewById(R.id.text_telefono_user_DRMP);
         domicilio = findViewById(R.id.text_domicilio_user_DRMP);
 
-
-        //Toast.makeText(getApplicationContext(), "Nombre: " + reporteP.getNombre(), Toast.LENGTH_LONG).show();
 
 
         //Imprimir valores del objeto recibido
@@ -92,11 +142,11 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         });
 
         /*
-        correoUser.setText(email);
-        nombreUser.setText(nomUser);
+        //correoUser.setText(userRep[0].getEmail());
+        nombreUser.setText(userRep[0].getNombre() + userRep[0].getApellidos());
         telefonoUser.setText(telefono);
-        domicilio.setText(domiUser);
-         */
+        domicilio.setText(userRep[0]. getCalle() + "no. Ext: " + userRep[0].getNoext() + " no. Int: " + userRep[0].getNoint() + ", " + userRep[0].getAlcaldia());
+        */
 
     }
 

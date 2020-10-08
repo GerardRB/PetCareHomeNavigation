@@ -1,5 +1,6 @@
 package com.example.petcarehome.homenavigation.ui.difusion.perdidas;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,11 +26,13 @@ import android.widget.Toast;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
 import com.example.petcarehome.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -468,29 +471,28 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             onBackPressed();*/
 
             //Bien una foto
+            final String finalIdUser = idUser;
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                     while (!uriTask.isSuccessful());
                     downloadUri = uriTask.getResult();
-                    ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString());
+                    ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), finalIdUser);
                     //Guardar en base de datos
 
 
-                    reportesPReference.setValue(reporteP);
-                    final String reporte = "Reporte generado:" +
-                            "\nNombre: " + reporteP.getNombre() +
-                            "\nTipo: " + reporteP.getTipo() +
-                            "\nEdad: " + reporteP.getEdad() +
-                            "\nFecha: " + reporteP.getFecha() +
-                            "\nHora: " + reporteP.getHora() +
-                            "\nZona: " + reporteP.getAlcaldia() +
-                            ", col. " + reporteP.getColonia() +
-                            ", calle " + reporteP.getCalle() +
-                            "\nDescripción: " + reporteP.getDescripcion();
-                    Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
-                    onBackPressed();
+                    reportesPReference.setValue(reporteP, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            if (databaseError != null){
+                                Toast.makeText(getApplicationContext(), "No se pudo generar el reporte", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Reporte generado con éxito", Toast.LENGTH_LONG).show();
+                                onBackPressed();
+                            }
+                        }
+                    });
                 }
             });
 
