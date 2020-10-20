@@ -3,9 +3,14 @@ package com.example.petcarehome.InicioYRegistro;
 public class ayudaRegistroDuenoCuidador {
 //7 campos a guardar en la bd
 
-String nombre, apellidos, calle, noext, noint, alcaldia, cel;
+String nombre, apellidos, calle, noext, noint, alcaldia, cel, correo;
 
-    public ayudaRegistroDuenoCuidador(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String cel) {
+
+    public ayudaRegistroDuenoCuidador(){
+
+    }
+
+    public ayudaRegistroDuenoCuidador(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String cel, String correo) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.calle = calle;
@@ -13,66 +18,71 @@ String nombre, apellidos, calle, noext, noint, alcaldia, cel;
         this.noint = noint;
         this.alcaldia = alcaldia;
         this.cel = cel;
-    }
-
-    public ayudaRegistroDuenoCuidador(){
-
+        this.correo = correo;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public String getCalle() {
-        return calle;
-    }
-
-    public String getNoext() {
-        return noext;
-    }
-
-    public String getNoint() {
-        return noint;
-    }
-
-    public String getAlcaldia() {
-        return alcaldia;
-    }
-
-    public String getCel() {
-        return cel;
-    }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
     }
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
 
+    public String getCalle() {
+        return calle;
+    }
+
     public void setCalle(String calle) {
         this.calle = calle;
+    }
+
+    public String getNoext() {
+        return noext;
     }
 
     public void setNoext(String noext) {
         this.noext = noext;
     }
 
+    public String getNoint() {
+        return noint;
+    }
+
     public void setNoint(String noint) {
         this.noint = noint;
+    }
+
+    public String getAlcaldia() {
+        return alcaldia;
     }
 
     public void setAlcaldia(String alcaldia) {
         this.alcaldia = alcaldia;
     }
 
+    public String getCel() {
+        return cel;
+    }
+
     public void setCel(String cel) {
         this.cel = cel;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 }
 

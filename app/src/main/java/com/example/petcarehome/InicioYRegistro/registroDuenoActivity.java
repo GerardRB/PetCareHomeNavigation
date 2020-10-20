@@ -86,8 +86,9 @@ public class registroDuenoActivity extends AppCompatActivity implements AdapterV
                             //  String correo = mcorreo_dueno.getText().toString();
                             // String contrasena = mcontrasena.getText().toString();
                             String telefono = mtel_dueno.getText().toString();
+                            String email = mcorreo_dueno.getText().toString();
 
-                            ayudaRegistroDuenoCuidador ayudaRegistroDuenoCuidador = new ayudaRegistroDuenoCuidador(nombre, apellido, calle, noext, noint, alcaldia, telefono);
+                            ayudaRegistroDuenoCuidador ayudaRegistroDuenoCuidador = new ayudaRegistroDuenoCuidador(nombre, apellido, calle, noext, noint, alcaldia, telefono, email);
 
                             //Creando referencia al usuario actual -> a los dueños en la bd
                             DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("dueno");

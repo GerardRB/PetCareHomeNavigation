@@ -431,7 +431,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             //Referencia al Storage de reportes
             firebaseStorage = FirebaseStorage.getInstance();
             firebaseDatabase = FirebaseDatabase.getInstance();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null){
                 idUser = user.getEmail();
             }
@@ -471,14 +471,15 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             onBackPressed();*/
 
             //Bien una foto
-            final String finalIdUser = idUser;
+            //final String finalIdUser = idUser;
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                     while (!uriTask.isSuccessful());
                     downloadUri = uriTask.getResult();
-                    ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), finalIdUser);
+                    String idUserf = user.getEmail();
+                    ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), idUserf);
                     //Guardar en base de datos
 
 
