@@ -31,8 +31,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
 
     private String correoU;
     private FirebaseDatabase firebaseDatabase;
-    private FirebaseUser user;
-    private ayudaRegistroDuenoCuidador userRep;
+    //private ayudaRegistroDuenoCuidador userRep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,69 +44,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         if (reporteSeleccionado != null){
             reporteP = (ReportePerdidasID) reporteSeleccionado.getSerializable("reportePerdida");
         }
-
-
-
-
-        /*
-        Boolean isDueno = true;
-
-        if (isDueno){
-            //  Obtener datos del usuario que genero el reporte
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
-
-
-
-            userRep = null;
-            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot :
-                            dataSnapshot.getChildren()) {
-                        String email = snapshot.getKey();
-                        if (email == reporteP.getReportePerdidas().getUsuario()){
-                            userRep = (ayudaRegistroDuenoCuidador) snapshot.getValue();
-                            correoU = snapshot.getKey();
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-            if (userRep == null){
-                isDueno = false;
-            }
-        } else {
-            //  Obtener datos del usuario que genero el reporte
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
-            userRep = new ayudaRegistroDuenoCuidador();
-            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot :
-                            dataSnapshot.getChildren()) {
-                        String email = snapshot.getKey();
-                        if (email == reporteP.getReportePerdidas().getUsuario()){
-                            userRep = (ayudaRegistroDuenoCuidador) snapshot.getValue();
-                            correoU = snapshot.getKey();
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }*/
-
-
-
 
         //Referencia a textviews
         idReporte = findViewById(R.id.text_id_DRMP);
@@ -126,6 +62,74 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         telefonoUser = findViewById(R.id.text_telefono_user_DRMP);
         domicilio = findViewById(R.id.text_domicilio_user_DRMP);
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference userRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
+
+
+        /*
+        Boolean isDueno = true;
+
+        if (isDueno){
+            //  Obtener datos del usuario que genero el reporte
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
+
+            //userRep = null;
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot :
+                            dataSnapshot.getChildren()) {
+                        String email = snapshot.child("correo").getValue(String.class);
+                        if (email == reporteP.getReportePerdidas().getUsuario()){
+                            ayudaRegistroDuenoCuidador userRep = (ayudaRegistroDuenoCuidador) snapshot.getValue();
+                            //correoU = snapshot.getKey();
+                            //correoUser.setText(userRep.getCorreo());
+                            nombreUser.setText(userRep.getNombre() + userRep.getApellidos());
+                            telefonoUser.setText(userRep.getCel());
+                            domicilio.setText(userRep. getCalle() + "no. Ext: " + userRep.getNoext() + " no. Int: " + userRep.getNoint() + ", " + userRep.getAlcaldia());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            if (userRep == null){
+                isDueno = false;
+            }
+        } else {
+            //  Obtener datos del usuario que genero el reporte
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
+            //userRep = new ayudaRegistroDuenoCuidador();
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot :
+                            dataSnapshot.getChildren()) {
+                        String email = snapshot.child("correo").getValue(String.class);
+                        if (email == reporteP.getReportePerdidas().getUsuario()){
+                            userRep = (ayudaRegistroDuenoCuidador) snapshot.getValue();
+                            //correoU = snapshot.getKey();
+                            //correoUser.setText(userRep.getCorreo());
+                            nombreUser.setText(userRep.getNombre() + userRep.getApellidos());
+                            telefonoUser.setText(userRep.getCel());
+                            domicilio.setText(userRep. getCalle() + "no. Ext: " + userRep.getNoext() + " no. Int: " + userRep.getNoint() + ", " + userRep.getAlcaldia());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }*/
+
+
 
 
         //Imprimir valores del objeto recibido
@@ -139,6 +143,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         colonia.setText(reporteP.getReportePerdidas().getColonia());
         calle.setText(reporteP.getReportePerdidas().getCalle());
         descripcion.setText(reporteP.getReportePerdidas().getDescripcion());
+        correoUser.setText(reporteP.getReportePerdidas().getUsuario());
         Picasso.with(this).load(reporteP.getReportePerdidas().getFoto()).into(foto, new Callback() {
             @Override
             public void onSuccess() {
@@ -151,12 +156,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        correoUser.setText(userRep.getCorreo());
-        nombreUser.setText(userRep.getNombre() + userRep.getApellidos());
-        telefonoUser.setText(userRep.getCel());
-        domicilio.setText(userRep. getCalle() + "no. Ext: " + userRep.getNoext() + " no. Int: " + userRep.getNoint() + ", " + userRep.getAlcaldia());
-        */
+
 
     }
 
