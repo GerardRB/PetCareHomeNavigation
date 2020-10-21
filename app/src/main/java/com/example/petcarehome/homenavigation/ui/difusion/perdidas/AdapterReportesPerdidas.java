@@ -45,7 +45,7 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
         holder.etinombre.setText(listReportesPerdidas.get(position).getReportePerdidas().getNombre());
         holder.etidescripcion.setText(listReportesPerdidas.get(position).getReportePerdidas().getDescripcion());
         //holder.foto.setImageURI(Uri.parse(listReportesPerdidas.get(position).getFoto()));
-        Picasso.with(context).load(listReportesPerdidas.get(position).getReportePerdidas().getFoto()).into(holder.foto, new Callback() {
+        Picasso.with(context).load(listReportesPerdidas.get(position).getReportePerdidas().getFotos().get(0)).into(holder.foto, new Callback() {
             @Override
             public void onSuccess() {
                 holder.foto.setVisibility(View.VISIBLE);

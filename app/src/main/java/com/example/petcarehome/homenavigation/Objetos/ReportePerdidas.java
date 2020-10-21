@@ -2,17 +2,18 @@ package com.example.petcarehome.homenavigation.Objetos;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReportePerdidas implements Serializable {
-    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, foto, usuario;
-    //private ArrayList<String> fotos;
+    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, usuario;
+    private List<String> fotos;
     //private Uri foto;
 
     public ReportePerdidas(){
 
     }
 
-    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String foto, String usuario) {
+    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String usuario, List<String> fotos) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.edad = edad;
@@ -22,8 +23,8 @@ public class ReportePerdidas implements Serializable {
         this.colonia = colonia;
         this.calle = calle;
         this.descripcion = descripcion;
-        this.foto = foto;
         this.usuario = usuario;
+        this.fotos = fotos;
     }
 
     public String getNombre() {
@@ -98,20 +99,20 @@ public class ReportePerdidas implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
-
     public String getUsuario() {
         return usuario;
     }
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public List<String> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<String> fotos) {
+        this.fotos = fotos;
     }
 }
 

@@ -42,8 +42,10 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class GenerarReporteExtravioActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -65,6 +67,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     private String aleatorio;
     private ArrayList<Uri> listImagesRec = new ArrayList<Uri>();;
     private ArrayList<String> listDwonloadUri;
+    //private List fotosList;
 
 
     private FirebaseDatabase firebaseDatabase;
@@ -394,6 +397,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
     }
 
+
     private void ValidarCampos() {
         final String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idRep;
         listDwonloadUri = new ArrayList<String>();
@@ -437,39 +441,52 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             }
             final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push();
             idRep = reportesPReference.getKey();
-            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + ".jpg");
-            /* Varias fotos(error: no sube al realtime el atributo list String fotos
+            //final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + ".jpg");
+
+            final FotosLista fotosLista = new FotosLista();
+            //Varias fotos(error: no sube al realtime el atributo list String fotos
             for (int i = 0; i < listImagesRec.size(); i++){
-                final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + i + ".jpg");
+                final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + i + ".jpg");
+                //storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + i + ".jpg");
+
                 storageReportesReference.putFile(listImagesRec.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                         while (!uriTask.isSuccessful());
                         downloadUri = uriTask.getResult();
-                        listDwonloadUri.add(downloadUri.toString());
+
+                        fotosLista.AgregarFoto(downloadUri.toString());
+                        //listDwonloadUri.add(downloadUri.toString());
+
+                        //fotosList.add(downloadUri.toString());
                         //Toast.makeText(getApplicationContext(), "Fotos subidas: " + listDwonloadUri.size(), Toast.LENGTH_LONG).show();
                     }
                 });
             }
-            ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, listDwonloadUri);
-            //Guardar en base de datos
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference reportesReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE);
-            reportesReference.child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push().setValue(reporteP);
-            final String reporte = "Reporte generado:" +
-                    "\nNombre: " + reporteP.getNombre() +
-                    "\nTipo: " + reporteP.getTipo() +
-                    "\nEdad: " + reporteP.getEdad() +
-                    "\nFecha: " + reporteP.getFecha() +
-                    "\nHora: " + reporteP.getHora() +
-                    "\nZona: " + reporteP.getAlcaldia() +
-                    ", col. " + reporteP.getColonia() +
-                    ", calle " + reporteP.getCalle() +
-                    "\nDescripción: " + reporteP.getDescripcion();
-            Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
-            onBackPressed();*/
 
+            List fotosList = new ArrayList<String>(Arrays.<String>asList(String.valueOf(fotosLista.getArrayFotos())));
+            String idUserf = user.getEmail();
+            ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idUserf, fotosList);
+            //Guardar en base de datos
+
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference reportesReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(idRep);
+            reportesReference.setValue(reporteP, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                    if (databaseError != null){
+                        Toast.makeText(getApplicationContext(), "No se pudo generar el reporte", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Reporte generado con éxito", Toast.LENGTH_LONG).show();
+                        onBackPressed();
+                    }
+                }
+            });
+
+
+
+            /*
             //Bien una foto
             //final String finalIdUser = idUser;
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -495,12 +512,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                         }
                     });
                 }
-            });
-
-
-
-
-
+            });*/
 
 
 
