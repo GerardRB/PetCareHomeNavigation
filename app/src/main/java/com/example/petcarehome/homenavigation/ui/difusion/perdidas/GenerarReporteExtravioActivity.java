@@ -405,21 +405,21 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     public String SubirFoto(String idUser, String idRep, int noFoto){
         final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + noFoto + ".jpg");
         //final Uri[] downloadUri = new Uri[1];
-        final StorageTask<UploadTask.TaskSnapshot> subeFoto = storageReportesReference.putFile(listImagesRec.get(noFoto));
-                /*.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        final UploadTask subeFoto = (UploadTask) storageReportesReference.putFile(listImagesRec.get(noFoto))
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!uriTask.isSuccessful());
-                //downloadUri[1] = uriTask.getResult();
-                //Toast.makeText(getApplicationContext(), "Foto subida URL:" + downloadUri[1].toString(), Toast.LENGTH_LONG).show();
+                downloadUri = uriTask.getResult();
+                Toast.makeText(getApplicationContext(), "Foto subida URL:" + downloadUri.toString(), Toast.LENGTH_LONG).show();
             }
-        });*/
+        });
         //Toast.makeText(getApplicationContext(), "Foto subida URL:" + downloadUri[1].toString(), Toast.LENGTH_LONG).show();
 
-        String stringUrl = subeFoto.getSnapshot().getStorage().getDownloadUrl().toString();
 
 
+        String stringUrl = "Url " + noFoto;
         return stringUrl;
     }
 
@@ -472,7 +472,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             for (int i = 0; i < listImagesRec.size(); i++){
                 String downUri = SubirFoto(idUser, idRep, i);
                 listDwonloadUri.add(downUri);
-                Toast.makeText(getApplicationContext(), "Foto subida URL:" + downUri, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Foto subida URL:" + downUri, Toast.LENGTH_LONG).show();
             }
 
 
