@@ -7,7 +7,6 @@ import java.util.List;
 public class ReportePerdidas implements Serializable {
     private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, usuario;
     private List<String> fotos;
-    //private Uri foto;
 
     public ReportePerdidas(){
 

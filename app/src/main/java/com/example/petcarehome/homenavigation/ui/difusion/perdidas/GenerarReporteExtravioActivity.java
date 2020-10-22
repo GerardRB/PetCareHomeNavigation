@@ -26,8 +26,10 @@ import android.widget.Toast;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
 import com.example.petcarehome.R;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -44,6 +47,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -398,7 +402,28 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
     }
 
 
-    private void ValidarCampos() {
+    public String SubirFoto(String idUser, String idRep, int noFoto){
+        final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + noFoto + ".jpg");
+        //final Uri[] downloadUri = new Uri[1];
+        final StorageTask<UploadTask.TaskSnapshot> subeFoto = storageReportesReference.putFile(listImagesRec.get(noFoto));
+                /*.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isSuccessful());
+                //downloadUri[1] = uriTask.getResult();
+                //Toast.makeText(getApplicationContext(), "Foto subida URL:" + downloadUri[1].toString(), Toast.LENGTH_LONG).show();
+            }
+        });*/
+        //Toast.makeText(getApplicationContext(), "Foto subida URL:" + downloadUri[1].toString(), Toast.LENGTH_LONG).show();
+
+        String stringUrl = subeFoto.getSnapshot().getStorage().getDownloadUrl().toString();
+
+
+        return stringUrl;
+    }
+
+    public void ValidarCampos() {
         final String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idRep;
         listDwonloadUri = new ArrayList<String>();
         String mensaje = "Faltan campos por ingresar";
@@ -441,35 +466,23 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             }
             final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push();
             idRep = reportesPReference.getKey();
-            //final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + ".jpg");
 
-            final FotosLista fotosLista = new FotosLista();
             //Varias fotos(error: no sube al realtime el atributo list String fotos
+            //Subir las fotos al Storage y guardar su url en listDownloaduri
             for (int i = 0; i < listImagesRec.size(); i++){
-                final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + i + ".jpg");
-                //storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child("img" + new Date().toString() + i + ".jpg");
-
-                storageReportesReference.putFile(listImagesRec.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while (!uriTask.isSuccessful());
-                        downloadUri = uriTask.getResult();
-
-                        fotosLista.AgregarFoto(downloadUri.toString());
-                        //listDwonloadUri.add(downloadUri.toString());
-
-                        //fotosList.add(downloadUri.toString());
-                        //Toast.makeText(getApplicationContext(), "Fotos subidas: " + listDwonloadUri.size(), Toast.LENGTH_LONG).show();
-                    }
-                });
+                String downUri = SubirFoto(idUser, idRep, i);
+                listDwonloadUri.add(downUri);
+                Toast.makeText(getApplicationContext(), "Foto subida URL:" + downUri, Toast.LENGTH_LONG).show();
             }
 
-            List fotosList = new ArrayList<String>(Arrays.<String>asList(String.valueOf(fotosLista.getArrayFotos())));
+
+            //Convertir el array en list y creacion del reporte
+            List<String> fotosList = new ArrayList<String>(Arrays.<String>asList(String.valueOf(listDwonloadUri)));
             String idUserf = user.getEmail();
             ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idUserf, fotosList);
-            //Guardar en base de datos
 
+
+            //Subir reporte al realtime database
             firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference reportesReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(idRep);
             reportesReference.setValue(reporteP, new DatabaseReference.CompletionListener() {
@@ -482,13 +495,14 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                         onBackPressed();
                     }
                 }
-            });
+            });//Fin varias Fotos
 
 
 
-            /*
-            //Bien una foto
+
+            /*Bien una foto
             //final String finalIdUser = idUser;
+            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -512,20 +526,15 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                         }
                     });
                 }
-            });*/
+            });//Fin una foto */
 
 
 
-        }
+        }//fin else del if  de datos completos
 
 
 
-
-
-
-
-
-    }
+    }//fin validar campos
 }
 
 
