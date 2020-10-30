@@ -17,14 +17,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.CategoriaLugar;
 import com.example.petcarehome.homenavigation.Objetos.Convertir;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
-import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseError;
@@ -38,34 +36,26 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-public class AgregarPetfriendlyActivity extends AppCompatActivity {
-    private static final String TAG = "AregarPetfriendly";
+public class AgregarCategoriaActivity extends AppCompatActivity {
+    private static final String TAG = "AregarCategoria";
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
-    private CategoriaLugar mCategoria;
     private Button mBotonAgregar;
     private Button mBotonFoto;
     private Dialog mDialog;
     private ByteArrayInputStream mInputStream;
-    private DatabaseReference mLugaresPetfriendlyRef;
+    private DatabaseReference mCategoriasPetfriendlyRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agregar_petfriendly);
-
-        Intent intent = getIntent();
-        if (intent.getExtras() != null) {
-            mCategoria = (CategoriaLugar) intent.getExtras().getSerializable("categoria");
-        }
+        setContentView(R.layout.activity_agregar_categoria);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStorage = FirebaseStorage.getInstance().getReference();
-        mLugaresPetfriendlyRef = mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE)
-                .child(mCategoria.getId())
-                .child("lugares");
+        mCategoriasPetfriendlyRef = mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE);
 
-        mBotonFoto = findViewById(R.id.button_tomar_foto_lugar_petfriendly);
+        mBotonFoto = findViewById(R.id.boton_agregar_foto);
         mBotonFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,23 +63,19 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
             }
         });
 
-        mBotonAgregar = findViewById(R.id.button_agregar_lugar);
+        mBotonAgregar = findViewById(R.id.boton_agregar);
         mBotonAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDialog = ProgressDialog.show(AgregarPetfriendlyActivity.this, "",
-                        "Guardando lugar", true);
+                mDialog = ProgressDialog.show(AgregarCategoriaActivity.this, "",
+                        "Guardando categoría", true);
 
-                EditText entradaNombre = findViewById(R.id.edit_text_nombre_lugar);
-                EditText entradaDescripcion = findViewById(R.id.edit_text_descripcion_lugar);
-                RatingBar entradaEstrellas = findViewById(R.id.rating_resena);
-                subirFotoOGuardarLugar(entradaNombre.getText().toString(),
-                        entradaDescripcion.getText().toString(),
-                        (int) entradaEstrellas.getRating(),
-                        mInputStream);
+                EditText entradaNombre = findViewById(R.id.edit_text_nombre);
+                subirFotoOGuardarCategoria(entradaNombre.getText().toString(),  mInputStream);
             }
         });
     }
+
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -100,7 +86,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(AgregarPetfriendlyActivity.this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -120,20 +106,20 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
             mInputStream = new ByteArrayInputStream(bitmapData);
         } else if (resultCode != RESULT_OK) {
             mBotonAgregar.setEnabled(true);
-            Toast.makeText(AgregarPetfriendlyActivity.this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void guardarLugar(DatabaseReference ref, LugarPetFriendly lugar) {
+    private void guardarCategoria(DatabaseReference ref, CategoriaLugar categoria) {
         try {
-            ref.updateChildren(Convertir.aMapa(lugar), new DatabaseReference.CompletionListener() {
+            ref.updateChildren(Convertir.aMapa(categoria), new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                     if (databaseError != null) {
                         Log.e(TAG, databaseError.getMessage());
                         mDialog.dismiss();
                         mDialog = new AlertDialog.Builder(getBaseContext())
-                                .setMessage("No se ha podido crear el lugar, por favor intente más tarde")
+                                .setMessage("No se ha podido crear la categoria, por favor intente más tarde")
                                 .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -141,43 +127,39 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
                                     }
                                 }).create();
                     } else {
-                        Log.d(TAG, "Lugar agregado!");
-                        AgregarPetfriendlyActivity.this.finish();
+                        Log.d(TAG, "Categoría agregada!");
+                        finish();
                     }
                 }
             });
         } catch (IllegalAccessException e) {
             Log.e(TAG, e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.toString());
-            Toast.makeText(AgregarPetfriendlyActivity.this, "No se ha podido crear el lugar", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No se ha podido crear la categoria", Toast.LENGTH_LONG).show();
         } finally {
             mDialog.dismiss();
         }
     }
 
-    private void subirFotoOGuardarLugar(String nombre, String descripcion, int estrellas, InputStream streamFoto) {
-        final DatabaseReference ref = mLugaresPetfriendlyRef.push();
-        final LugarPetFriendly lugar = new LugarPetFriendly(ref.getKey());
-        Log.d(TAG, "Agregando lugar " + lugar.getId());
-        lugar.setNombre(nombre);
-        lugar.setDescripcion(descripcion);
-        lugar.setEstrellas(estrellas);
-        lugar.setCategoria(mCategoria.getId());
-        lugar.getResenas().add(new LugarPetFriendly.Resena(estrellas, descripcion, "Usuario PetFriendly"));
+    private void subirFotoOGuardarCategoria(String nombre, InputStream streamFoto) {
+        final DatabaseReference ref = mCategoriasPetfriendlyRef.push();
+        final CategoriaLugar categoria = new CategoriaLugar(ref.getKey());
+        Log.d(TAG, "Agregando categoria " + categoria.getId());
+        categoria.setNombre(nombre);
 
         if (streamFoto != null) {
-            String archivoFoto = lugar.getId() + ".jpeg";
+            String archivoFoto = categoria.getId() + ".jpeg";
             StorageReference fotoRef = mStorage.child(FirebaseReferences.STORAGE_FOTO_LUGAR_PETFRIENDLY).child(archivoFoto);
-            lugar.setFoto(archivoFoto);
+            categoria.setFoto(archivoFoto);
 
             UploadTask uploadTask = fotoRef.putStream(streamFoto);
             uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     if (task.isSuccessful()) {
-                        guardarLugar(ref, lugar);
+                        guardarCategoria(ref, categoria);
                     } else {
                         mDialog = new AlertDialog.Builder(getBaseContext())
-                                .setMessage("No se ha podido subir la foto para el lugar, por favor intente más tarde")
+                                .setMessage("No se ha podido subir la foto para la categoría, por favor intente más tarde")
                                 .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -188,7 +170,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
                 }
             });
         } else {
-            guardarLugar(ref, lugar);
+            guardarCategoria(ref, categoria);
         }
     }
 }

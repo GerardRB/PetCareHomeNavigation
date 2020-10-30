@@ -79,6 +79,8 @@ public class DescripcionLugarFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE)
+                        .child(mLugar.getCategoria())
+                        .child("lugares")
                         .child(mLugar.getId())
                         .removeValue()
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

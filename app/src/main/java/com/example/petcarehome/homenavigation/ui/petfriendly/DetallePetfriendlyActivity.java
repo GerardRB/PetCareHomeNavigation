@@ -1,18 +1,13 @@
 package com.example.petcarehome.homenavigation.ui.petfriendly;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores.TabsPagerAdapter;
 
 public class DetallePetfriendlyActivity extends AppCompatActivity {
 

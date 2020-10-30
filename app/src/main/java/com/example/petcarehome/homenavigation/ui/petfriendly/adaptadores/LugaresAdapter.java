@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly;
+package com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.Objetos.CategoriaLugar;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
+import com.example.petcarehome.homenavigation.ui.petfriendly.DetallePetfriendlyActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,15 +34,17 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
     private Context mContext;
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
+    private CategoriaLugar mCategoria;
     private ArrayList<LugarPetFriendly> mLugares;
     private LayoutInflater mInflater;
     private ChildEventListener mListener;
     private Query mQuery;
 
-    public LugaresAdapter(Context mContext, DatabaseReference mDatabase, StorageReference mStorage) {
+    public LugaresAdapter(Context mContext, DatabaseReference mDatabase, StorageReference mStorage, CategoriaLugar mCategoria) {
         this.mContext = mContext;
         this.mDatabase = mDatabase;
         this.mStorage  = mStorage;
+        this.mCategoria = mCategoria;
         this.mLugares = new ArrayList<>();
         this.mInflater = LayoutInflater.from(mContext);
     }
@@ -88,7 +92,10 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
             }
         };
 
-        mQuery = mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE).orderByKey();
+        mQuery = mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE)
+                .child(mCategoria.getId())
+                .child("lugares")
+                .orderByKey();
         mQuery.addChildEventListener(mListener);
     }
 

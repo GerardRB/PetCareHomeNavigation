@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".homenavigation.ui.petfriendly.AgregarPetfriendlyActivity">
+    tools:context=".homenavigation.ui.petfriendly.AgregarCategoriaActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -42,7 +42,7 @@
             android:text="@string/label_nombre_lugar" />
 
         <EditText
-            android:id="@+id/edit_text_nombre_lugar"
+            android:id="@+id/edit_text_nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -55,32 +55,18 @@
             android:layout_marginTop="20dp"
             android:text="@string/label_descripcion_lugar" />
 
-        <EditText
-            android:id="@+id/edit_text_descripcion_lugar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName" />
-
-        <RatingBar
-            android:id="@+id/rating_resena"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:rating="0"
-            android:stepSize="1" />
-
         <Button
-            android:id="@+id/button_tomar_foto_lugar_petfriendly"
+            android:id="@+id/boton_agregar_foto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_tomar_foto" />
 
         <Button
-            android:id="@+id/button_agregar_lugar"
+            android:id="@+id/boton_agregar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_agregar_lugar" />
+            android:text="@string/label_agregar_categoria" />
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

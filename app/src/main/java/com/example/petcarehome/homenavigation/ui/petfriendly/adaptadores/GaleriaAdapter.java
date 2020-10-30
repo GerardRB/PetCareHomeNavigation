@@ -1,7 +1,6 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly;
+package com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +89,8 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ItemHold
         };
 
         mQuery = mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE)
+                .child(mLugar.getCategoria())
+                .child("lugares")
                 .child(mLugar.getId())
                 .child("galeria")
                 .orderByKey();

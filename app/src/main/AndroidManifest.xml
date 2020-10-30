@@ -22,6 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
+        <activity android:name=".homenavigation.ui.petfriendly.AgregarCategoriaActivity"></activity>
+        <activity android:name=".homenavigation.ui.petfriendly.LugaresPetFriendlyActivity" />
         <activity android:name=".homenavigation.ui.petfriendly.DetallePetfriendlyActivity" />
         <activity android:name=".homenavigation.ui.petfriendly.AgregarPetfriendlyActivity" />
         <activity android:name=".InicioYRegistro.registroCuidadorActivity" />

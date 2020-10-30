@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly;
+package com.example.petcarehome.homenavigation.ui.petfriendly.otros;
 
 import android.content.Context;
 

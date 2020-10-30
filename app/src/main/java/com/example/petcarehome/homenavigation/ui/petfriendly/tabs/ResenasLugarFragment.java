@@ -1,6 +1,5 @@
 package com.example.petcarehome.homenavigation.ui.petfriendly.tabs;
 
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
@@ -11,8 +10,7 @@ import android.widget.ListView;
 
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
-import com.example.petcarehome.homenavigation.ui.petfriendly.ResenaAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores.ResenaAdapter;
 
 public class ResenasLugarFragment extends Fragment {
     private static final String ARG_LUGAR = "lugar";

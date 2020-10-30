@@ -104,9 +104,10 @@
     <string name="button_ok">Aceptar</string>
     <string name="label_nombre_lugar">Nombre</string>
     <string name="label_descripcion_lugar">Descripción</string>
-    <string name="label_tomar_foto_lugar">Agregar foto</string>
+    <string name="label_tomar_foto">Agregar foto</string>
     <string name="label_cambiar_foto_lugar">Cambiar foto</string>
     <string name="label_agregar_lugar">Guardar lugar PetFriendly</string>
+    <string name="label_agregar_categoria">Guardar categoría PetFriendly</string>
     <string name="label_agregar_resena">Agregar reseña</string>
 
     <!--

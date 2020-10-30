@@ -26,7 +26,7 @@ import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.Convertir;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
-import com.example.petcarehome.homenavigation.ui.petfriendly.GaleriaAdapter;
+import com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores.GaleriaAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -135,6 +135,8 @@ public class GaleriaLugarFragment extends Fragment {
                         mLugar.getFotosGaleria().add(nombreArchivo);
                         try {
                             mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE)
+                                    .child(mLugar.getCategoria())
+                                    .child("lugares")
                                     .child(mLugar.getId())
                                     .updateChildren(Convertir.aMapa(mLugar));
                         } catch (IllegalAccessException e) {

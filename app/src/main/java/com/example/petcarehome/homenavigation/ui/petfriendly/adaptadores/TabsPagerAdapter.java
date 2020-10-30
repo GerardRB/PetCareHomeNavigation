@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly;
+package com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
