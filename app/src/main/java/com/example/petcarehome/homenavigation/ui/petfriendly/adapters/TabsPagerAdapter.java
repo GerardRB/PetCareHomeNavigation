@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores;
+package com.example.petcarehome.homenavigation.ui.petfriendly.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -6,9 +6,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
-import com.example.petcarehome.homenavigation.ui.petfriendly.tabs.DescripcionLugarFragment;
-import com.example.petcarehome.homenavigation.ui.petfriendly.tabs.GaleriaLugarFragment;
-import com.example.petcarehome.homenavigation.ui.petfriendly.tabs.ResenasLugarFragment;
+import com.example.petcarehome.homenavigation.ui.petfriendly.fragments.DescripcionLugarFragment;
+import com.example.petcarehome.homenavigation.ui.petfriendly.fragments.GaleriaLugarFragment;
+import com.example.petcarehome.homenavigation.ui.petfriendly.fragments.ResenasLugarFragment;
 
 public class TabsPagerAdapter extends FragmentStatePagerAdapter {
     private LugarPetFriendly mLugar;

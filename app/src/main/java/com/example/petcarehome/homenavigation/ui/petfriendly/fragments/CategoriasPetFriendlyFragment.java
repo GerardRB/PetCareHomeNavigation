@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly;
+package com.example.petcarehome.homenavigation.ui.petfriendly.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.petcarehome.R;
-import com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores.CategoriasAdapter;
+import com.example.petcarehome.homenavigation.ui.petfriendly.activities.AgregarCategoriaActivity;
+import com.example.petcarehome.homenavigation.ui.petfriendly.adapters.CategoriasAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

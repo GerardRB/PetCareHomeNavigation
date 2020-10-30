@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly.tabs;
+package com.example.petcarehome.homenavigation.ui.petfriendly.fragments;
 
 import android.os.Bundle;
 

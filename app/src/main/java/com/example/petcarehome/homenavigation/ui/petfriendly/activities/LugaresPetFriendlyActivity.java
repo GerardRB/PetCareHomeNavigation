@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly;
+package com.example.petcarehome.homenavigation.ui.petfriendly.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +14,7 @@ import android.view.View;
 
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.CategoriaLugar;
-import com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores.LugaresAdapter;
+import com.example.petcarehome.homenavigation.ui.petfriendly.adapters.LugaresAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

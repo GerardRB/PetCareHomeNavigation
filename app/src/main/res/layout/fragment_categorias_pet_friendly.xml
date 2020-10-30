@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="70dp"
-    tools:context=".homenavigation.ui.petfriendly.CategoriasPetFriendlyFragment">
+    tools:context=".homenavigation.ui.petfriendly.fragments.CategoriasPetFriendlyFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/grid_categorias"

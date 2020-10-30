@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores;
+package com.example.petcarehome.homenavigation.ui.petfriendly.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

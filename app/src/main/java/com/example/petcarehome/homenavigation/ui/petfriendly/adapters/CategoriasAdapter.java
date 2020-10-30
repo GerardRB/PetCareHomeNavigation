@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores;
+package com.example.petcarehome.homenavigation.ui.petfriendly.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.CategoriaLugar;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
-import com.example.petcarehome.homenavigation.ui.petfriendly.DetallePetfriendlyActivity;
+import com.example.petcarehome.homenavigation.ui.petfriendly.activities.LugaresPetFriendlyActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,23 +29,21 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHolder> {
-    private static final String TAG = "LugaresAdapter";
+public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.ItemHolder> {
+    private static final String TAG = "CategoriasAdapter";
     private Context mContext;
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
-    private CategoriaLugar mCategoria;
-    private ArrayList<LugarPetFriendly> mLugares;
+    private ArrayList<CategoriaLugar> mCategorias;
     private LayoutInflater mInflater;
     private ChildEventListener mListener;
     private Query mQuery;
 
-    public LugaresAdapter(Context mContext, DatabaseReference mDatabase, StorageReference mStorage, CategoriaLugar mCategoria) {
+    public CategoriasAdapter(Context mContext, DatabaseReference mDatabase, StorageReference mStorage) {
         this.mContext = mContext;
         this.mDatabase = mDatabase;
         this.mStorage  = mStorage;
-        this.mCategoria = mCategoria;
-        this.mLugares = new ArrayList<>();
+        this.mCategorias = new ArrayList<>();
         this.mInflater = LayoutInflater.from(mContext);
     }
 
@@ -54,8 +52,8 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                mLugares.add(dataSnapshot.getValue(LugarPetFriendly.class));
-                LugaresAdapter.this.notifyDataSetChanged();
+                mCategorias.add(dataSnapshot.getValue(CategoriaLugar.class));
+                CategoriasAdapter.this.notifyDataSetChanged();
             }
 
             @Override
@@ -63,39 +61,36 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey() + ", old key:" + s);
 
                 LugarPetFriendly encontrar = new LugarPetFriendly(dataSnapshot.getKey());
-                int indice = mLugares.indexOf(encontrar);
-                if (indice < mLugares.size() && indice > -1) {
-                    mLugares.set(indice, dataSnapshot.getValue(LugarPetFriendly.class));
+                int indice = mCategorias.indexOf(encontrar);
+                if (indice < mCategorias.size() && indice > -1) {
+                    mCategorias.set(indice, dataSnapshot.getValue(CategoriaLugar.class));
                 }
-                LugaresAdapter.this.notifyDataSetChanged();
+                CategoriasAdapter.this.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-                mLugares.remove(dataSnapshot.getValue(LugarPetFriendly.class));
-                LugaresAdapter.this.notifyDataSetChanged();
+                mCategorias.remove(dataSnapshot.getValue(CategoriaLugar.class));
+                CategoriasAdapter.this.notifyDataSetChanged();
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String idPrevio) {
                 Log.d(TAG, "onChildMoved:" + dataSnapshot.getKey());
-                mLugares.remove(new LugarPetFriendly(idPrevio));
-                mLugares.add(dataSnapshot.getValue(LugarPetFriendly.class));
-                LugaresAdapter.this.notifyDataSetChanged();
+                mCategorias.remove(new CategoriaLugar(idPrevio));
+                mCategorias.add(dataSnapshot.getValue(CategoriaLugar.class));
+                CategoriasAdapter.this.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.w(TAG, "onCancelled", databaseError.toException());
-                Toast.makeText(mContext, "No se ha podido cargar la lista de lugares Pet Friendly", Toast.LENGTH_LONG);
+                Toast.makeText(mContext, "No se ha podido cargar la categoria Pet Friendly", Toast.LENGTH_LONG).show();
             }
         };
 
-        mQuery = mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE)
-                .child(mCategoria.getId())
-                .child("lugares")
-                .orderByKey();
+        mQuery = mDatabase.child(FirebaseReferences.LUGARES_PET_FRIENDLY_REFERENCE).orderByKey();
         mQuery.addChildEventListener(mListener);
     }
 
@@ -111,9 +106,9 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
         return new ItemHolder(mContext, view, mStorage, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int adapterPosition) {
-                LugarPetFriendly lugar = mLugares.get(adapterPosition);
-                Intent intent = new Intent(mContext, DetallePetfriendlyActivity.class);
-                intent.putExtra("lugar", lugar);
+                CategoriaLugar categoria = mCategorias.get(adapterPosition);
+                Intent intent = new Intent(mContext, LugaresPetFriendlyActivity.class);
+                intent.putExtra("categoria", categoria);
                 mContext.startActivity(intent);
             }
         });
@@ -121,19 +116,19 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
 
     @Override
     public void onBindViewHolder(ItemHolder holder, int position) {
-        holder.setLugar(mLugares.get(position));
+        holder.setCategoria(mCategorias.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mLugares.size();
+        return mCategorias.size();
     }
 
     public static class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final String TAG = "ItemHolder";
         private TextView nombreView;
         private ImageView imagenView;
-        private LugarPetFriendly mLugar;
+        private CategoriaLugar mCategoria;
         private StorageReference mStorage;
         private Context mContext;
         private RecyclerViewClickListener mListener;
@@ -153,10 +148,10 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
             imagenView.setOnClickListener(this);
         }
 
-        public void setLugar(LugarPetFriendly lugar) {
-            mLugar = lugar;
-            nombreView.setText(mLugar.getNombre());
-            descargarFoto(lugar.getFoto());
+        public void setCategoria(CategoriaLugar categoria) {
+            mCategoria = categoria;
+            nombreView.setText(categoria.getNombre());
+            descargarFoto(categoria.getFoto());
         }
 
         private void descargarFoto(String archivo) {

@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.petfriendly.tabs;
+package com.example.petcarehome.homenavigation.ui.petfriendly.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,7 +26,7 @@ import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.Convertir;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
-import com.example.petcarehome.homenavigation.ui.petfriendly.adaptadores.GaleriaAdapter;
+import com.example.petcarehome.homenavigation.ui.petfriendly.adapters.GaleriaAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
