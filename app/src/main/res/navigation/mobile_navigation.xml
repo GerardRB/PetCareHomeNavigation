@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_petfriendly"
-        android:name="com.example.petcarehome.homenavigation.ui.petfriendly.PetfriendlyFragment"
+        android:name="com.example.petcarehome.homenavigation.ui.petfriendly.fragments.CategoriasPetFriendlyFragment"
         android:label="@string/title_petfriendly"
-        tools:layout="@layout/fragment_petfriendly" />
+        tools:layout="@layout/fragment_categorias_pet_friendly" />
 
     <fragment
         android:id="@+id/navigation_config"
