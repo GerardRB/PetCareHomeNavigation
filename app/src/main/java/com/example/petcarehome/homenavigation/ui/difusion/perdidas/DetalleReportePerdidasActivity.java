@@ -144,7 +144,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         calle.setText(reporteP.getReportePerdidas().getCalle());
         descripcion.setText(reporteP.getReportePerdidas().getDescripcion());
         correoUser.setText(reporteP.getReportePerdidas().getUsuario());
-        Picasso.with(this).load(reporteP.getReportePerdidas().getFotos().get(0)).into(foto, new Callback() {
+        Picasso.with(this).load(reporteP.getReportePerdidas().getFoto()).into(foto, new Callback() {
             @Override
             public void onSuccess() {
                 foto.setVisibility(View.VISIBLE);

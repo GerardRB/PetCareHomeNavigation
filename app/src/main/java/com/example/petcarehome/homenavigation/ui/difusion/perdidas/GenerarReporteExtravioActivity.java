@@ -467,6 +467,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push();
             idRep = reportesPReference.getKey();
 
+            /*
             //Varias fotos(error: no sube al realtime el atributo list String fotos
             //Subir las fotos al Storage y guardar su url en listDownloaduri
             for (int i = 0; i < listImagesRec.size(); i++){
@@ -497,10 +498,12 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                 }
             });//Fin varias Fotos
 
+             */
 
 
 
-            /*Bien una foto
+
+            //Bien una foto
             //final String finalIdUser = idUser;
             final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -526,7 +529,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                         }
                     });
                 }
-            });//Fin una foto */
+            });//Fin una foto
 
 
 
