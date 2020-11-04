@@ -42,7 +42,8 @@ public class PerdidasFragment extends Fragment {
     private ReportePerdidasID reportePID;
     private AdapterReportesPerdidas adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private FirebaseDatabase firebaseDatabase;
+    //private FirebaseDatabase firebaseDatabase;
+    //private DatabaseReference reportePerdidaReference;
     private Filtro filtro;
 
 
@@ -91,9 +92,8 @@ public class PerdidasFragment extends Fragment {
 
         filtro = null;
 
-        //Instanciar la base de datos y referenciarla
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
+
+        //final DatabaseReference reportePerdidaReference = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
 
         llenarReportes(filtro, false);
 
@@ -132,12 +132,12 @@ public class PerdidasFragment extends Fragment {
 
     private void llenarReportes(final Filtro filtro, Boolean filtrada) {
         //Instanciar la base de datos y referenciarla
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
+        final DatabaseReference reportePerdidaReference = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
+        reportePerdidaReference.keepSynced(true);
 
         if (filtrada == true){
             //Llenar lista desde la base con filtro
-            reportePerdidaReference.addValueEventListener(new ValueEventListener() {
+            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listReportes.removeAll(listReportes);
@@ -175,7 +175,7 @@ public class PerdidasFragment extends Fragment {
             });
         } else {
             //Llenar lista desde la base sin filtro
-            reportePerdidaReference.addValueEventListener(new ValueEventListener() {
+            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listReportes.removeAll(listReportes);
