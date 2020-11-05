@@ -2,11 +2,11 @@ package com.example.petcarehome.homenavigation.Objetos;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReportePerdidas implements Serializable {
     private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, foto, usuario;
-    //private ArrayList<String> fotos;
-    //private Uri foto;
+    //private List<String> fotos;
 
     public ReportePerdidas(){
 

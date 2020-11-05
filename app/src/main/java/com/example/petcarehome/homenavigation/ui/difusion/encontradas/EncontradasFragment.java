@@ -20,6 +20,10 @@ import com.example.petcarehome.homenavigation.Objetos.Filtro;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradasID;
+import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
+import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
+import com.example.petcarehome.homenavigation.ui.difusion.perdidas.AdapterReportesPerdidas;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,11 +41,12 @@ public class EncontradasFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private ArrayList<ReporteEncontradas> listReportesEncontradas;
+    private ArrayList<ReporteEncontradasID> listReportes;
     private RecyclerView recycler;
+    private ReporteEncontradasID reporteEID;
     private AdapterReportesEncontradas adapter;
-    private ReporteEncontradas reporteE;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Filtro filtro;
     private FirebaseDatabase firebaseDatabase;
 
     public static EncontradasFragment newInstance(int index) {
@@ -75,39 +80,16 @@ public class EncontradasFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Construir Recycler
-        listReportesEncontradas = new ArrayList<>();
+        listReportes = new ArrayList<>();
         recycler = view.findViewById(R.id.recyclerEncontradasId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new AdapterReportesEncontradas(listReportesEncontradas);
+        adapter = new AdapterReportesEncontradas(listReportes, getContext());
         recycler.setAdapter(adapter);
 
-        //Instanciar la base de datos y referenciarla
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference reporteEncontradaReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE);
+        filtro = null;
 
-        //Llenar list desde la base
-        reporteEncontradaReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listReportesEncontradas.removeAll(listReportesEncontradas);
-                for (DataSnapshot snapshot:
-                        dataSnapshot.getChildren()) {
-                    reporteE = snapshot.getValue(ReporteEncontradas.class);
-                    listReportesEncontradas.add(0,reporteE);
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-        //llenarReportes();
-
+        llenarReportes(filtro, false);
 
 
         //Abrir detalle del reporte
@@ -117,7 +99,7 @@ public class EncontradasFragment extends Fragment {
                 //Toast.makeText(getContext(), "Selección: Reporte #" + listReportesEncontradas.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
                 Intent intentDetalleRME = new Intent(getContext(), DetalleReporteEncontradaActivity.class);
                 Bundle  bundle = new Bundle();
-                bundle.putSerializable("reporteEncontrada", listReportesEncontradas.get(recycler.getChildAdapterPosition(v)));
+                bundle.putSerializable("reporteEncontrada", listReportes.get(recycler.getChildAdapterPosition(v)));
                 intentDetalleRME.putExtras(bundle);
                 startActivity(intentDetalleRME);
             }
@@ -129,34 +111,84 @@ public class EncontradasFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                reporteEncontradaReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        listReportesEncontradas.removeAll(listReportesEncontradas);
-                        for (DataSnapshot snapshot:
-                                dataSnapshot.getChildren()) {
-                            reporteE = snapshot.getValue(ReporteEncontradas.class);
-                            listReportesEncontradas.add(0,reporteE);
-                        }
-                        adapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                if (filtro != null){
+                    llenarReportes(filtro, true);
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    llenarReportes(filtro, false);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
 
             }
         });
     }
-    /*
-    private void llenarReportes() {
-        for(int i = 0; i<=5; i++){
-            listReportesEncontradas.add(0, new ReporteEncontradas("Tipo", "Fecha", "Hora", "Alcaldía", "Colonia", "Calle", "Descripcion", R.drawable.ic_gato, i));
+
+    private void llenarReportes(final Filtro filtro, boolean filtrada) {
+        //Instanciar la base de datos y referenciarla
+        final DatabaseReference reportePerdidaReference = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE);
+        reportePerdidaReference.keepSynced(true);
+
+        if (filtrada == true){
+            //Llenar lista desde la base con filtro
+            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listReportes.removeAll(listReportes);
+                    for (DataSnapshot snapshot:
+                            dataSnapshot.getChildren()) {
+                        String alcaldia = snapshot.child("alcaldia").getValue(String.class);
+                        String tipo = snapshot.child("tipo").getValue(String.class);
+                        if(filtro.getZona() != null){
+                            if (filtro.getTipoM() != null){
+                                if (alcaldia.equals(filtro.getZona()) && tipo.equals(filtro.getTipoM())){
+                                    //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                    reporteEID = new ReporteEncontradasID(snapshot.getKey(), snapshot.getValue(ReporteEncontradas.class));
+                                    listReportes.add(0,reporteEID);
+                                }
+                            } else if (alcaldia.equals(filtro.getZona())){
+                                //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                reporteEID = new ReporteEncontradasID(snapshot.getKey(), snapshot.getValue(ReporteEncontradas.class));
+                                listReportes.add(0,reporteEID);
+                            }
+                        } else if (filtro.getTipoM() != null){
+                            if (tipo.equals(filtro.getTipoM())){
+                                //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                reporteEID = new ReporteEncontradasID(snapshot.getKey(), snapshot.getValue(ReporteEncontradas.class));
+                                listReportes.add(0,reporteEID);
+                            }
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            //Llenar lista desde la base sin filtro
+            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listReportes.removeAll(listReportes);
+                    for (DataSnapshot snapshot:
+                            dataSnapshot.getChildren()) {
+                        reporteEID = new ReporteEncontradasID(snapshot.getKey(), snapshot.getValue(ReporteEncontradas.class));
+                        listReportes.add(0,reporteEID);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
-    }*/
+
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -165,10 +197,8 @@ public class EncontradasFragment extends Fragment {
             case 0:
                 if (resultCode == Activity.RESULT_OK){
                     Bundle bundle = data.getExtras();
-
-                    Filtro filtro = (Filtro) bundle.getSerializable("filtro");
-                    String cad = "Encontradas Filtro: \n- Zona: " + filtro.getZona() + "\n- Tipo: " + filtro.getTipoM() + "\n- Del: " + filtro.getFecha1() + " Al: " + filtro.getFecha2();
-                    Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                    filtro = (Filtro) bundle.getSerializable("filtro");
+                    llenarReportes(filtro, true);
                 }
                 break;
         }
