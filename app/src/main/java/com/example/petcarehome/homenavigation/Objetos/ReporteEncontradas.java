@@ -3,13 +3,13 @@ package com.example.petcarehome.homenavigation.Objetos;
 import java.io.Serializable;
 
 public class ReporteEncontradas implements Serializable {
-    private String tipo, fecha, hora, alcaldia, colonia, calle, descripcion;
-    private int foto, id;
+    private String tipo, fecha, hora, alcaldia, colonia, calle, descripcion, foto, idUser;
+    //private int foto, id;
 
     public ReporteEncontradas(){
     }
 
-    public ReporteEncontradas(String tipo, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, int foto, int id) {
+    public ReporteEncontradas(String tipo, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String foto, String idUser) {
         this.tipo = tipo;
         this.fecha = fecha;
         this.hora = hora;
@@ -18,7 +18,7 @@ public class ReporteEncontradas implements Serializable {
         this.calle = calle;
         this.descripcion = descripcion;
         this.foto = foto;
-        this.id = id;
+        this.idUser = idUser;
     }
 
     public String getTipo() {
@@ -77,19 +77,19 @@ public class ReporteEncontradas implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 
-    public int getId() {
-        return id;
+    public String getIdUser() {
+        return idUser;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 }

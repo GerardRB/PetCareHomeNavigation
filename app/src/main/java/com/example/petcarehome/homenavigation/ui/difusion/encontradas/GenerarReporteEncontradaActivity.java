@@ -1,8 +1,10 @@
 package com.example.petcarehome.homenavigation.ui.difusion.encontradas;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -24,9 +26,22 @@ import android.widget.Toast;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
+import com.example.petcarehome.homenavigation.ui.difusion.perdidas.GenerarReporteExtravioActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GenerarReporteEncontradaActivity extends AppCompatActivity implements View.OnClickListener{
@@ -41,6 +56,12 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     private ImageView imageView;
     private Button button;
     private FirebaseDatabase firebaseDatabase;
+
+    private Uri resultUri;
+    private ArrayList<Uri> listImagesRec = new ArrayList<Uri>();;
+    private FirebaseStorage firebaseStorage;
+    private Uri downloadUri;
+    private ArrayList<String> listDwonloadUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,17 +292,56 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
 
     //Acceso a la galería
     private void cargarImagen() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/");
-        startActivityForResult(intent.createChooser(intent, "Seleccione la Aplicación"), 10);
+        Intent intent = new Intent();
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 10);
     }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
-            Uri path = data.getData();
-            imageView.setImageURI(path);
+        if (requestCode == 10 && resultCode == Activity.RESULT_OK){
+
+            if (data.getClipData() != null){
+                for (int i = 0; i < data.getClipData().getItemCount(); i++){
+                    CropImage.activity(data.getClipData().getItemAt(i).getUri())
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .setRequestedSize(1024, 1024)
+                            .setAspectRatio(3,3).start(GenerarReporteEncontradaActivity.this);
+                }
+
+            } else {
+                CropImage.activity(data.getData())
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setRequestedSize(1024, 1024)
+                        .setAspectRatio(3,3).start(GenerarReporteEncontradaActivity.this);
+            }
+
+            /*
+            //Uri imageUri = CropImage.getPickImageResultUri(this, data);
+            Uri imageUri = data.getData();
+            //Recortar imagen
+            CropImage.activity(imageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setRequestedSize(1024, 1024)
+                    .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
+            //imageView.setImageURI(imageUri);*/
         }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK){
+                resultUri = result.getUri();
+                listImagesRec.add(resultUri);
+                imageView.setImageURI(listImagesRec.get(0));
+                //Toast.makeText(getApplicationContext(), "Fotos seleccionadas: " + listImagesRec.size(), Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 
     //Regresar a la actividad anterior con la flecha de action bar(por defecto)
@@ -303,10 +363,34 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
 
     }
 
+
+    public String SubirFoto(String idUser, String idRep, int noFoto){
+        final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + noFoto + ".jpg");
+        //final Uri[] downloadUri = new Uri[1];
+        final UploadTask subeFoto = (UploadTask) storageReportesReference.putFile(listImagesRec.get(noFoto))
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful());
+                        downloadUri = uriTask.getResult();
+                        Toast.makeText(getApplicationContext(), "Foto subida URL:" + downloadUri.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+        //Toast.makeText(getApplicationContext(), "Foto subida URL:" + downloadUri[1].toString(), Toast.LENGTH_LONG).show();
+
+
+
+        String stringUrl = "Url " + noFoto;
+        return stringUrl;
+    }
+
     private void validarCampos() {
-        String tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE;
+        final String tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idRep;
+        listDwonloadUri = new ArrayList<String>();
         String mensaje = "Faltan campos por ingresar";
         String reporte = "";
+        String idUser = null;
         tipoM = comboTipoMascota.getSelectedItem().toString();
         fechaE = fecha.getText().toString();
         horaE = hora.getText().toString();
@@ -328,33 +412,49 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                 descripcion.setError("Obligatorio");
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
-            ReporteEncontradas reporteE = new ReporteEncontradas(tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, R.drawable.ic_perro, 1);
 
-            //Guardar en base de datos
+            //Referencia al Storage de reportes
+            firebaseStorage = FirebaseStorage.getInstance();
             firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference petCareReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE);
-            petCareReference.child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE).push().setValue(reporteE);
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null){
+                idUser = user.getEmail();
+            }
+            final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE).push();
+            idRep = reportesPReference.getKey();
 
-            Intent intent = new Intent(GenerarReporteEncontradaActivity.this, EncontradasFragment.class);
 
-            Bundle  bundle = new Bundle();
-            bundle.putSerializable("reporteEncontrada", reporteE);
+            //Bien una foto
+            //final String finalIdUser = idUser;
+            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEENCONTRADA_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
+            storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isSuccessful());
+                    downloadUri = uriTask.getResult();
+                    String idUserf = user.getEmail();
+                    ReporteEncontradas reporteE = new ReporteEncontradas(tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), idUserf);
+                    //Guardar en base de datos
 
-            intent.putExtras(bundle);
-            //startActivity(intent);
 
-            reporte = "Reporte generado: \nID: " + reporteE.getId() +
-                    "\nTipo: " + reporteE.getTipo() +
-                    "\nFecha: " + reporteE.getFecha() +
-                    "\nHora: " + reporteE.getHora() +
-                    "\nZona: " + reporteE.getAlcaldia() +
-                    ", col. " + reporteE.getColonia() +
-                    ", calle " + reporteE.getCalle() +
-                    "\nDescripción: " + reporteE.getDescripcion();
-            Toast.makeText(getApplicationContext(), reporte, Toast.LENGTH_LONG).show();
-            onBackPressed();
-        }
+                    reportesPReference.setValue(reporteE, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            if (databaseError != null){
+                                Toast.makeText(getApplicationContext(), "No se pudo generar el reporte", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Reporte generado con éxito", Toast.LENGTH_LONG).show();
+                                onBackPressed();
+                            }
+                        }
+                    });
+                }
+            });//Fin una foto
 
-    }
+
+        }//fin else del if  de datos completos
+
+    }//fin validar campos
 
 }

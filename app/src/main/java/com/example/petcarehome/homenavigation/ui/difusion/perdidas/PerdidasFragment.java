@@ -38,12 +38,9 @@ public class PerdidasFragment extends Fragment {
 
     private ArrayList<ReportePerdidasID> listReportes;
     private RecyclerView recyclerPerdidas;
-    private ReportePerdidas reporteP;
     private ReportePerdidasID reportePID;
     private AdapterReportesPerdidas adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-    //private FirebaseDatabase firebaseDatabase;
-    //private DatabaseReference reportePerdidaReference;
     private Filtro filtro;
 
 
