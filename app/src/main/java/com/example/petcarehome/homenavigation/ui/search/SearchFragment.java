@@ -3,9 +3,14 @@ package com.example.petcarehome.homenavigation.ui.search;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +26,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -173,29 +180,51 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
     }*/
 
 
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
     private void getCurrentLocation() {
-        //Inicializar la tarea de ubicación.
-        Task<Location> task = fusedLocationClient.getLastLocation();
 
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(final Location location) {
-                //Cuando se logra obtener la ubicación
-                if(location != null){
+        if (ActivityCompat.checkSelfPermission(this.getContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+            //getDeviceLocation();
+            //getCurrentLocation();
+            //Inicializar la tarea de ubicación.
+            Task<Location> task = fusedLocationClient.getLastLocation();
 
-                            //Inicializar latitud y longitud
-                            LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
-                            //Crear opciones para el marcador
-                            MarkerOptions options = new MarkerOptions().position(current)
-                                    .title("Mi ubicación");
-                            //Zoom en el mapa
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
-                            //Añadir marcador en el mapa
-                            mMap.addMarker(options);
+            task.addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(final Location location) {
+                    //Cuando se logra obtener la ubicación
+                    if(location != null){
+
+                        //Inicializar latitud y longitud
+                        LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+                        //Crear opciones para el marcador
+                        MarkerOptions options = new MarkerOptions().position(current)
+                                .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
+                        //Zoom en el mapa
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+                        //Añadir marcador en el mapa
+                        mMap.addMarker(options);
+                    }
                 }
-            }
 
-        });
+            });
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    44);
+        }
+
     }
 
 }
