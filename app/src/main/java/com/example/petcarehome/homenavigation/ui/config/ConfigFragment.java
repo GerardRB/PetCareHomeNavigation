@@ -16,7 +16,6 @@ public class ConfigFragment extends Fragment {
 
     private TextView textView;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_config, container, false);

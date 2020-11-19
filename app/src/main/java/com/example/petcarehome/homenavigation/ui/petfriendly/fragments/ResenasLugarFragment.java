@@ -25,6 +25,7 @@ public class ResenasLugarFragment extends Fragment {
         args.putSerializable(ARG_LUGAR, lugar);
         fragment.setArguments(args);
         return fragment;
+
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
