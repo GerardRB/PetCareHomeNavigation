@@ -3,13 +3,12 @@ package com.example.petcarehome.homenavigation.Objetos;
 import java.io.Serializable;
 
 public class ReporteAdopcion implements Serializable {
-    private String tipo, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion;
-    private int foto, id;
+    private String tipo, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion, foto, idUser;
 
     public ReporteAdopcion(){
     }
 
-    public ReporteAdopcion(String tipo, String raza, String edad, String vacunas, String esterilizacion, String alcaldia, String colonia, String calle, String descripcion, int foto, int id) {
+    public ReporteAdopcion(String tipo, String raza, String edad, String vacunas, String esterilizacion, String alcaldia, String colonia, String calle, String descripcion, String foto, String idUser) {
         this.tipo = tipo;
         this.raza = raza;
         this.edad = edad;
@@ -20,7 +19,7 @@ public class ReporteAdopcion implements Serializable {
         this.calle = calle;
         this.descripcion = descripcion;
         this.foto = foto;
-        this.id = id;
+        this.idUser = idUser;
     }
 
     public String getTipo() {
@@ -95,19 +94,19 @@ public class ReporteAdopcion implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 
-    public int getId() {
-        return id;
+    public String getIdUser() {
+        return idUser;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String idUser) {
+        this.idUser = idUser;
     }
 }
