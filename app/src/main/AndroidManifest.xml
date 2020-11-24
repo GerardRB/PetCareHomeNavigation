@@ -107,8 +107,9 @@
             android:name=".homenavigation.HomeActivity_Dueno"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/MaterialAppTheme"
-            tools:ignore="LockedOrientationActivity" />
-    </application>
+        android:theme="@style/AppTheme"
+                  tools:ignore="LockedOrientationActivity" />
 
-</manifest>
+          </application>
+
+      </manifest>

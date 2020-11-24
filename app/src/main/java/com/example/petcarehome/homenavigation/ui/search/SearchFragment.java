@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -175,7 +176,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
 
     private void getCurrentLocation() {
         //Inicializar la tarea de ubicación.
-        Task<Location> task = fusedLocationClient.getLastLocation();
+        @SuppressLint("MissingPermission") Task<Location> task = fusedLocationClient.getLastLocation();
 
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
