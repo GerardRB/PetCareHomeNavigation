@@ -1,5 +1,6 @@
 package com.example.petcarehome.homenavigation.ui.difusion.perdidas;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -8,11 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.petcarehome.InicioYRegistro.Cuidador;
+import com.example.petcarehome.InicioYRegistro.Dueno;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.example.petcarehome.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -55,63 +61,58 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         telefonoUser = findViewById(R.id.text_telefono_user_DRMP);
         domicilio = findViewById(R.id.text_domicilio_user_DRMP);
 
+
         firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference userRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
+        final DatabaseReference duenoRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
+        final DatabaseReference cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
 
 
-        /*
-        Boolean isDueno = true;
 
-        if (isDueno){
-            //  Obtener datos del usuario que genero el reporte
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
+        cuidadorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            //userRep = null;
-            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot :
-                            dataSnapshot.getChildren()) {
-                        String email = snapshot.child("correo").getValue(String.class);
-                        if (email == reporteP.getReportePerdidas().getUsuario()){
-                            ayudaRegistroDuenoCuidador userRep = (ayudaRegistroDuenoCuidador) snapshot.getValue();
-                            //correoU = snapshot.getKey();
-                            //correoUser.setText(userRep.getCorreo());
-                            nombreUser.setText(userRep.getNombre() + userRep.getApellidos());
-                            telefonoUser.setText(userRep.getCel());
-                            domicilio.setText(userRep. getCalle() + "no. Ext: " + userRep.getNoext() + " no. Int: " + userRep.getNoint() + ", " + userRep.getAlcaldia());
-                        }
+
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+                    String mailUser = snapshot.child("correo").getValue(String.class);
+                    if (mailUser.equals(reporteP.getReportePerdidas().getUsuario())){
+                        Cuidador cuidador = snapshot.getValue(Cuidador.class);
+                        nombreUser.setText(cuidador.getNombre() + " " + cuidador.getApellidos());
+                        correoUser.setText(cuidador.getCorreo());
+                        telefonoUser.setText(cuidador.getCel());
+                        domicilio.setText(cuidador.getCalle() + " " + cuidador.getNoext() + " " + cuidador.getNoint() + ", " + cuidador.getAlcaldia());
                     }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
-            if (userRep == null){
-                isDueno = false;
             }
-        } else {
-            //  Obtener datos del usuario que genero el reporte
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference userReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
-            //userRep = new ayudaRegistroDuenoCuidador();
-            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        correoU = correoUser.getText().toString();
+
+        if (correoU.isEmpty()){
+            duenoRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot :
+
+
+                    for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
-                        String email = snapshot.child("correo").getValue(String.class);
-                        if (email == reporteP.getReportePerdidas().getUsuario()){
-                            userRep = (ayudaRegistroDuenoCuidador) snapshot.getValue();
-                            //correoU = snapshot.getKey();
-                            //correoUser.setText(userRep.getCorreo());
-                            nombreUser.setText(userRep.getNombre() + userRep.getApellidos());
-                            telefonoUser.setText(userRep.getCel());
-                            domicilio.setText(userRep. getCalle() + "no. Ext: " + userRep.getNoext() + " no. Int: " + userRep.getNoint() + ", " + userRep.getAlcaldia());
+                        String mailUser = snapshot.child("correo").getValue(String.class);
+                        if (mailUser.equals(reporteP.getReportePerdidas().getUsuario())){
+                            Dueno dueno = snapshot.getValue(Dueno.class);
+                            nombreUser.setText(dueno.getNombre() + " " + dueno.getApellidos());
+                            correoUser.setText(dueno.getCorreo());
+                            telefonoUser.setText(dueno.getCel());
+                            domicilio.setText(dueno.getCalle() + " " + dueno.getNoext() + " " + dueno.getNoint() + ", " + dueno.getAlcaldia());
                         }
+
                     }
                 }
 
@@ -120,10 +121,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
 
                 }
             });
-        }*/
-
-
-
+        }
 
         //Imprimir valores del objeto recibido
         idReporte.setText(reporteP.getId());
@@ -136,7 +134,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         colonia.setText(reporteP.getReportePerdidas().getColonia());
         calle.setText(reporteP.getReportePerdidas().getCalle());
         descripcion.setText(reporteP.getReportePerdidas().getDescripcion());
-        correoUser.setText(reporteP.getReportePerdidas().getUsuario());
+        //correoUser.setText(reporteP.getReportePerdidas().getUsuario());
         Picasso.with(this).load(reporteP.getReportePerdidas().getFoto()).into(foto, new Callback() {
             @Override
             public void onSuccess() {
