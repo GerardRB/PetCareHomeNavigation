@@ -23,7 +23,7 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
 
     ArrayList<ReporteEncontradasID> listReportesEncontradas;
     private View.OnClickListener listener;
-    Context context;
+    private Context context;
 
     public AdapterReportesEncontradas(ArrayList<ReporteEncontradasID> listReportesEncontradas, Context context) {
         this.listReportesEncontradas = listReportesEncontradas;

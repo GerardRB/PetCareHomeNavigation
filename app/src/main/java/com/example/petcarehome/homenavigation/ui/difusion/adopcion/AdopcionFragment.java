@@ -20,6 +20,9 @@ import com.example.petcarehome.homenavigation.Objetos.Filtro;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcion;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcionID;
+import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
+import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradasID;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,12 +40,13 @@ public class AdopcionFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private ArrayList<ReporteAdopcion> listReportesAdopcion;
+    private ArrayList<ReporteAdopcionID> listReportes;
     private RecyclerView recycler;
     private AdapterReportesAdopcion adapter;
-    private ReporteAdopcion reporteA;
+    private ReporteAdopcionID reporteAID;
     private SwipeRefreshLayout swipeRefreshLayout;
     private FirebaseDatabase firebaseDatabase;
+    private Filtro filtro;
 
     public static AdopcionFragment newInstance(int index) {
         AdopcionFragment fragment = new AdopcionFragment();
@@ -75,37 +79,17 @@ public class AdopcionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Construir el recycler
-        listReportesAdopcion = new ArrayList<>();
+        listReportes = new ArrayList<>();
         recycler = view.findViewById(R.id.recyclerAdopcionId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new AdapterReportesAdopcion(listReportesAdopcion);
+        adapter = new AdapterReportesAdopcion(listReportes, getContext());
         recycler.setAdapter(adapter);
 
-        //Instanciar la base de datos y referenciarla
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        final DatabaseReference reporteAdopcionReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE);
+        filtro = null;
 
-        //Llenar list desde la base
-        reporteAdopcionReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listReportesAdopcion.removeAll(listReportesAdopcion);
-                for (DataSnapshot snapshot:
-                        dataSnapshot.getChildren()) {
-                    reporteA = snapshot.getValue(ReporteAdopcion.class);
-                    listReportesAdopcion.add(0,reporteA);
-                }
-                adapter.notifyDataSetChanged();
-            }
+        llenarReportes(filtro, false);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        //llenarReportes();
 
         //Abrir detalle del reporte
         adapter.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +98,7 @@ public class AdopcionFragment extends Fragment {
                 //Toast.makeText(getContext(), "Selección: Reporte #" + listReportesAdopcion.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
                 Intent intentDetalleRMA = new Intent(getContext(), DetalleReporteAdopcionActivity.class);
                 Bundle  bundle = new Bundle();
-                bundle.putSerializable("reporteAdopcion", listReportesAdopcion.get(recycler.getChildAdapterPosition(v)));
+                bundle.putSerializable("reporteAdopcion", listReportes.get(recycler.getChildAdapterPosition(v)));
                 intentDetalleRMA.putExtras(bundle);
                 startActivity(intentDetalleRMA);
             }
@@ -126,35 +110,83 @@ public class AdopcionFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                reporteAdopcionReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        listReportesAdopcion.removeAll(listReportesAdopcion);
-                        for (DataSnapshot snapshot:
-                                dataSnapshot.getChildren()) {
-                            reporteA = snapshot.getValue(ReporteAdopcion.class);
-                            listReportesAdopcion.add(0,reporteA);
-                        }
-                        adapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                if (filtro != null){
+                    llenarReportes(filtro, true);
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    llenarReportes(filtro, false);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
 
             }
         });
     }
 
-    /*
-    private void llenarReportes() {
-        for(int i = 0; i<=5; i++){
-            listReportesAdopcion.add(0, new ReporteAdopcion("Tipo", "Raza", "Edad", "Vacunas", "Esterilización", "Alcaldía", "Colonia", "Calle", "Descripción", R.drawable.ic_gato, i));
+    private void llenarReportes(final Filtro filtro, boolean filtrada) {
+        //Instanciar la base de datos y referenciarla
+        final DatabaseReference reportePerdidaReference = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE);
+        reportePerdidaReference.keepSynced(true);
+
+        if (filtrada == true){
+            //Llenar lista desde la base con filtro
+            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listReportes.removeAll(listReportes);
+                    for (DataSnapshot snapshot:
+                            dataSnapshot.getChildren()) {
+                        String alcaldia = snapshot.child("alcaldia").getValue(String.class);
+                        String tipo = snapshot.child("tipo").getValue(String.class);
+                        if(filtro.getZona() != null){
+                            if (filtro.getTipoM() != null){
+                                if (alcaldia.equals(filtro.getZona()) && tipo.equals(filtro.getTipoM())){
+                                    //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                    reporteAID = new ReporteAdopcionID(snapshot.getKey(), snapshot.getValue(ReporteAdopcion.class));
+                                    listReportes.add(0,reporteAID);
+                                }
+                            } else if (alcaldia.equals(filtro.getZona())){
+                                //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                reporteAID = new ReporteAdopcionID(snapshot.getKey(), snapshot.getValue(ReporteAdopcion.class));
+                                listReportes.add(0,reporteAID);
+                            }
+                        } else if (filtro.getTipoM() != null){
+                            if (tipo.equals(filtro.getTipoM())){
+                                //reporteP = snapshot.getValue(ReportePerdidas.class);
+                                reporteAID = new ReporteAdopcionID(snapshot.getKey(), snapshot.getValue(ReporteAdopcion.class));
+                                listReportes.add(0,reporteAID);
+                            }
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        } else {
+            //Llenar lista desde la base sin filtro
+            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listReportes.removeAll(listReportes);
+                    for (DataSnapshot snapshot:
+                            dataSnapshot.getChildren()) {
+                        reporteAID = new ReporteAdopcionID(snapshot.getKey(), snapshot.getValue(ReporteAdopcion.class));
+                        listReportes.add(0,reporteAID);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
-    }*/
+
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -163,10 +195,8 @@ public class AdopcionFragment extends Fragment {
             case 0:
                 if (resultCode == Activity.RESULT_OK){
                     Bundle bundle = data.getExtras();
-
-                    Filtro filtro = (Filtro) bundle.getSerializable("filtro");
-                    String cad = "Adopción Filtro: \n- Zona: " + filtro.getZona() + "\n- Tipo: " + filtro.getTipoM() + "\n- Del: " + filtro.getFecha1() + " Al: " + filtro.getFecha2();
-                    Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                    filtro = (Filtro) bundle.getSerializable("filtro");
+                    llenarReportes(filtro, true);
                 }
                 break;
         }

@@ -3,27 +3,37 @@ package com.example.petcarehome.homenavigation.ui.search;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.petcarehome.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -133,8 +143,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
-            //getDeviceLocation();
-            getCurrentLocation();
+            //getDeviceLocation(mLocationPermissionGranted);
+            getCurrentLocation(mLocationPermissionGranted);
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -142,7 +152,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    /*private void getDeviceLocation() {
+    /*
+    private void getDeviceLocation(boolean mLocationPermissionGranted) {
         //Get the best and most recent location of the device, which may be null in rare cases when a location is not available.
 
         try {
@@ -157,12 +168,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
                             mLastKnownLocation = (Location) task.getResult();
                             LatLng current = new LatLng(mLastKnownLocation.getLatitude(),
                                     mLastKnownLocation.getLongitude());
-                            mMap.addMarker(new MarkerOptions().position(current).title("Mi ubicación"));
+                            mMap.addMarker(new MarkerOptions().position(current).title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual"));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current,15));
 
                         } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
+                            Toast.makeText(getContext(),"Ubicación actual es null", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"Exception: " + task.getException(), Toast.LENGTH_LONG).show();
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 15));
                         }
                     }
@@ -174,29 +185,51 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
     }*/
 
 
-    private void getCurrentLocation() {
-        //Inicializar la tarea de ubicación.
-        @SuppressLint("MissingPermission") Task<Location> task = fusedLocationClient.getLastLocation();
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
 
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(final Location location) {
-                //Cuando se logra obtener la ubicación
-                if(location != null){
+
+    private void getCurrentLocation(boolean mLocationPermissionGranted) {
+
+        try {
+            if (mLocationPermissionGranted){
+                //Inicializar la tarea de ubicación.
+                //fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getContext());
+                final Task<Location> task = fusedLocationClient.getLastLocation();
+
+                task.addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(final Location location) {
+                        //Cuando se logra obtener la ubicación
+                        if(location != null){
 
                             //Inicializar latitud y longitud
                             LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
                             //Crear opciones para el marcador
                             MarkerOptions options = new MarkerOptions().position(current)
-                                    .title("Mi ubicación");
+                                    .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
                             //Zoom en el mapa
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
                             //Añadir marcador en el mapa
                             mMap.addMarker(options);
-                }
+                        } else {
+                            Toast.makeText(getContext(),"Ubicación actual es null", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"Exception: " + task.getException(), Toast.LENGTH_LONG).show();
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 15));
+                        }
+                    }
+                });
             }
+        } catch (SecurityException e){
+            Log.e("Exception: %s", e.getMessage());
+        }
 
-        });
     }
 
 }
