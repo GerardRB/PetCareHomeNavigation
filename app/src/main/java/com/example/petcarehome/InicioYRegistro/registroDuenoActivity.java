@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class registroDuenoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class   registroDuenoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     EditText mnombre_dueno, mapellidos_dueno, mcontrasena, mcalle_dueno,
             mnoext_dueno, mnoint_dueno, mcorreo_dueno, mtel_dueno;
     Button mRegistroDueno;

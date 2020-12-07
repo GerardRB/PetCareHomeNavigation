@@ -11,6 +11,9 @@
     <string name="action_settings">Ajustes</string>
     <string name="action_privacity">Privacidad</string>
 
+    <!-- Strings used for fragments for navigation_drawer_configuracion abrir y cerrar el drawer-->
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="title_search">Búsqueda</string>

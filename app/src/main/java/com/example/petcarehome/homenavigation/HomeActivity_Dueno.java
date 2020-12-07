@@ -5,10 +5,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.ui.config.FragmentOnBackPressedListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -26,10 +28,10 @@ public class HomeActivity_Dueno extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_search, R.id.navigation_difusion, R.id.navigation_config)
+                R.id.navigation_search, R.id.navigation_difusion/*, R.id.navigation_config*/)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+       NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
     }
@@ -61,4 +63,10 @@ public class HomeActivity_Dueno extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.drawer_layout_configuracion);
+        if (!(fragment instanceof FragmentOnBackPressedListener) || !((FragmentOnBackPressedListener) fragment).onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
 }
