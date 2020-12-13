@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.search;
+package com.example.petcarehome.homenavigation.ui.mapa.dueno;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +23,6 @@ import com.example.petcarehome.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,12 +32,11 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-public class SearchFragment extends Fragment implements View.OnClickListener{
+public class MapaFragmentDueno extends Fragment implements View.OnClickListener{
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
@@ -75,7 +73,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_search, container, false);
+        View root = inflater.inflate(R.layout.fragment_mapa_dueno, container, false);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         return root;
     }
@@ -128,8 +126,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
     }
 
     private void openDialog() {
-        SearchDialog searchDialog = new SearchDialog();
-        searchDialog.show(getChildFragmentManager(), "Buscar un cuidador");
+        BuscarCuidadoresDialog buscarCuidadoresDialog = new BuscarCuidadoresDialog();
+        buscarCuidadoresDialog.show(getChildFragmentManager(), "Buscar un cuidador");
     }
 
 

@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.petcarehome.homenavigation.ui.search.SearchFragment"
+        android:name="com.example.petcarehome.homenavigation.ui.mapa.dueno.MapaFragmentDueno"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_mapa_dueno" />
 
     <fragment
         android:id="@+id/navigation_difusion"

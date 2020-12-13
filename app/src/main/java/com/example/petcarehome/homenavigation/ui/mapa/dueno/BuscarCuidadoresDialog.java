@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.search;
+package com.example.petcarehome.homenavigation.ui.mapa.dueno;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.petcarehome.R;
 
-public class SearchDialog extends AppCompatDialogFragment {
+public class BuscarCuidadoresDialog extends AppCompatDialogFragment {
     private EditText editTextUbicacion;
     private Spinner spinnerMascota, spinnerCuidado;
     private SeekBar seekBar;
@@ -30,7 +30,7 @@ public class SearchDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_search, null);
+        View view = inflater.inflate(R.layout.dialog_buscar_cuidadores, null);
 
         editTextUbicacion = view.findViewById(R.id.input_location);
 
