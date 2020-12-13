@@ -112,6 +112,7 @@
     <string name="label_agregar_lugar">Guardar lugar PetFriendly</string>
     <string name="label_agregar_categoria">Guardar categoría PetFriendly</string>
     <string name="label_agregar_resena">Agregar reseña</string>
+    <string name="title_mapa_cuidador">Mapa</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION

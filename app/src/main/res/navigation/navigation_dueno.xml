@@ -2,11 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_search">
+    android:id="@+id/navigation_dueno"
+    app:startDestination="@+id/navigation_mapa_dueno">
 
     <fragment
-        android:id="@+id/navigation_search"
+        android:id="@+id/navigation_mapa_dueno"
         android:name="com.example.petcarehome.homenavigation.ui.mapa.dueno.MapaFragmentDueno"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_mapa_dueno" />

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_cuidador"
+    app:startDestination="@+id/navigation_mapa_cuidador">
+
+    <fragment
+        android:id="@+id/navigation_mapa_cuidador"
+        android:name="com.example.petcarehome.homenavigation.ui.mapa.cuidador.MapaFragmentCuidador"
+        android:label="@string/title_mapa_cuidador"
+        tools:layout="@layout/fragment_mapa_cuidador" />
+
+    <fragment
+        android:id="@+id/navigation_difusion"
+        android:name="com.example.petcarehome.homenavigation.ui.difusion.DifusionFragment"
+        android:label="@string/title_difusion"
+        tools:layout="@layout/fragment_difusion" />
+
+    <fragment
+        android:id="@+id/navigation_petfriendly"
+        android:name="com.example.petcarehome.homenavigation.ui.petfriendly.fragments.CategoriasPetFriendlyFragment"
+        android:label="@string/title_petfriendly"
+        tools:layout="@layout/fragment_categorias_pet_friendly" />
+
+    <fragment
+        android:id="@+id/navigation_config"
+        android:name="com.example.petcarehome.homenavigation.ui.config.ConfigFragment_dueno"
+        android:label="@string/title_config"
+        tools:layout="@layout/fragment_config_dueno" />
+</navigation>

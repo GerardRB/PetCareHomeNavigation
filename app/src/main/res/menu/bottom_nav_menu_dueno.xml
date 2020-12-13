@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_search"
+        android:id="@+id/navigation_mapa_dueno"
         android:icon="@drawable/maps_selector"
         android:title="Buscar" />
 
