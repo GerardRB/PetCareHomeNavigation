@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- MENU PARA EL APARTADO DE CONFIGURACIÓN
+     (falta agregar mascotas para el caso de cuidador) -->
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/volver_menuconfig"
+            android:icon="@drawable/ic_flechavolver_config"
+            android:title="Perfil" />
+        <item
+            android:id="@+id/contrasena_menuconfig"
+            android:icon="@drawable/ic_contrasena_configuracion"
+            android:title="Cambiar contraseña" />
+
+                <item
+                    android:id="@+id/mascotas_cuidador"
+                    android:title="Registrar mascotas"
+                    android:icon="@drawable/ic_animales_configuracion"
+                    />
+
+        <item
+            android:id="@+id/notificaciones_menuconfig"
+            android:icon="@drawable/ic_notificacion_configuracion"
+            android:title="Notificaciones" />
+        <item
+            android:id="@+id/idioma_menuconfig"
+            android:icon="@drawable/ic_lenguaje_configuracion"
+            android:title="Idioma"></item>
+
+        <item
+            android:id="@+id/terms_menuconfig"
+            android:icon="@drawable/ic_terminoscondiciones_configuracion"
+            android:title="Términos y condiciones"></item>
+        <item
+            android:id="@+id/Ayuda_menuconfig"
+            android:icon="@drawable/ic_ayuda_configuracion"
+            android:title="Ayuda"></item>
+
+        <item
+            android:id="@+id/salir_menuconfig"
+            android:icon="@drawable/ic_salida_configuracion"
+            android:title="Cerrar sesión"></item>
+
+        <item
+            android:id="@+id/eliminarcuenta_menuconfig"
+            android:icon="@drawable/ic_eliminarcuenta_configuracion"
+            android:title="Eliminar cuenta"></item>
+
+    </group>
+</menu>
