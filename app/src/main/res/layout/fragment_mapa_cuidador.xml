@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:textOff="@string/estado_inactivo"
+        app:switchTextAppearance="@style/MySwitchButton"
         android:textOn="@string/estado_activo"
         android:thumb="@drawable/thumb_switch"
         app:layout_constraintEnd_toEndOf="parent"

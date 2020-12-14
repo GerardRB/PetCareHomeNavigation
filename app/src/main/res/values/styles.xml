@@ -36,5 +36,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="MySwitchButtonText" >
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15dp</item>
+    </style>
 
 </resources>
