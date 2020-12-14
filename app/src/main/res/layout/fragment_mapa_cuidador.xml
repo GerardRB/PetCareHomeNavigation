@@ -30,18 +30,17 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:textOff="@string/estado_inactivo"
         android:textOn="@string/estado_activo"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="100dp"
-        app:showText="true"
         android:thumb="@drawable/thumb_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:showText="true"
         app:track="@drawable/track_switch"
-        tools:ignore="MissingConstraints"
-        />
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

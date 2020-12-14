@@ -3,16 +3,16 @@
     <item android:state_checked="true">
         <shape android:shape="rectangle">
             <solid android:color="#98EA88"/>
-            <corners android:radius="20dp"/>
-            <size android:height="25dp"
+            <corners android:radius="10dp"/>
+            <size android:height="40dp"
                 android:width="100dp"/>
         </shape>
     </item>
     <item android:state_checked="false">
         <shape android:shape="rectangle">
             <solid android:color="#F2A5A5"/>
-            <corners android:radius="20dp"/>
-            <size android:height="25dp"
+            <corners android:radius="10dp"/>
+            <size android:height="40dp"
                 android:width="100dp"/>
         </shape>
     </item>
