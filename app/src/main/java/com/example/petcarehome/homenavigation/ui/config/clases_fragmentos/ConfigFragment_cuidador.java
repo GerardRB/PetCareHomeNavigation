@@ -76,14 +76,14 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
 
 
         //Creando referencia al Navigation View para manejar los eventos al hacer clic
-        NavigationView navigationView = view.findViewById(R.id.navigation_drawer_configuracion);
+        NavigationView navigationView = view.findViewById(R.id.navigation_drawer_configuracion_cuidador);
         navigationView.setNavigationItemSelectedListener(this);
 
         //Que se guarde este fragmento al volver/ir a configuración y que se guarde al girar el dispositivo
         if (savedInstanceState == null) {
 
             //Fragmento principal perfil - perfil_usuario() = fragmento del perfil, el que se muestra al ir al apartado de configuración
-            getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new perfil_usuario()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new perfil_usuario()).commit();
             navigationView.setCheckedItem(R.id.volver_menuconfig);
 
         }
@@ -107,31 +107,31 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
         switch (item.getItemId()) {
             //Primer icono, volver a apartado de configuración
             case R.id.volver_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new perfil_usuario()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new perfil_usuario()).commit();
                 break;
             //Segundo icono, ir a fragmento para cambiar la contraseña
             case R.id.contrasena_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new cambiar_contrasena()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new cambiar_contrasena()).commit();
                 break;
             //Tercer icono, ir a fragmento para manejar las notificaciones
             case R.id.mascotas_cuidador:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new mascotas_cuidador()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new mascotas_cuidador()).commit();
                 break;
             //Tercer icono, ir a fragmento para manejar las notificaciones
             case R.id.notificaciones_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new notificaciones()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new notificaciones()).commit();
                 break;
             //Cuarto icono, ir a fragmento que solo tendrá el idioma
             case R.id.idioma_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new idioma()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new idioma()).commit();
                 break;
             //Quinto icono, ir a fragmento que tendrá los términos y condiciones
             case R.id.terms_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new terminos_y_condiciones()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new terminos_y_condiciones()).commit();
                 break;
             //Sexto icono, ir a fragmento que tendrá la ayuda
             case R.id.Ayuda_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new ayuda()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new ayuda()).commit();
                 break;
             //Séptimo icono, llamar a función para salir de la aplicación
             case R.id.salir_menuconfig:
