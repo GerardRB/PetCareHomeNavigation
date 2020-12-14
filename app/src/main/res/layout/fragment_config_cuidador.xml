@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout_configuracion"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout_configuracion_cuidador"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".homenavigation.ui.config.ConfigFragment_dueno"
+    tools:context=".homenavigation.ui.config.clases_fragmentos.ConfigFragment_cuidador"
     tools:openDrawer="left">
+
     <!-- FRAGMENTO QUE SE ABRE AL IR AL
-     APARTADO DE CONFIGURACIÓN -->
+         APARTADO DE CONFIGURACIÓN (Cuidador) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolar_configuracion"
+            android:id="@+id/toolar_configuracion_cuidador"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
@@ -25,7 +26,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <FrameLayout
-            android:id="@+id/contenedor_fragmentos"
+            android:id="@+id/contenedor_fragmentos_cuidador"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -34,11 +35,11 @@
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_drawer_configuracion"
+        android:id="@+id/navigation_drawer_configuracion_cuidador"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
         app:headerLayout="@layout/nav_header_config"
-        app:menu="@menu/menu_configuracion" />
+        app:menu="@menu/menu_configuracion_cuidador" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
