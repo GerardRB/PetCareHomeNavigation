@@ -2,6 +2,7 @@ package com.example.petcarehome.homenavigation.ui.mapa.cuidador;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -44,7 +45,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
     private boolean requestingLocationUpdates, mLocationPermissionGranted;
     private LocationRequest locationRequest;
     private ExtendedFloatingActionButton fablocation;
-    private ToggleButton estadoButton;
+    private SwitchCompat estadoButton;
     private GoogleMap mMap;
     private Location mLastKnownLocation;
 

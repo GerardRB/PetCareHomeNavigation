@@ -113,6 +113,8 @@
     <string name="label_agregar_categoria">Guardar categoría PetFriendly</string>
     <string name="label_agregar_resena">Agregar reseña</string>
     <string name="title_mapa_cuidador">Mapa</string>
+    <string name="estado_inactivo">Inactivo</string>
+    <string name="estado_activo">Activo</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION
