@@ -20,8 +20,7 @@
         tools:ignore="MissingConstraints"
         android:onClick="onClick"/>
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_cuidador"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -34,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:textOff="@string/estado_inactivo"
-        app:switchTextAppearance="@style/MySwitchButton"
+        app:switchTextAppearance="@style/MySwitchButtonText"
         android:textOn="@string/estado_activo"
         android:thumb="@drawable/thumb_switch"
         app:layout_constraintEnd_toEndOf="parent"

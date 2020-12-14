@@ -39,7 +39,7 @@
     <style name="MySwitchButtonText" >
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
 </resources>
