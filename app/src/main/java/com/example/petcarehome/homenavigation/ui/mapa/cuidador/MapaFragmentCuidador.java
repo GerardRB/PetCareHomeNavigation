@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.example.petcarehome.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -131,9 +134,10 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
+            //mLocationPermissionGranted = true;
             //getDeviceLocation(mLocationPermissionGranted);
-            getCurrentLocation(mLocationPermissionGranted);
+            //getCurrentLocation(mLocationPermissionGranted);
+            startLocationUpdates();
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -150,7 +154,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-
+    /*
     private void getCurrentLocation(boolean mLocationPermissionGranted) {
 
         try {
@@ -186,6 +190,46 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             Log.e("Exception: %s", e.getMessage());
         }
 
+    }*/
+
+    private void startLocationUpdates() {
+        //revision de permisos
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        //creación de la solicitud de ubicacion
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(60000);
+        locationRequest.setFastestInterval(30000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        //Devolucion de la llamada de la solicitud de la ubicacion
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    mMap.clear();
+                    //Inicializar latitud y longitud
+                    LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+                    //Crear opciones para el marcador
+                    MarkerOptions options = new MarkerOptions().position(current)
+                            .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
+                    //Zoom en el mapa
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
+                    //Añadir marcador en el mapa
+                    mMap.addMarker(options);
+                }
+            }
+        };
+
+        //Solicitud de actualizacion de ubicacion
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                Looper.getMainLooper());
     }
 
 

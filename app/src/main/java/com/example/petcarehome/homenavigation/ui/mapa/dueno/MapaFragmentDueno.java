@@ -141,9 +141,10 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
+            //mLocationPermissionGranted = true;
             //getDeviceLocation(mLocationPermissionGranted);
-            getCurrentLocation(mLocationPermissionGranted);
+            //getCurrentLocation(mLocationPermissionGranted);
+            startLocationUpdates();
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -193,7 +194,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-
+    /*
     private void getCurrentLocation(boolean mLocationPermissionGranted) {
 
         try {
@@ -206,6 +207,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     @Override
                     public void onSuccess(final Location location) {
                         //Cuando se logra obtener la ubicación
+                        mMap.clear();
                         if (location != null) {
 
                             //Inicializar latitud y longitud
@@ -218,13 +220,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             //Añadir marcador en el mapa
                             mMap.addMarker(options);
                         } else {
-                            /*
-                            Toast.makeText(getContext(),"Ubicación actual es null", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getContext(),"Exception: " + task.getException(), Toast.LENGTH_LONG).show();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 15));
-                             */
 
-                            //if (requestingLocationUpdates) {
+                                //Metodo para hacer actualizacion de la ubicación
                                 startLocationUpdates();
 
                             //}
@@ -236,22 +233,21 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             Log.e("Exception: %s", e.getMessage());
         }
 
-    }
+    }*/
 
     private void startLocationUpdates() {
+        //revision de permisos
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        //creación de la solicitud de ubicacion
         locationRequest = LocationRequest.create();
+        locationRequest.setInterval(60000);
+        locationRequest.setFastestInterval(30000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
+        //Devolucion de la llamada de la solicitud de la ubicacion
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -259,6 +255,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
+                    mMap.clear();
                     //Inicializar latitud y longitud
                     LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
                     //Crear opciones para el marcador
@@ -272,7 +269,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             }
         };
 
-
+        //Solicitud de actualizacion de ubicacion
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 Looper.getMainLooper());
