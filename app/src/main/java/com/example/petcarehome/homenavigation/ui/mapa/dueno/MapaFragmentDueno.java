@@ -6,6 +6,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +26,7 @@ import com.example.petcarehome.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,15 +40,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-public class MapaFragmentDueno extends Fragment implements View.OnClickListener{
+public class MapaFragmentDueno extends Fragment implements View.OnClickListener {
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
-    private boolean requestingLocationUpdates, mLocationPermissionGranted;
+    private boolean mLocationPermissionGranted;
     private LocationRequest locationRequest;
     private ExtendedFloatingActionButton fabbusqueda, fablocation;
     private GoogleMap mMap;
-    private Location  mLastKnownLocation;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -63,7 +66,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener{
             //googleMap.addMarker(new MarkerOptions().position(cdmx).title("CDMX"));
             mMap = googleMap;
             mMap.moveCamera(CameraUpdateFactory.newLatLng(cdmx));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cdmx,15));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cdmx, 15));
 
         }
     };
@@ -87,8 +90,6 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener{
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-
-
 
 
         //Botones flotates referencias y escuchador
@@ -115,7 +116,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.fab_busqueda:
                 openDialog();
                 break;
@@ -196,7 +197,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener{
     private void getCurrentLocation(boolean mLocationPermissionGranted) {
 
         try {
-            if (mLocationPermissionGranted){
+            if (mLocationPermissionGranted) {
                 //Inicializar la tarea de ubicación.
                 //fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getContext());
                 final Task<Location> task = fusedLocationClient.getLastLocation();
@@ -205,7 +206,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener{
                     @Override
                     public void onSuccess(final Location location) {
                         //Cuando se logra obtener la ubicación
-                        if(location != null){
+                        if (location != null) {
 
                             //Inicializar latitud y longitud
                             LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
@@ -213,21 +214,69 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener{
                             MarkerOptions options = new MarkerOptions().position(current)
                                     .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
                             //Zoom en el mapa
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
                             //Añadir marcador en el mapa
                             mMap.addMarker(options);
                         } else {
+                            /*
                             Toast.makeText(getContext(),"Ubicación actual es null", Toast.LENGTH_LONG).show();
                             Toast.makeText(getContext(),"Exception: " + task.getException(), Toast.LENGTH_LONG).show();
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 15));
+                             */
+
+                            //if (requestingLocationUpdates) {
+                                startLocationUpdates();
+
+                            //}
                         }
                     }
                 });
             }
-        } catch (SecurityException e){
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
 
     }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    //Inicializar latitud y longitud
+                    LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+                    //Crear opciones para el marcador
+                    MarkerOptions options = new MarkerOptions().position(current)
+                            .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
+                    //Zoom en el mapa
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
+                    //Añadir marcador en el mapa
+                    mMap.addMarker(options);
+                }
+            }
+        };
+
+
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                Looper.getMainLooper());
+    }
+
 
 }
