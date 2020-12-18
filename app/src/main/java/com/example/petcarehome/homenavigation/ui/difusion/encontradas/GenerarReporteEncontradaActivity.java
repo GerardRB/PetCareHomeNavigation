@@ -418,7 +418,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
             firebaseDatabase = FirebaseDatabase.getInstance();
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null){
-                idUser = user.getEmail();
+                idUser = user.getUid();
             }
             final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE).push();
             idRep = reportesPReference.getKey();
@@ -433,7 +433,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                     while (!uriTask.isSuccessful());
                     downloadUri = uriTask.getResult();
-                    String idUserf = user.getEmail();
+                    String idUserf = user.getUid();
                     ReporteEncontradas reporteE = new ReporteEncontradas(tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), idUserf);
                     //Guardar en base de datos
 

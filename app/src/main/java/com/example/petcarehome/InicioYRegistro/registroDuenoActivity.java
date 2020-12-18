@@ -88,13 +88,13 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
                             String telefono = mtel_dueno.getText().toString();
                             String email = mcorreo_dueno.getText().toString();
 
-                            Dueno Dueno = new Dueno(nombre, apellido, calle, noext, noint, alcaldia, telefono, email, "");
+                            Dueno Dueno = new Dueno(nombre, apellido, calle, noext, noint, alcaldia, telefono, email, "", "Dueno");
 
                             //Creando referencia al usuario actual -> a los dueños en la bd
                             DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("dueno");
 
                             //Haciendo que se ordenen por tel e insertando los valores en la BD
-                            currentUserDB.child(telefono).setValue(Dueno);
+                            currentUserDB.child(mAuth.getCurrentUser().getUid()).setValue(Dueno);
 
                             //Si es correcto llevar a otra actividad (login)
                             Intent intent = new Intent(registroDuenoActivity.this, HomeActivity_Dueno.class);

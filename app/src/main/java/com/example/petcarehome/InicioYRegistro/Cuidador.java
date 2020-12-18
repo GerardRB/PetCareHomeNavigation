@@ -1,20 +1,24 @@
 package com.example.petcarehome.InicioYRegistro;
 
 public class Cuidador {
-    String nombre, apellidos, calle, noext, noint, alcaldia, cel, correo, foto, comentarios;
-    Boolean estado;
+    String nombre, apellidos, calle, noext, noint, alcaldia, telefono, correo, foto, comentarios, estado, tipo;
     Mascota mascota;
     Servicio servicio;
-    Double calificacion;
+    Double calificacion, lat, lng;
 
-    public Cuidador(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String cel, String correo, String foto, String comentarios, Boolean estado, Mascota mascota, Servicio servicio, Double calificacion) {
+
+    public Cuidador(){
+
+    }
+
+    public Cuidador(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String telefono, String correo, String foto, String comentarios, String estado, Mascota mascota, Servicio servicio, Double calificacion, Double lat, Double lng, String tipo) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.calle = calle;
         this.noext = noext;
         this.noint = noint;
         this.alcaldia = alcaldia;
-        this.cel = cel;
+        this.telefono = telefono;
         this.correo = correo;
         this.foto = foto;
         this.comentarios = comentarios;
@@ -22,9 +26,9 @@ public class Cuidador {
         this.mascota = mascota;
         this.servicio = servicio;
         this.calificacion = calificacion;
-    }
-    public Cuidador(){
-
+        this.lat = lat;
+        this.lng = lng;
+        this.tipo = tipo;
     }
 
     public String getNombre() {
@@ -75,12 +79,12 @@ public class Cuidador {
         this.alcaldia = alcaldia;
     }
 
-    public String getCel() {
-        return cel;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setCel(String cel) {
-        this.cel = cel;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getCorreo() {
@@ -107,11 +111,11 @@ public class Cuidador {
         this.comentarios = comentarios;
     }
 
-    public Boolean getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(Boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
@@ -137,5 +141,29 @@ public class Cuidador {
 
     public void setCalificacion(Double calificacion) {
         this.calificacion = calificacion;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

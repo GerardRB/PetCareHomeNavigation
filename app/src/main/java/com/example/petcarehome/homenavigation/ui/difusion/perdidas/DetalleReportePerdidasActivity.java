@@ -75,12 +75,12 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
 
                 for (DataSnapshot snapshot:
                         dataSnapshot.getChildren()) {
-                    String mailUser = snapshot.child("correo").getValue(String.class);
-                    if (mailUser.equals(reporteP.getReportePerdidas().getUsuario())){
+                    String idUser = snapshot.getKey();
+                    if (idUser.equals(reporteP.getReportePerdidas().getUsuario())){
                         Cuidador cuidador = snapshot.getValue(Cuidador.class);
                         nombreUser.setText(cuidador.getNombre() + " " + cuidador.getApellidos());
                         correoUser.setText(cuidador.getCorreo());
-                        telefonoUser.setText(cuidador.getCel());
+                        telefonoUser.setText(cuidador.getTelefono());
                         domicilio.setText(cuidador.getCalle() + " " + cuidador.getNoext() + " " + cuidador.getNoint() + ", " + cuidador.getAlcaldia());
                     }
 
@@ -104,8 +104,8 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
 
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
-                        String mailUser = snapshot.child("correo").getValue(String.class);
-                        if (mailUser.equals(reporteP.getReportePerdidas().getUsuario())){
+                        String idUser = snapshot.getKey();
+                        if (idUser.equals(reporteP.getReportePerdidas().getUsuario())){
                             Dueno dueno = snapshot.getValue(Dueno.class);
                             nombreUser.setText(dueno.getNombre() + " " + dueno.getApellidos());
                             correoUser.setText(dueno.getCorreo());

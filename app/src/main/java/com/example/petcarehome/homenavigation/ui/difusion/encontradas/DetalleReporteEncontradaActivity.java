@@ -73,12 +73,12 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity {
 
                 for (DataSnapshot snapshot:
                         dataSnapshot.getChildren()) {
-                    String mailUser = snapshot.child("correo").getValue(String.class);
-                    if (mailUser.equals(reporteE.getReporteEncontradas().getIdUser())){
+                    String idUser = snapshot.getKey();
+                    if (idUser.equals(reporteE.getReporteEncontradas().getIdUser())){
                         Cuidador cuidador = snapshot.getValue(Cuidador.class);
                         nombreUser.setText(cuidador.getNombre() + " " + cuidador.getApellidos());
                         correoUser.setText(cuidador.getCorreo());
-                        telefonoUser.setText(cuidador.getCel());
+                        telefonoUser.setText(cuidador.getTelefono());
                         domicilio.setText(cuidador.getCalle() + " " + cuidador.getNoext() + " " + cuidador.getNoint() + ", " + cuidador.getAlcaldia());
                     }
 
@@ -102,8 +102,8 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity {
 
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
-                        String mailUser = snapshot.child("correo").getValue(String.class);
-                        if (mailUser.equals(reporteE.getReporteEncontradas().getIdUser())){
+                        String idUser = snapshot.getKey();
+                        if (idUser.equals(reporteE.getReporteEncontradas().getIdUser())){
                             Dueno dueno = snapshot.getValue(Dueno.class);
                             nombreUser.setText(dueno.getNombre() + " " + dueno.getApellidos());
                             correoUser.setText(dueno.getCorreo());

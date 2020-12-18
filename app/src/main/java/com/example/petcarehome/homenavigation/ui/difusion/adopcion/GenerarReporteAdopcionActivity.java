@@ -228,7 +228,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
             firebaseDatabase = FirebaseDatabase.getInstance();
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null){
-                idUser = user.getEmail();
+                idUser = user.getUid();
             }
             final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE).push();
             idRep = reportesPReference.getKey();
@@ -243,7 +243,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                     while (!uriTask.isSuccessful());
                     downloadUri = uriTask.getResult();
-                    String idUserf = user.getEmail();
+                    String idUserf = user.getUid();
                     ReporteAdopcion reporteA = new ReporteAdopcion(tipoM, razaM, edadM, vacunas, esterilizacion, alcaldiaA, coloniaA, calleA, descripcionA, downloadUri.toString(), idUserf);
                     //Guardar en base de datos
 

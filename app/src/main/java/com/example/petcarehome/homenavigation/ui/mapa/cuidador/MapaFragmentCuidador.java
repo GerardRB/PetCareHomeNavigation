@@ -23,7 +23,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -40,6 +42,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MapaFragmentCuidador extends Fragment implements View.OnClickListener{
 
@@ -51,6 +60,11 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
     private SwitchCompat estadoButton;
     private GoogleMap mMap;
     private Location mLastKnownLocation;
+
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference cuidadorRef;
+    private FirebaseUser firebaseUser;
+    private String idCuidador;
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -101,6 +115,30 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         estadoButton = view.findViewById(R.id.switch1);
         estadoButton.setOnClickListener(this);
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        idCuidador = firebaseUser.getUid();
+
+        cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE).child(idCuidador);
+
+        cuidadorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String estadoCuidador = dataSnapshot.child("estado").getValue(String.class);
+                if (estadoCuidador.equals("Activo")){
+                    estadoButton.setChecked(true);
+                } else {
+                    estadoButton.setChecked(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 
     }
 
@@ -118,9 +156,27 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
     private void cambiarEstado() {
         if (estadoButton.isChecked()){
-            Toast.makeText(getContext(),"Estado: Activo", Toast.LENGTH_LONG).show();
+            cuidadorRef.child("estado").setValue("Activo", new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                    if (databaseError != null){
+                        Toast.makeText(getContext(), "No se pudo actualizar tu estado\nEstado: Inactivo", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Actualización de estado exitosa.\nEstado: Activo", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         } else {
-            Toast.makeText(getContext(),"Estado: Inactivo", Toast.LENGTH_LONG).show();
+            cuidadorRef.child("estado").setValue("Inactivo", new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                    if (databaseError != null){
+                        Toast.makeText(getContext(), "No se pudo actualizar tu estado\nEstado: Activo", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Actualización de estado exitosa.\nEstado: Inactivo", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
     }
 
