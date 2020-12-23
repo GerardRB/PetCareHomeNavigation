@@ -131,7 +131,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //Verifica el estado en la base de datos
-                String estadoCuidador = dataSnapshot.child("estado").getValue(String.class);
+                String estadoCuidador = dataSnapshot.child(FirebaseReferences.ESTADO_CUIDADOR).getValue(String.class);
                 //Si es activo...
                 if (estadoCuidador.equals("Activo")) {
                     //Pone el switch en activo
@@ -187,7 +187,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                 //Actualiza la ubicación en la base de datos
                 updateLocationFB(locationFB);
                 //Actualiza el estado en la base de datos
-                cuidadorRef.child("estado").setValue("Activo", new DatabaseReference.CompletionListener() {
+                cuidadorRef.child(FirebaseReferences.ESTADO_CUIDADOR).setValue("Activo", new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                         if (databaseError != null) {
@@ -202,7 +202,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             //Borra la ubicación de la base de datos
             deleteLocationFB();
             //Actualiza el estado en la base de datos
-            cuidadorRef.child("estado").setValue("Inactivo", new DatabaseReference.CompletionListener() {
+            cuidadorRef.child(FirebaseReferences.ESTADO_CUIDADOR).setValue("Inactivo", new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                     if (databaseError != null) {
@@ -220,7 +220,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
     //Actualizar la ubicacion en la base de datos
     private void updateLocationFB(LatLng locationFB) {
-        cuidadorRef.child("lat").setValue(locationFB.latitude, new DatabaseReference.CompletionListener() {
+        cuidadorRef.child(FirebaseReferences.LATITUD_CUIDADOR).setValue(locationFB.latitude, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError != null) {
@@ -228,7 +228,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                 }
             }
         });
-        cuidadorRef.child("lng").setValue(locationFB.longitude, new DatabaseReference.CompletionListener() {
+        cuidadorRef.child(FirebaseReferences.LONGITUD_CUIDADOR).setValue(locationFB.longitude, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError != null) {
@@ -241,7 +241,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
     //Borrar la ubicacion en la base de datos
     private void deleteLocationFB() {
-        cuidadorRef.child("lat").setValue(null, new DatabaseReference.CompletionListener() {
+        cuidadorRef.child(FirebaseReferences.LATITUD_CUIDADOR).setValue(null, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError != null) {
@@ -249,7 +249,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                 }
             }
         });
-        cuidadorRef.child("lng").setValue(null, new DatabaseReference.CompletionListener() {
+        cuidadorRef.child(FirebaseReferences.LONGITUD_CUIDADOR).setValue(null, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError != null) {

@@ -12,6 +12,9 @@ public class FirebaseReferences {
     final public static String USERS_REFERENCE = "usuario";
     final public static String CUIDADOR_REFERENCE = "cuidador";
     final public static String DUENO_REFERENCE = "dueno";
+    final public static String LATITUD_CUIDADOR = "lat";
+    final public static String LONGITUD_CUIDADOR = "lng";
+    final public static String ESTADO_CUIDADOR = "estado";
 
     // Cosas para petfriendly
     final public static String LUGARES_PET_FRIENDLY_REFERENCE = "lugaresPetFriendly";
