@@ -18,6 +18,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -50,6 +52,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Locale;
+
 public class MapaFragmentDueno extends Fragment implements View.OnClickListener {
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -61,6 +68,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
 
     private MarkerOptions marker;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+
+    private String currentAddress;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -263,6 +272,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     mMap.clear();
                     //Inicializar latitud y longitud
                     LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+
                     //Crear opciones para el marcador
                     marker = new MarkerOptions().position(current)
                             .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
