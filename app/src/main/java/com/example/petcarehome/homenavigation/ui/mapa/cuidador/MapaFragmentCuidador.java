@@ -12,6 +12,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -44,6 +45,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -204,7 +206,8 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                     }
                 });
             }
-        } else { // Si el switch.isChecked == false entonces
+        } else {
+            // Si el switch.isChecked == false entonces
             //Borra la ubicación de la base de datos
             deleteLocationFB();
             //Actualiza el estado en la base de datos
@@ -218,8 +221,10 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                     }
                 }
             });
-            //Detiene las actualizaciones de ubicacion
-            stopLocationUpdates();
+            if (marker != null){
+                //Detiene las actualizaciones de ubicacion
+                stopLocationUpdates();
+            }
         }
     }
 
@@ -307,12 +312,6 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             return;
         }
 
-        //creación de la solicitud de ubicacion
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        startLocationUpdates(locationRequest);
-
         final Task<Location> task = fusedLocationClient.getLastLocation();
 
                 task.addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -324,6 +323,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                         }
                     }
                 });
+
     }
 
 
@@ -357,7 +357,8 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                         // Show the dialog by calling startResolutionForResult(),
                         // and check the result in onActivityResult().
                         ResolvableApiException resolvable = (ResolvableApiException) e;
-                        resolvable.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
+                        //resolvable.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
+                        startIntentSenderForResult(resolvable.getResolution().getIntentSender(), REQUEST_CHECK_SETTINGS, null, 0, 0, 0, null);
                     } catch (IntentSender.SendIntentException sendEx) {
                         // Ignore the error.
                     }
@@ -367,7 +368,16 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK){
+                //creación de la solicitud de ubicacion
+                locationRequest = LocationRequest.create();
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                startLocationUpdates(locationRequest);
+        }
+    }
 
     //Iniciar los servicios de actualizacion de ubicación
     private void startLocationUpdates(LocationRequest locationRequest) {
