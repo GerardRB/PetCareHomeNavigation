@@ -9,8 +9,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,21 +20,22 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,6 +44,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -69,6 +73,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
     private DatabaseReference cuidadorRef;
     private FirebaseUser firebaseUser;
     private String idCuidador;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -137,7 +142,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                     //Pone el switch en activo
                     estadoButton.setChecked(true);
                     //Inicia los servicios de actualizacion de ubicación
-                    startLocationUpdates();
+                    checkLocationSettings();
                     //Obtiene la  ubicación y la actualiza en la base de datos
                     getLastLoc();
                 } else {
@@ -161,10 +166,11 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                 cambiarEstado();
                 break;
             case R.id.fab_location_cuidador:
-                startLocationUpdates();
+                checkLocationSettings();
 
         }
     }
+
 
     private void cambiarEstado() {
         if (estadoButton.isChecked()) {
@@ -300,6 +306,13 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        //creación de la solicitud de ubicacion
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        startLocationUpdates(locationRequest);
+
         final Task<Location> task = fusedLocationClient.getLastLocation();
 
                 task.addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -314,17 +327,54 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
     }
 
 
-
-    //Iniciar los servicios de actualizacion de ubicación
-    private void startLocationUpdates() {
-        //revision de permisos
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+    private void checkLocationSettings(){
 
         //creación de la solicitud de ubicacion
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        //Verificar la configuracion actual de la ubicación
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        SettingsClient client = LocationServices.getSettingsClient(getActivity());
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+
+        task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                startLocationUpdates(locationRequest);
+            }
+        });
+
+        task.addOnFailureListener(getActivity(), new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        resolvable.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+
+    }
+
+
+
+    //Iniciar los servicios de actualizacion de ubicación
+    private void startLocationUpdates(LocationRequest locationRequest) {
+        //revision de permisos
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
 
         //Devolucion de la llamada de la solicitud de la ubicacion
         locationCallback = new LocationCallback() {
@@ -352,6 +402,8 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 Looper.getMainLooper());
+
+
     }
 
     //Detener los servicios de actualizacion de ubicacion
