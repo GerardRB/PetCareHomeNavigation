@@ -2,17 +2,24 @@ package com.example.petcarehome.homenavigation.ui.mapa.dueno;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -23,11 +30,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.petcarehome.R;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,9 +47,15 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Locale;
 
 public class MapaFragmentDueno extends Fragment implements View.OnClickListener {
 
@@ -48,6 +65,11 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     private LocationRequest locationRequest;
     private ExtendedFloatingActionButton fabbusqueda, fablocation;
     private GoogleMap mMap;
+
+    private MarkerOptions marker;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+
+    private String currentAddress;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -99,6 +121,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         fabbusqueda.setOnClickListener(this);
         fablocation.setOnClickListener(this);
 
+        marker = null;
+
         /*Boton estado cuidador
         final ToggleButton switchEstado = root.findViewById(R.id.switch1);
         switchEstado.setOnClickListener(new View.OnClickListener() {
@@ -121,23 +145,31 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                 openDialog();
                 break;
             case R.id.fab_location:
-                getLocationPermission();
+                checkLocationSettings();
 
         }
     }
 
     private void openDialog() {
-        BuscarCuidadoresDialog buscarCuidadoresDialog = new BuscarCuidadoresDialog();
-        buscarCuidadoresDialog.show(getChildFragmentManager(), "Buscar un cuidador");
+        if (marker == null){
+            AlertDialog.Builder obtenerUbiError = new AlertDialog.Builder(getActivity());
+            obtenerUbiError.setMessage("Debes obtener tu ubicación antes de realizar una búsqueda de cuidadores.")
+                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+        } else {
+            BuscarCuidadoresDialog buscarCuidadoresDialog = new BuscarCuidadoresDialog();
+            buscarCuidadoresDialog.show(getChildFragmentManager(), "Buscar un cuidador");
+        }
+
     }
 
-
+    /*
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
+
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -150,39 +182,9 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     44);
         }
-    }
-
-    /*
-    private void getDeviceLocation(boolean mLocationPermissionGranted) {
-        //Get the best and most recent location of the device, which may be null in rare cases when a location is not available.
-
-        try {
-            if (mLocationPermissionGranted) {
-                Task locationResult = fusedLocationClient.getLastLocation();
-                locationResult.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            Toast.makeText(getContext(),"Actualizando ubicación", Toast.LENGTH_LONG).show();
-                            mLastKnownLocation = (Location) task.getResult();
-                            LatLng current = new LatLng(mLastKnownLocation.getLatitude(),
-                                    mLastKnownLocation.getLongitude());
-                            mMap.addMarker(new MarkerOptions().position(current).title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual"));
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current,15));
-
-                        } else {
-                            Toast.makeText(getContext(),"Ubicación actual es null", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getContext(),"Exception: " + task.getException(), Toast.LENGTH_LONG).show();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 15));
-                        }
-                    }
-                });
-            }
-        } catch(SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
-        }
     }*/
+
+
 
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
@@ -194,48 +196,60 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    /*
-    private void getCurrentLocation(boolean mLocationPermissionGranted) {
+    private void checkLocationSettings(){
 
-        try {
-            if (mLocationPermissionGranted) {
-                //Inicializar la tarea de ubicación.
-                //fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getContext());
-                final Task<Location> task = fusedLocationClient.getLastLocation();
+        //creación de la solicitud de ubicacion
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-                task.addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(final Location location) {
-                        //Cuando se logra obtener la ubicación
-                        mMap.clear();
-                        if (location != null) {
+        //Verificar la configuracion actual de la ubicación
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        SettingsClient client = LocationServices.getSettingsClient(getActivity());
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
 
-                            //Inicializar latitud y longitud
-                            LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
-                            //Crear opciones para el marcador
-                            MarkerOptions options = new MarkerOptions().position(current)
-                                    .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
-                            //Zoom en el mapa
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
-                            //Añadir marcador en el mapa
-                            mMap.addMarker(options);
-                        } else {
 
-                                //Metodo para hacer actualizacion de la ubicación
-                                startLocationUpdates();
-
-                            //}
-                        }
-                    }
-                });
+        task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                startLocationUpdates(locationRequest);
             }
-        } catch (SecurityException e) {
-            Log.e("Exception: %s", e.getMessage());
+        });
+
+        task.addOnFailureListener(getActivity(), new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        //resolvable.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
+                        startIntentSenderForResult(resolvable.getResolution().getIntentSender(), REQUEST_CHECK_SETTINGS, null, 0, 0, 0, null);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK){
+            //creación de la solicitud de ubicacion
+            locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            startLocationUpdates(locationRequest);
         }
+    }
 
-    }*/
 
-    private void startLocationUpdates() {
+    private void startLocationUpdates(LocationRequest locationRequest) {
         //revision de permisos
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -258,13 +272,14 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     mMap.clear();
                     //Inicializar latitud y longitud
                     LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+
                     //Crear opciones para el marcador
-                    MarkerOptions options = new MarkerOptions().position(current)
+                    marker = new MarkerOptions().position(current)
                             .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
                     //Zoom en el mapa
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
                     //Añadir marcador en el mapa
-                    mMap.addMarker(options);
+                    mMap.addMarker(marker);
                 }
             }
         };
@@ -273,6 +288,15 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 Looper.getMainLooper());
+    }
+
+    //Detener los servicios de actualizacion de ubicacion
+    private void stopLocationUpdates() {
+        //Detiene los servicios de actualizacion de ubicacion
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+        //Mandar marker a null y limpiar el mapa
+        marker = null;
+        mMap.clear();
     }
 
 

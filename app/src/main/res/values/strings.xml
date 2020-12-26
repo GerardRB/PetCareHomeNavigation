@@ -115,6 +115,7 @@
     <string name="title_mapa_cuidador">Mapa</string>
     <string name="estado_inactivo">Inactivo</string>
     <string name="estado_activo">Activo</string>
+    <string name="label_dialog_ubicacion">Ubicación:</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION

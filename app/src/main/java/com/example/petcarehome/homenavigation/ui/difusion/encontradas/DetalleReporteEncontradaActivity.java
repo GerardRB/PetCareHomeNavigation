@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.InicioYRegistro.Dueno;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
@@ -20,8 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 public class DetalleReporteEncontradaActivity extends AppCompatActivity {
 
@@ -134,17 +133,7 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity {
         calle.setText(reporteE.getReporteEncontradas().getCalle());
         descripcion.setText(reporteE.getReporteEncontradas().getDescripcion());
         //correoUser.setText(reporteE.getReporteEncontradas().getIdUser());
-        Picasso.with(this).load(reporteE.getReporteEncontradas().getFoto()).into(foto, new Callback() {
-            @Override
-            public void onSuccess() {
-                foto.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onError() {
-                Toast.makeText(getApplicationContext(),"Error al cargar imagen", Toast.LENGTH_LONG).show();
-            }
-        });
+        Glide.with(this).load(reporteE.getReporteEncontradas().getFoto()).into(foto);
 
 
     }

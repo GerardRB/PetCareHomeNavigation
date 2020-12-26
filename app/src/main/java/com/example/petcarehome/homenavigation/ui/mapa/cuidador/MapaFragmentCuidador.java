@@ -2,13 +2,18 @@ package com.example.petcarehome.homenavigation.ui.mapa.cuidador;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,21 +21,22 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -39,6 +45,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -50,7 +58,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MapaFragmentCuidador extends Fragment implements View.OnClickListener{
+public class MapaFragmentCuidador extends Fragment implements View.OnClickListener {
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
@@ -61,10 +69,13 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
     private GoogleMap mMap;
     private Location mLastKnownLocation;
 
+    private MarkerOptions marker;
+
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference cuidadorRef;
     private FirebaseUser firebaseUser;
     private String idCuidador;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -84,7 +95,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             //googleMap.addMarker(new MarkerOptions().position(cdmx).title("CDMX"));
             mMap = googleMap;
             mMap.moveCamera(CameraUpdateFactory.newLatLng(cdmx));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cdmx,15));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cdmx, 15));
         }
     };
 
@@ -119,14 +130,23 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         idCuidador = firebaseUser.getUid();
 
-        cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE).child(idCuidador);
+        marker = null;
 
+        cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE).child(idCuidador);
+        //Poner el switch dependiendo del estado en el que esté el cuidador en la base de datos
         cuidadorRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String estadoCuidador = dataSnapshot.child("estado").getValue(String.class);
-                if (estadoCuidador.equals("Activo")){
+                //Verifica el estado en la base de datos
+                String estadoCuidador = dataSnapshot.child(FirebaseReferences.ESTADO_CUIDADOR).getValue(String.class);
+                //Si es activo...
+                if (estadoCuidador.equals("Activo")) {
+                    //Pone el switch en activo
                     estadoButton.setChecked(true);
+                    //Inicia los servicios de actualizacion de ubicación
+                    checkLocationSettings();
+                    //Obtiene la  ubicación y la actualiza en la base de datos
+                    getLastLoc();
                 } else {
                     estadoButton.setChecked(false);
                 }
@@ -139,54 +159,121 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         });
 
 
-
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.switch1:
                 cambiarEstado();
                 break;
             case R.id.fab_location_cuidador:
-                getLocationPermission();
+                checkLocationSettings();
 
         }
     }
 
+
     private void cambiarEstado() {
-        if (estadoButton.isChecked()){
-            cuidadorRef.child("estado").setValue("Activo", new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                    if (databaseError != null){
-                        Toast.makeText(getContext(), "No se pudo actualizar tu estado\nEstado: Inactivo", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getContext(), "Actualización de estado exitosa.\nEstado: Activo", Toast.LENGTH_LONG).show();
+        if (estadoButton.isChecked()) {
+            //Verificar que se tenga una ubicación definida para actualizar el estado
+            //Si no está definida, se muestra un dialogo que muestra un mensaje al usuario para que obtenga su ubicación
+            if (marker == null) {
+                AlertDialog.Builder obtenerUbiError = new AlertDialog.Builder(getActivity());
+                obtenerUbiError.setMessage("Debes obtener tu ubicación antes de cambiar a estado ACTIVO")
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                estadoButton.setChecked(false);
+            } else { //Si sí hay una ubicación definida obtiene la ubicación del marcador
+                double lati = marker.getPosition().latitude;
+                double lngi = marker.getPosition().longitude;
+                LatLng locationFB = new LatLng(lati, lngi);
+                //Actualiza la ubicación en la base de datos
+                updateLocationFB(locationFB);
+                //Actualiza el estado en la base de datos
+                cuidadorRef.child(FirebaseReferences.ESTADO_CUIDADOR).setValue("Activo", new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            Toast.makeText(getContext(), "No se pudo actualizar tu estado\nEstado: Inactivo", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getContext(), "Actualización de estado exitosa.\nEstado: Activo", Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-            });
+                });
+            }
         } else {
-            cuidadorRef.child("estado").setValue("Inactivo", new DatabaseReference.CompletionListener() {
+            // Si el switch.isChecked == false entonces
+            //Borra la ubicación de la base de datos
+            deleteLocationFB();
+            //Actualiza el estado en la base de datos
+            cuidadorRef.child(FirebaseReferences.ESTADO_CUIDADOR).setValue("Inactivo", new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                    if (databaseError != null){
+                    if (databaseError != null) {
                         Toast.makeText(getContext(), "No se pudo actualizar tu estado\nEstado: Activo", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getContext(), "Actualización de estado exitosa.\nEstado: Inactivo", Toast.LENGTH_LONG).show();
                     }
                 }
             });
+            if (marker != null){
+                //Detiene las actualizaciones de ubicacion
+                stopLocationUpdates();
+            }
         }
     }
 
 
+    //Actualizar la ubicacion en la base de datos
+    private void updateLocationFB(LatLng locationFB) {
+        cuidadorRef.child(FirebaseReferences.LATITUD_CUIDADOR).setValue(locationFB.latitude, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Toast.makeText(getContext(), "No se pudo actualizar tu latitud", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cuidadorRef.child(FirebaseReferences.LONGITUD_CUIDADOR).setValue(locationFB.longitude, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Toast.makeText(getContext(), "No se pudo actualizar tu longitud", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
+    //Borrar la ubicacion en la base de datos
+    private void deleteLocationFB() {
+        cuidadorRef.child(FirebaseReferences.LATITUD_CUIDADOR).setValue(null, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Toast.makeText(getContext(), "No se pudo actualizar tu latitud", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cuidadorRef.child(FirebaseReferences.LONGITUD_CUIDADOR).setValue(null, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    Toast.makeText(getContext(), "No se pudo actualizar tu longitud", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
+    /*
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
+
         if (ActivityCompat.checkSelfPermission(this.getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -199,8 +286,9 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     44);
         }
-    }
+    }*/
 
+    //Crear marcador personalizado
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
@@ -210,55 +298,93 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    /*
-    private void getCurrentLocation(boolean mLocationPermissionGranted) {
 
-        try {
-            if (mLocationPermissionGranted){
-                //Inicializar la tarea de ubicación.
-                //fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getContext());
-                final Task<Location> task = fusedLocationClient.getLastLocation();
+    //Actualizar la ubicación en la base de datos cuando se inicia la app y se está en estado activo
+    private void getLastLoc() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        final Task<Location> task = fusedLocationClient.getLastLocation();
 
                 task.addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(final Location location) {
                         //Cuando se logra obtener la ubicación
-                        if(location != null){
-
-                            //Inicializar latitud y longitud
-                            LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
-                            //Crear opciones para el marcador
-                            MarkerOptions options = new MarkerOptions().position(current)
-                                    .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
-                            //Zoom en el mapa
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
-                            //Añadir marcador en el mapa
-                            mMap.addMarker(options);
-                        } else {
-                            Toast.makeText(getContext(),"Ubicación actual es null", Toast.LENGTH_LONG).show();
-                            Toast.makeText(getContext(),"Exception: " + task.getException(), Toast.LENGTH_LONG).show();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(19.504803, -99.146900), 15));
+                        if(location != null) {
+                            updateLocationFB(new LatLng(location.getLatitude(), location.getLongitude()));
                         }
                     }
                 });
+
+    }
+
+
+    private void checkLocationSettings(){
+
+        //creación de la solicitud de ubicacion
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        //Verificar la configuracion actual de la ubicación
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        SettingsClient client = LocationServices.getSettingsClient(getActivity());
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+
+
+        task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                startLocationUpdates(locationRequest);
             }
-        } catch (SecurityException e){
-            Log.e("Exception: %s", e.getMessage());
+        });
+
+        task.addOnFailureListener(getActivity(), new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        //resolvable.startResolutionForResult(getActivity(), REQUEST_CHECK_SETTINGS);
+                        startIntentSenderForResult(resolvable.getResolution().getIntentSender(), REQUEST_CHECK_SETTINGS, null, 0, 0, 0, null);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK){
+                //creación de la solicitud de ubicacion
+                locationRequest = LocationRequest.create();
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                startLocationUpdates(locationRequest);
         }
+    }
 
-    }*/
-
-    private void startLocationUpdates() {
+    //Iniciar los servicios de actualizacion de ubicación
+    private void startLocationUpdates(LocationRequest locationRequest) {
         //revision de permisos
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
-        //creación de la solicitud de ubicacion
-        locationRequest = LocationRequest.create();
-        locationRequest.setInterval(60000);
-        locationRequest.setFastestInterval(30000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         //Devolucion de la llamada de la solicitud de la ubicacion
         locationCallback = new LocationCallback() {
@@ -272,12 +398,12 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                     //Inicializar latitud y longitud
                     LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
                     //Crear opciones para el marcador
-                    MarkerOptions options = new MarkerOptions().position(current)
+                    marker = new MarkerOptions().position(current)
                             .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
                     //Zoom en el mapa
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
                     //Añadir marcador en el mapa
-                    mMap.addMarker(options);
+                    mMap.addMarker(marker);
                 }
             }
         };
@@ -286,6 +412,17 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 Looper.getMainLooper());
+
+
+    }
+
+    //Detener los servicios de actualizacion de ubicacion
+    private void stopLocationUpdates() {
+        //Detiene los servicios de actualizacion de ubicacion
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+        //Mandar marker a null y limpiar el mapa
+        marker = null;
+        mMap.clear();
     }
 
 

@@ -11,11 +11,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradasID;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -45,17 +44,7 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
         holder.etifecha.setText(listReportesEncontradas.get(position).getReporteEncontradas().getFecha());
         holder.etitipo.setText(listReportesEncontradas.get(position).getReporteEncontradas().getTipo());
         holder.etidescripcion.setText(listReportesEncontradas.get(position).getReporteEncontradas().getDescripcion());
-        Picasso.with(context).load(listReportesEncontradas.get(position).getReporteEncontradas().getFoto()).into(holder.foto, new Callback() {
-            @Override
-            public void onSuccess() {
-                holder.foto.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onError() {
-                Toast.makeText(context, "Error al cargar imagenes", Toast.LENGTH_LONG).show();
-            }
-        });
+        Glide.with(context).load(listReportesEncontradas.get(position).getReporteEncontradas().getFoto()).into(holder.foto);
 
     }
 
