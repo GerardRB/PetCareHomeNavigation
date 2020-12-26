@@ -12,6 +12,9 @@ public class FirebaseReferences {
     final public static String USERS_REFERENCE = "usuario";
     final public static String CUIDADOR_REFERENCE = "cuidador";
     final public static String DUENO_REFERENCE = "dueno";
+    final public static String CUIDADOR_LATITUD_REFERENCE = "lat";
+    final public static String CUIDADOR_LONGITUD_REFERENCE = "lng";
+    final public static String CUIDADOR_ESTADO_REFERENCE = "estado";
 
 
 
