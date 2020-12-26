@@ -1,8 +1,14 @@
 package com.example.petcarehome.InicioYRegistro;
 
+import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
+import com.example.petcarehome.homenavigation.Objetos.Mascota;
+import com.example.petcarehome.homenavigation.Objetos.Servicio;
+
+import java.util.ArrayList;
+
 public class Cuidador {
     String nombre, apellidos, calle, noext, noint, alcaldia, telefono, correo, foto, comentarios, estado, tipo;
-    Mascota mascota;
+    ArrayList<Mascota> mascotas;
     Servicio servicio;
     Double calificacion, lat, lng;
 
@@ -11,7 +17,7 @@ public class Cuidador {
 
     }
 
-    public Cuidador(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String telefono, String correo, String foto, String comentarios, String estado, Mascota mascota, Servicio servicio, Double calificacion, Double lat, Double lng, String tipo) {
+    public Cuidador(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String telefono, String correo, String foto, String comentarios, String estado, ArrayList<Mascota> mascotas, Servicio servicio, Double calificacion, Double lat, Double lng, String tipo) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.calle = calle;
@@ -23,7 +29,7 @@ public class Cuidador {
         this.foto = foto;
         this.comentarios = comentarios;
         this.estado = estado;
-        this.mascota = mascota;
+        this.mascotas = mascotas;
         this.servicio = servicio;
         this.calificacion = calificacion;
         this.lat = lat;
@@ -119,12 +125,12 @@ public class Cuidador {
         this.estado = estado;
     }
 
-    public Mascota getMascota() {
-        return mascota;
+    public ArrayList<Mascota> getMascotas() {
+        return mascotas;
     }
 
-    public void setMascota(Mascota mascota) {
-        this.mascota = mascota;
+    public void setMascotas(ArrayList<Mascota> mascotas) {
+        this.mascotas = mascotas;
     }
 
     public Servicio getServicio() {

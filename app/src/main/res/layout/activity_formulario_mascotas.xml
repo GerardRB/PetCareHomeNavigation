@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".homenavigation.ui.config.clases_fragmentos.FormularioMascotas">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="50dp"
+        android:text="Registro de mascotas "
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:text="Mascota"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="Tipo de mascota: "
+            android:textColor="@color/textogris"
+            android:textStyle="bold"></TextView>
+
+        <Spinner
+            android:id="@+id/mascot_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Spinner>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="10dp"
+        android:text="Datos del servicio "
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:text="Tipo de servicio: "
+            android:textColor="@color/textogris"
+            android:textStyle="bold"></TextView>
+
+        <CheckBox
+            android:id="@+id/checkbox_paseo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paseo"
+            android:layout_marginLeft="20dp"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_estancia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hospedaje"
+            android:layout_marginLeft="20dp"/>
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="15dp">
+
+    <EditText
+        android:id="@+id/precio_paseo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:paddingRight="30dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Precio del paseo"
+        android:paddingBottom="15dp"
+       android:visibility="invisible"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:id="@+id/precio_hospedaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:paddingLeft="30dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Precio del hospedaje"
+        android:paddingBottom="15dp"
+        android:visibility="invisible"/>
+
+</LinearLayout>
+
+
+
+    <EditText
+        android:id="@+id/comentarios_paseo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Comentarios sobre paseo"
+        android:paddingTop="50dp"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:id="@+id/comentarios_hospedaje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Comentarios sobre hospedaje"
+        android:paddingTop="50dp"
+        android:visibility="invisible"/>
+
+    <Button
+        android:id="@+id/registrar_mascota"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/miboton"
+        android:text="Registrar"
+        android:textColor="#FFFFFF"
+        />
+</LinearLayout>

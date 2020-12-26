@@ -1,4 +1,4 @@
-package com.example.petcarehome.homenavigation.ui.config.clases_fragmentos;
+package com.example.petcarehome.homenavigation.ui.config;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +24,13 @@ import android.widget.Toast;
 import com.example.petcarehome.InicioYRegistro.TipoUserActivity;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.ui.config.FragmentOnBackPressedListener;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.ayuda;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasena;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.idioma;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.mascotas_cuidador;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.notificaciones;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.terminos_y_condiciones;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;

@@ -1,4 +1,4 @@
-package com.example.petcarehome.InicioYRegistro;
+package com.example.petcarehome.homenavigation.Objetos;
 
 public class Servicio {
     String tipoServicio;
