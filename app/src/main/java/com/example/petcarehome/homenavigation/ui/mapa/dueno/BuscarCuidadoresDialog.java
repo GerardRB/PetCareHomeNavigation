@@ -1,9 +1,11 @@
 package com.example.petcarehome.homenavigation.ui.mapa.dueno;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -221,6 +223,10 @@ public class BuscarCuidadoresDialog extends AppCompatDialogFragment {
             } else {
                 //Caso exitoso(Debe generar el filtro)
                 Toast.makeText(getContext(), cad, Toast.LENGTH_LONG).show();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("busqueda", busqueda);
+                Intent i = new Intent().putExtras(bundle);
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
                 dismiss();
             }
 

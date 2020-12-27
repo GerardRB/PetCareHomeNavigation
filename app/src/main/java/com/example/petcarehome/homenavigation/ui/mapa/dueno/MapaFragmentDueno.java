@@ -29,7 +29,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.Objetos.Busqueda;
+import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -51,9 +55,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,11 +75,17 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     private LocationRequest locationRequest;
     private ExtendedFloatingActionButton fabbusqueda, fablocation;
     private GoogleMap mMap;
+    private Busqueda busqueda;
 
     private MarkerOptions marker;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
     private String currentAddress;
+
+
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference cuidadoresRef;
+    private ArrayList<Cuidador> listCuidadores;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -112,6 +128,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+        listCuidadores = new ArrayList<>();
 
 
         //Botones flotates referencias y escuchador
@@ -162,7 +180,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     }).show();
         } else {
             BuscarCuidadoresDialog buscarCuidadoresDialog = new BuscarCuidadoresDialog();
-            buscarCuidadoresDialog.show(getChildFragmentManager(), "Buscar un cuidador");
+            buscarCuidadoresDialog.setTargetFragment(this, 20);
+            buscarCuidadoresDialog.show(getFragmentManager().beginTransaction(), "Buscar un cuidador");
         }
 
     }
@@ -246,6 +265,69 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             startLocationUpdates(locationRequest);
         }
+
+        if (requestCode == 20 && resultCode == Activity.RESULT_OK){
+            Bundle bundle = data.getExtras();
+            busqueda = (Busqueda) bundle.getSerializable("busqueda");
+            iniciarBusqueda(busqueda);
+        }
+
+    }
+
+    private void iniciarBusqueda(Busqueda busqueda) {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        cuidadoresRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
+
+        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapshot:
+                        dataSnapshot.getChildren()) {
+                    String estado = snapshot.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        //Cuidador cuidador = new Cuidador();
+                        String nombre = snapshot.child("nombre").getValue(String.class);
+                        String apellidos = snapshot.child("apellidos").getValue(String.class);
+                        String telefono = snapshot.child("telefono").getValue(String.class);
+                        String email = snapshot.child("correo").getValue(String.class);
+                        Double lat = snapshot.child("lat").getValue(Double.class);
+                        Double lng = snapshot.child("lng").getValue(Double.class);
+                        Cuidador cuidador = new Cuidador();
+                        cuidador.setNombre(nombre);
+                        cuidador.setApellidos(apellidos);
+                        cuidador.setTelefono(telefono);
+                        cuidador.setCorreo(email);
+                        cuidador.setLat(lat);
+                        cuidador.setLng(lng);
+                        listCuidadores.add(cuidador);
+                    }
+                }
+                llenarMapa(listCuidadores);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void llenarMapa(ArrayList<Cuidador> listCuidadores) {
+        for (int i = 0; i < listCuidadores.size(); i++){
+            LatLng locationCuidador = new LatLng(listCuidadores.get(i).getLat(), listCuidadores.get(i).getLng());
+            String nombre, telefono, email;
+            nombre = listCuidadores.get(i).getNombre() + " " + listCuidadores.get(i).getApellidos();
+            telefono = listCuidadores.get(i).getTelefono();
+            email = listCuidadores.get(i).getCorreo();
+
+            String snippetMarker = nombre + "\n Datos de contacto:\nTeléfono: " + telefono + "\nEmail: " + email;
+            //Crear opciones para el marcador
+            MarkerOptions markerCuidador = new MarkerOptions().position(locationCuidador)
+                    .title(nombre).icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet(snippetMarker);
+            mMap.addMarker(markerCuidador);
+        }
     }
 
 
@@ -275,7 +357,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
 
                     //Crear opciones para el marcador
                     marker = new MarkerOptions().position(current)
-                            .title("Mi ubicación").icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet("Ubicación actual");
+                            .title("Mi ubicación").snippet("Ubicación actual");
                     //Zoom en el mapa
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
                     //Añadir marcador en el mapa
