@@ -336,7 +336,7 @@ public class FilterDialog extends AppCompatDialogFragment {
                 bundle.putSerializable("filtro", filtro);
                 Intent i = new Intent().putExtras(bundle);
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
-                dismiss();;
+                dismiss();
             }
         } else {
             Toast.makeText(getContext(), "No seleccionó ningún filtro.", Toast.LENGTH_LONG).show();
