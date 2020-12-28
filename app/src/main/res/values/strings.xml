@@ -73,9 +73,9 @@
     <string name="label_zona_DRMA">Zona</string>
     <string name="fab_busqueda">Buscar un cuidador</string>
     <string name="dialog_ubicacion">Ubicación</string>
-    <string name="label_dialog_tipo_cuidado">Tipo de cuidado:</string>
+    <string name="label_dialog_tipo_cuidado">Tipo de servicio:</string>
     <string name="label_dialog_distancia">Distancia máxima:</string>
-    <string name="text_dialog_distancia">0Km</string>
+    <string name="text_dialog_distancia">0</string>
     <string name="label_filtrar_por">Filtrar por:</string>
     <string name="label_zona">Zona</string>
     <string name="label_fecha">Fecha</string>
@@ -116,6 +116,8 @@
     <string name="estado_inactivo">Inactivo</string>
     <string name="estado_activo">Activo</string>
     <string name="label_dialog_ubicacion">Ubicación:</string>
+    <string name="text_dialog_km">Km</string>
+    <string name="label_buscar_por">Buscar por:</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION

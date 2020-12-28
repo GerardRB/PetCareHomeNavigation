@@ -144,7 +144,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                     //Pone el switch en activo
                     estadoButton.setChecked(true);
                     //Inicia los servicios de actualizacion de ubicación
-                    checkLocationSettings();
+                    getLocationPermission();
                     //Obtiene la  ubicación y la actualiza en la base de datos
                     getLastLoc();
                 } else {
@@ -168,7 +168,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                 cambiarEstado();
                 break;
             case R.id.fab_location_cuidador:
-                checkLocationSettings();
+                getLocationPermission();
 
         }
     }
@@ -271,7 +271,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
     }
 
 
-    /*
+
     private void getLocationPermission() {
 
         if (ActivityCompat.checkSelfPermission(this.getContext(),
@@ -280,13 +280,13 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             //mLocationPermissionGranted = true;
             //getDeviceLocation(mLocationPermissionGranted);
             //getCurrentLocation(mLocationPermissionGranted);
-            startLocationUpdates();
+            checkLocationSettings();
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     44);
         }
-    }*/
+    }
 
     //Crear marcador personalizado
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {

@@ -32,48 +32,112 @@
         android:hint="@string/dialog_ubicacion"
         android:textColor="@color/colorPrimary" />
 
-    <TextView
-        android:id="@+id/label_dialog_tipo_mascota"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/label_tipo"
-        android:textSize="20sp"
-        tools:ignore="MissingConstraints" />
-
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/dialog_tipo_mascota"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:theme="@style/Spinner"
-        tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/label_dialog_tipo_cuidado"
+            android:id="@+id/label_buscar_por"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
-            android:text="@string/label_dialog_tipo_cuidado"
+            android:text="@string/label_buscar_por"
             android:textSize="20sp"
             tools:ignore="MissingConstraints" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/dialog_tipo_cuidado"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="20dp"
-            android:theme="@style/Spinner"
-            tools:ignore="MissingConstraints" />
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <CheckBox
+                android:id="@+id/checkBox_tipo_mascota_busqueda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/label_tipo"
+                />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/dialog_tipo_mascota"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:theme="@style/Spinner"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <CheckBox
+                android:id="@+id/checkBox_tipo_servicio_busqueda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/label_dialog_tipo_cuidado"
+                />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/dialog_tipo_cuidado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:theme="@style/Spinner"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <CheckBox
+                android:id="@+id/checkBox_distancia_busqueda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/label_dialog_distancia"
+                />
+
+            <TextView
+                android:id="@+id/text_dialog_distancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/text_dialog_distancia"
+                android:textSize="20sp"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/label_text_km"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/text_dialog_km"
+                android:textSize="20sp"
+                tools:ignore="MissingConstraints" />
+
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -82,25 +146,9 @@
             android:orientation="horizontal"
             android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/label_dialog_distancia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="@string/label_dialog_distancia"
-                android:textSize="20sp"
-                tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/text_dialog_distancia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="@string/text_dialog_distancia"
-                android:textSize="20sp"
-                tools:ignore="MissingConstraints" />
+
+
 
 
 
