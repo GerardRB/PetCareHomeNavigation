@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingTop="5dp"
-        android:paddingBottom="50dp"
+        android:paddingBottom="10dp"
         android:text="Mis mascotas "
         android:textSize="25sp" />
 
@@ -26,7 +26,7 @@
         android:textColor="#ffffff"
         android:tint="@color/colorAccent"
        android:src="@drawable/ic_add"
-        android:layout_gravity="end|bottom"
+        android:layout_gravity="bottom|end"
 
         >
 

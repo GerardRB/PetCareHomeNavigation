@@ -17,12 +17,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.load.Option;
 import com.example.petcarehome.InicioYRegistro.Cuidador;
+import com.example.petcarehome.InicioYRegistro.registroCuidadorActivity;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.HomeActivity_Cuidador;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -46,8 +50,7 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
     //Para la bd
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
-    FirebaseReferences firebaseReferences;
-    Cuidador cuidador;
+
 
 
     @Override
@@ -241,7 +244,20 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
         mascop.add(mp);
 
         for(Mascota masco : mascop) {
-            cuidadorRef.child(tipomasco).setValue(masco);
+            cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(!task.isSuccessful()){
+                        Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
+                        startActivity(intent);
+                        finish();
+                        return;
+                    }
+                }
+            });
         }
                 }
 
@@ -272,7 +288,20 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
                     // cuidadorMap.put("Mascotas", mascop);
 
                     for(Mascota masco : mascoh) {
-                        cuidadorRef.child(tipomasco).setValue(masco);
+                        cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(!task.isSuccessful()){
+                                    Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
+                                    startActivity(i);
+                                    finish();
+                                    return;
+                                }
+                            }
+                        });
                     }
                 }
 
@@ -319,11 +348,22 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
 
 
                     for(Mascota masco : mascop) {
-                        cuidadorRef.child(tipomasco).setValue(masco);
+                        cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(!task.isSuccessful()){
+                                    Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
+                                    Intent ii = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
+                                    startActivity(ii);
+                                    finish();
+                                    return;
+                                }
+                            }
+                        });
                     }
-
         }
-
         }
 
 
