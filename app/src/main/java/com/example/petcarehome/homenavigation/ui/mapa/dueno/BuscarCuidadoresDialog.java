@@ -167,7 +167,7 @@ public class BuscarCuidadoresDialog extends AppCompatDialogFragment {
         LatLng ubicacion;
         boolean e = false;
 
-        Busqueda busqueda = new Busqueda();
+        Busqueda busqueda = new Busqueda(null, "", "", 0);
 
         tipoM = spinnerMascota.getSelectedItem().toString();
         tipoS = spinnerCuidado.getSelectedItem().toString();
