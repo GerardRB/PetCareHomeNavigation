@@ -76,11 +76,19 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
                         dataSnapshot.getChildren()) {
                     String idUser = snapshot.getKey();
                     if (idUser.equals(reporteP.getReportePerdidas().getUsuario())){
-                        Cuidador cuidador = snapshot.getValue(Cuidador.class);
-                        nombreUser.setText(cuidador.getNombre() + " " + cuidador.getApellidos());
-                        correoUser.setText(cuidador.getCorreo());
-                        telefonoUser.setText(cuidador.getTelefono());
-                        domicilio.setText(cuidador.getCalle() + " " + cuidador.getNoext() + " " + cuidador.getNoint() + ", " + cuidador.getAlcaldia());
+                        //Cuidador cuidador = snapshot.getValue(Cuidador.class);
+                        String nom, corr, tel, dir;
+                        nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
+                        corr = snapshot.child("correo").getValue(String.class);
+                        tel = snapshot.child("telefono").getValue(String.class);
+                        dir = snapshot.child("calle").getValue(String.class) + ""
+                                + snapshot.child("noext").getValue(String.class) + ""
+                                + snapshot.child("noint").getValue(String.class) + ", "
+                                + snapshot.child("alcaldia").getValue(String.class);
+                        nombreUser.setText(nom);
+                        correoUser.setText(corr);
+                        telefonoUser.setText(tel);
+                        domicilio.setText(dir);
                     }
 
                 }
@@ -105,11 +113,18 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
                             dataSnapshot.getChildren()) {
                         String idUser = snapshot.getKey();
                         if (idUser.equals(reporteP.getReportePerdidas().getUsuario())){
-                            Dueno dueno = snapshot.getValue(Dueno.class);
-                            nombreUser.setText(dueno.getNombre() + " " + dueno.getApellidos());
-                            correoUser.setText(dueno.getCorreo());
-                            telefonoUser.setText(dueno.getCel());
-                            domicilio.setText(dueno.getCalle() + " " + dueno.getNoext() + " " + dueno.getNoint() + ", " + dueno.getAlcaldia());
+                            String nom, corr, tel, dir;
+                            nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
+                            corr = snapshot.child("correo").getValue(String.class);
+                            tel = snapshot.child("telefono").getValue(String.class);
+                            dir = snapshot.child("calle").getValue(String.class) + ""
+                                    + snapshot.child("noext").getValue(String.class) + ""
+                                    + snapshot.child("noint").getValue(String.class) + ", "
+                                    + snapshot.child("alcaldia").getValue(String.class);
+                            nombreUser.setText(nom);
+                            correoUser.setText(corr);
+                            telefonoUser.setText(tel);
+                            domicilio.setText(dir);
                         }
 
                     }
