@@ -36,6 +36,8 @@ import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -511,8 +513,78 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
 
 
     //Busqueda solo por distancia
-    private void busquedaDistancia(DatabaseReference cuidadoresRef, int distancia, LatLng ubicacion) {
+    private void busquedaDistancia(DatabaseReference cuidadoresRef, final int distancia, final LatLng ubicacion) {
+        listCuidadores = new ArrayList<>();
+        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapCuidador:
+                     dataSnapshot.getChildren()) {
+                    String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
+                        Double lngCuidador = snapCuidador.child("lng").getValue(Double.class);
+                        GeoLocation locDueno = new GeoLocation(ubicacion.latitude, ubicacion.longitude);
+                        GeoLocation locCuidador = new GeoLocation(latCuidador, lngCuidador);
+                        Double distance = (GeoFireUtils.getDistanceBetween(locDueno, locCuidador))/1000;
+                        if (distance.intValue() <= distancia){
+                            String nombre = snapCuidador.child("nombre").getValue(String.class);
+                            String apellidos = snapCuidador.child("apellidos").getValue(String.class);
+                            String calle = snapCuidador.child("calle").getValue(String.class);
+                            String noInt = snapCuidador.child("noint").getValue(String.class);
+                            String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
+                            String telefono = snapCuidador.child("telefono").getValue(String.class);
+                            String email = snapCuidador.child("correo").getValue(String.class);
+                            String foto = snapCuidador.child("foto").getValue(String.class);
+                            String comentarios = snapCuidador.child("comentarios").getValue(String.class);
+                            ArrayList<Mascota> listMascotas = new ArrayList<>();
+                            Double calif = snapCuidador.child("calificacion").getValue(Double.class);
+                            Double lat = snapCuidador.child("lat").getValue(Double.class);
+                            Double lng = snapCuidador.child("lng").getValue(Double.class);
 
+                            Cuidador cuidador = new Cuidador();
+                            cuidador.setNombre(nombre);
+                            cuidador.setApellidos(apellidos);
+                            cuidador.setCalle(calle);
+                            cuidador.setNoint(noInt);
+                            cuidador.setNoext(noExt);
+                            cuidador.setAlcaldia(alcaldia);
+                            cuidador.setTelefono(telefono);
+                            cuidador.setCorreo(email);
+                            cuidador.setFoto(foto);
+                            cuidador.setComentarios(comentarios);
+                            cuidador.setCalificacion(calif);
+                            cuidador.setLat(lat);
+                            cuidador.setLng(lng);
+                            listCuidadores.add(cuidador);
+                            for (DataSnapshot snapMascota:
+                                 snapCuidador.child("mascotas").getChildren()) {
+                                if (snapMascota.exists()){
+                                    Mascota mascota = snapMascota.getValue(Mascota.class);
+                                    listMascotas.add(mascota);
+                                }
+                            }
+                            if (!listMascotas.isEmpty()){
+                                cuidador.setMascotas(listMascotas);
+                                listCuidadores.add(cuidador);
+                            }
+                        }
+                    }
+                }
+                if (!listCuidadores.isEmpty()){
+                    llenarMapa(listCuidadores);
+                } else {
+                    Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //Busqueda por Mascota y servicio
@@ -602,15 +674,262 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     }
 
     //Busqueda por Mascota y distancia
-    private void busquedaMascotaDistancia(DatabaseReference cuidadoresRef, final String tipoMascota, int distancia, LatLng ubicacion) {
+    private void busquedaMascotaDistancia(DatabaseReference cuidadoresRef, final String tipoMascota, final int distancia, final LatLng ubicacion) {
+        listCuidadores = new ArrayList<>();
+        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapCuidador:
+                        dataSnapshot.getChildren()) {
+                    String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
+                        Double lngCuidador = snapCuidador.child("lng").getValue(Double.class);
+                        GeoLocation locDueno = new GeoLocation(ubicacion.latitude, ubicacion.longitude);
+                        GeoLocation locCuidador = new GeoLocation(latCuidador, lngCuidador);
+                        Double distance = (GeoFireUtils.getDistanceBetween(locDueno, locCuidador))/1000;
+                        if (distance <= distancia){
+                            String nombre = snapCuidador.child("nombre").getValue(String.class);
+                            String apellidos = snapCuidador.child("apellidos").getValue(String.class);
+                            String calle = snapCuidador.child("calle").getValue(String.class);
+                            String noInt = snapCuidador.child("noint").getValue(String.class);
+                            String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
+                            String telefono = snapCuidador.child("telefono").getValue(String.class);
+                            String email = snapCuidador.child("correo").getValue(String.class);
+                            String foto = snapCuidador.child("foto").getValue(String.class);
+                            String comentarios = snapCuidador.child("comentarios").getValue(String.class);
+                            ArrayList<Mascota> listMascotas = new ArrayList<>();
+                            Double calif = snapCuidador.child("calificacion").getValue(Double.class);
+                            Double lat = snapCuidador.child("lat").getValue(Double.class);
+                            Double lng = snapCuidador.child("lng").getValue(Double.class);
+
+                            Cuidador cuidador = new Cuidador();
+                            cuidador.setNombre(nombre);
+                            cuidador.setApellidos(apellidos);
+                            cuidador.setCalle(calle);
+                            cuidador.setNoint(noInt);
+                            cuidador.setNoext(noExt);
+                            cuidador.setAlcaldia(alcaldia);
+                            cuidador.setTelefono(telefono);
+                            cuidador.setCorreo(email);
+                            cuidador.setFoto(foto);
+                            cuidador.setComentarios(comentarios);
+                            cuidador.setCalificacion(calif);
+                            cuidador.setLat(lat);
+                            cuidador.setLng(lng);
+                            for (DataSnapshot snapMascota:
+                                    snapCuidador.child("mascotas").getChildren()) {
+                                if (snapMascota.exists()){
+                                    String tiopM = snapMascota.getKey();
+                                    if (tiopM.equals(tipoMascota)) {
+                                        Mascota mascota = snapMascota.getValue(Mascota.class);
+                                        listMascotas.add(mascota);
+                                    }
+                                }
+                            }
+                            if (!listMascotas.isEmpty()){
+                                cuidador.setMascotas(listMascotas);
+                                listCuidadores.add(cuidador);
+                            }
+                        }
+                    }
+                }
+                if (!listCuidadores.isEmpty()){
+                    llenarMapa(listCuidadores);
+                } else {
+                    Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //Busqueda por Servicio y distancia
-    private void busquedaServicioDistancia(DatabaseReference cuidadoresRef, String tipoServicio, int distancia, LatLng ubicacion) {
+    private void busquedaServicioDistancia(DatabaseReference cuidadoresRef, final String tipoServicio, final int distancia, final LatLng ubicacion) {
+        listCuidadores = new ArrayList<>();
+        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapCuidador:
+                        dataSnapshot.getChildren()) {
+                    String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
+                        Double lngCuidador = snapCuidador.child("lng").getValue(Double.class);
+                        GeoLocation locDueno = new GeoLocation(ubicacion.latitude, ubicacion.longitude);
+                        GeoLocation locCuidador = new GeoLocation(latCuidador, lngCuidador);
+                        Double distance = (GeoFireUtils.getDistanceBetween(locDueno, locCuidador))/1000;
+                        if (distance <= distancia){
+                            String nombre = snapCuidador.child("nombre").getValue(String.class);
+                            String apellidos = snapCuidador.child("apellidos").getValue(String.class);
+                            String calle = snapCuidador.child("calle").getValue(String.class);
+                            String noInt = snapCuidador.child("noint").getValue(String.class);
+                            String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
+                            String telefono = snapCuidador.child("telefono").getValue(String.class);
+                            String email = snapCuidador.child("correo").getValue(String.class);
+                            String foto = snapCuidador.child("foto").getValue(String.class);
+                            String comentarios = snapCuidador.child("comentarios").getValue(String.class);
+                            ArrayList<Mascota> listMascotas = new ArrayList<>();
+                            Double calif = snapCuidador.child("calificacion").getValue(Double.class);
+                            Double lat = snapCuidador.child("lat").getValue(Double.class);
+                            Double lng = snapCuidador.child("lng").getValue(Double.class);
+
+                            Cuidador cuidador = new Cuidador();
+                            cuidador.setNombre(nombre);
+                            cuidador.setApellidos(apellidos);
+                            cuidador.setCalle(calle);
+                            cuidador.setNoint(noInt);
+                            cuidador.setNoext(noExt);
+                            cuidador.setAlcaldia(alcaldia);
+                            cuidador.setTelefono(telefono);
+                            cuidador.setCorreo(email);
+                            cuidador.setFoto(foto);
+                            cuidador.setComentarios(comentarios);
+                            cuidador.setCalificacion(calif);
+                            cuidador.setLat(lat);
+                            cuidador.setLng(lng);
+                            for (DataSnapshot snapMascota:
+                                    snapCuidador.child("mascotas").getChildren()) {
+                                if (snapMascota.exists()){
+                                    String tMascota = snapMascota.getKey();
+                                    Mascota mascota = new Mascota();
+                                    mascota.setTipo(tMascota);
+                                    ArrayList<Servicio> listServicios = new ArrayList<>();
+                                    for (DataSnapshot snapServicio:
+                                            snapMascota.child("servicios").getChildren()) {
+                                        if (snapServicio.exists()){
+                                            String servicio = snapServicio.child("tipoServicio").getValue(String.class);
+                                            if (servicio.equals(tipoServicio)){
+                                                Servicio serv = snapServicio.getValue(Servicio.class);
+                                                listServicios.add(serv);
+                                            }
+                                        }
+                                    }
+                                    if(!listServicios.isEmpty()){
+                                        mascota.setServicios(listServicios);
+                                        listMascotas.add(mascota);
+                                    }
+                                }
+                            }
+                            if (!listMascotas.isEmpty()){
+                                cuidador.setMascotas(listMascotas);
+                                listCuidadores.add(cuidador);
+                            }
+                        }
+                    }
+                }
+                if (!listCuidadores.isEmpty()){
+                    llenarMapa(listCuidadores);
+                } else {
+                    Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //Busqueda por Mascota, Servicio y distancia
-    private void busquedaMascotaServicioDistancia(DatabaseReference cuidadoresRef, String tipoMascota, String tipoServicio, int distancia, LatLng ubicacion) {
+    private void busquedaMascotaServicioDistancia(DatabaseReference cuidadoresRef, final String tipoMascota, final String tipoServicio, final int distancia, final LatLng ubicacion) {
+        listCuidadores = new ArrayList<>();
+        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapCuidador:
+                        dataSnapshot.getChildren()) {
+                    String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
+                        Double lngCuidador = snapCuidador.child("lng").getValue(Double.class);
+                        GeoLocation locDueno = new GeoLocation(ubicacion.latitude, ubicacion.longitude);
+                        GeoLocation locCuidador = new GeoLocation(latCuidador, lngCuidador);
+                        Double distance = (GeoFireUtils.getDistanceBetween(locDueno, locCuidador))/1000;
+                        if (distance <= distancia){
+                            String nombre = snapCuidador.child("nombre").getValue(String.class);
+                            String apellidos = snapCuidador.child("apellidos").getValue(String.class);
+                            String calle = snapCuidador.child("calle").getValue(String.class);
+                            String noInt = snapCuidador.child("noint").getValue(String.class);
+                            String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
+                            String telefono = snapCuidador.child("telefono").getValue(String.class);
+                            String email = snapCuidador.child("correo").getValue(String.class);
+                            String foto = snapCuidador.child("foto").getValue(String.class);
+                            String comentarios = snapCuidador.child("comentarios").getValue(String.class);
+                            ArrayList<Mascota> listMascotas = new ArrayList<>();
+                            Double calif = snapCuidador.child("calificacion").getValue(Double.class);
+                            Double lat = snapCuidador.child("lat").getValue(Double.class);
+                            Double lng = snapCuidador.child("lng").getValue(Double.class);
+
+                            Cuidador cuidador = new Cuidador();
+                            cuidador.setNombre(nombre);
+                            cuidador.setApellidos(apellidos);
+                            cuidador.setCalle(calle);
+                            cuidador.setNoint(noInt);
+                            cuidador.setNoext(noExt);
+                            cuidador.setAlcaldia(alcaldia);
+                            cuidador.setTelefono(telefono);
+                            cuidador.setCorreo(email);
+                            cuidador.setFoto(foto);
+                            cuidador.setComentarios(comentarios);
+                            cuidador.setCalificacion(calif);
+                            cuidador.setLat(lat);
+                            cuidador.setLng(lng);
+                            for (DataSnapshot snapMascota:
+                                    snapCuidador.child("mascotas").getChildren()) {
+                                if (snapMascota.exists()){
+                                    String tipoM = snapMascota.getKey();
+                                    if (tipoM.equals(tipoMascota)){
+                                        Mascota mascota = new Mascota();
+                                        mascota.setTipo(tipoM);
+                                        ArrayList<Servicio> listServicios = new ArrayList<>();
+                                        for (DataSnapshot snapServicio:
+                                                snapMascota.child("servicios").getChildren()) {
+                                            if (snapServicio.exists()){
+                                                String servicio = snapServicio.child("tipoServicio").getValue(String.class);
+                                                if (servicio.equals(tipoServicio)){
+                                                    Servicio serv = snapServicio.getValue(Servicio.class);
+                                                    listServicios.add(serv);
+                                                }
+                                            }
+                                        }
+                                        if (!listServicios.isEmpty()) {
+                                            mascota.setServicios(listServicios);
+                                            listMascotas.add(mascota);
+                                        }
+                                    }
+                                }
+                            }
+                            if (!listMascotas.isEmpty()){
+                                cuidador.setMascotas(listMascotas);
+                                listCuidadores.add(cuidador);
+                            }
+                        }
+                    }
+                }
+                if (!listCuidadores.isEmpty()){
+                    llenarMapa(listCuidadores);
+                } else {
+                    Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void llenarMapa(ArrayList<Cuidador> listCuidadores) {

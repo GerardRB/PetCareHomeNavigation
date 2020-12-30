@@ -48,6 +48,7 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.firebase:geofire-android:3.1.0'
 
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
