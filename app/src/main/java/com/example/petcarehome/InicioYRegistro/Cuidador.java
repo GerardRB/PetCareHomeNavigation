@@ -4,9 +4,10 @@ import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cuidador {
+public class Cuidador implements Serializable {
     String nombre, apellidos, calle, noext, noint, alcaldia, telefono, correo, foto, comentarios, estado, tipo;
     ArrayList<Mascota> mascotas;
     Servicio servicio;

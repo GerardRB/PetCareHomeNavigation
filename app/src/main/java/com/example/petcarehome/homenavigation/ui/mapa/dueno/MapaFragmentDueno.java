@@ -33,9 +33,11 @@ import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.Busqueda;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.example.petcarehome.homenavigation.Objetos.MarcadorCuidador;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
+import com.example.petcarehome.homenavigation.ui.difusion.perdidas.DetalleReportePerdidasActivity;
 import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -54,6 +56,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -83,6 +86,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
 
     private MarkerOptions marker;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private ArrayList<MarcadorCuidador> listMarkerCuidador;
 
     private String currentAddress;
 
@@ -932,20 +936,37 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         });
     }
 
-    private void llenarMapa(ArrayList<Cuidador> listCuidadores) {
+    private void llenarMapa(final ArrayList<Cuidador> listCuidadores) {
+        listMarkerCuidador = new ArrayList<>();
         for (int i = 0; i < listCuidadores.size(); i++){
             LatLng locationCuidador = new LatLng(listCuidadores.get(i).getLat(), listCuidadores.get(i).getLng());
-            String nombre, telefono, email;
+            String nombre;
             nombre = listCuidadores.get(i).getNombre() + " " + listCuidadores.get(i).getApellidos();
-            telefono = listCuidadores.get(i).getTelefono();
-            email = listCuidadores.get(i).getCorreo();
 
-            String snippetMarker = nombre + "\n Datos de contacto:\nTeléfono: " + telefono + "\nEmail: " + email;
+            //String snippetMarker = nombre + "\n Datos de contacto:\nTeléfono: " + telefono + "\nEmail: " + email;
             //Crear opciones para el marcador
             MarkerOptions markerCuidador = new MarkerOptions().position(locationCuidador)
-                    .title(nombre).icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet(snippetMarker);
-            mMap.addMarker(markerCuidador);
+                    .title(nombre).icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion));
+            Marker marcador = mMap.addMarker(markerCuidador);
+            listMarkerCuidador.add(new MarcadorCuidador(marcador.getId(), listCuidadores.get(i)));
         }
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                String id = marker.getId();
+                for (int j = 0; j< listMarkerCuidador.size(); j++){
+                    if (id.equals(listMarkerCuidador.get(j).getIdMarker())){
+                        Intent intentCuidador = new Intent(getContext(), CuidadorInfoActivity.class);
+                        Bundle  bundle = new Bundle();
+                        Cuidador cuidador = listMarkerCuidador.get(j).getCuidador();
+                        bundle.putSerializable("cuidador", cuidador);
+                        intentCuidador.putExtras(bundle);
+                        startActivity(intentCuidador);
+                    }
+                }
+                return true;
+            }
+        });
     }
 
 

@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
-        <activity android:name=".homenavigation.ui.config.clases_fragmentos.FormularioMascotas"></activity>
+        <activity android:name=".homenavigation.ui.mapa.dueno.CuidadorInfoActivity"></activity>
+        <activity android:name=".homenavigation.ui.config.clases_fragmentos.FormularioMascotas" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
