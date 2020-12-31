@@ -377,6 +377,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         String calle = snapCuidador.child("calle").getValue(String.class);
                         String noInt = snapCuidador.child("noint").getValue(String.class);
                         String noExt = snapCuidador.child("noext").getValue(String.class);
+                        String colonia = snapCuidador.child("colonia").getValue(String.class);
                         String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                         String telefono = snapCuidador.child("telefono").getValue(String.class);
                         String email = snapCuidador.child("correo").getValue(String.class);
@@ -393,6 +394,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         cuidador.setCalle(calle);
                         cuidador.setNoint(noInt);
                         cuidador.setNoext(noExt);
+                        cuidador.setColonia(colonia);
                         cuidador.setAlcaldia(alcaldia);
                         cuidador.setTelefono(telefono);
                         cuidador.setCorreo(email);
@@ -448,6 +450,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         String calle = snapCuidador.child("calle").getValue(String.class);
                         String noInt = snapCuidador.child("noint").getValue(String.class);
                         String noExt = snapCuidador.child("noext").getValue(String.class);
+                        String colonia = snapCuidador.child("colonia").getValue(String.class);
                         String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                         String telefono = snapCuidador.child("telefono").getValue(String.class);
                         String email = snapCuidador.child("correo").getValue(String.class);
@@ -464,6 +467,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         cuidador.setCalle(calle);
                         cuidador.setNoint(noInt);
                         cuidador.setNoext(noExt);
+                        cuidador.setColonia(colonia);
                         cuidador.setAlcaldia(alcaldia);
                         cuidador.setTelefono(telefono);
                         cuidador.setCorreo(email);
@@ -538,6 +542,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             String calle = snapCuidador.child("calle").getValue(String.class);
                             String noInt = snapCuidador.child("noint").getValue(String.class);
                             String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String colonia = snapCuidador.child("colonia").getValue(String.class);
                             String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                             String telefono = snapCuidador.child("telefono").getValue(String.class);
                             String email = snapCuidador.child("correo").getValue(String.class);
@@ -554,6 +559,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             cuidador.setCalle(calle);
                             cuidador.setNoint(noInt);
                             cuidador.setNoext(noExt);
+                            cuidador.setColonia(colonia);
                             cuidador.setAlcaldia(alcaldia);
                             cuidador.setTelefono(telefono);
                             cuidador.setCorreo(email);
@@ -607,6 +613,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         String calle = snapCuidador.child("calle").getValue(String.class);
                         String noInt = snapCuidador.child("noint").getValue(String.class);
                         String noExt = snapCuidador.child("noext").getValue(String.class);
+                        String colonia = snapCuidador.child("colonia").getValue(String.class);
                         String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                         String telefono = snapCuidador.child("telefono").getValue(String.class);
                         String email = snapCuidador.child("correo").getValue(String.class);
@@ -623,6 +630,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         cuidador.setCalle(calle);
                         cuidador.setNoint(noInt);
                         cuidador.setNoext(noExt);
+                        cuidador.setColonia(colonia);
                         cuidador.setAlcaldia(alcaldia);
                         cuidador.setTelefono(telefono);
                         cuidador.setCorreo(email);
@@ -699,6 +707,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             String calle = snapCuidador.child("calle").getValue(String.class);
                             String noInt = snapCuidador.child("noint").getValue(String.class);
                             String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String colonia = snapCuidador.child("colonia").getValue(String.class);
                             String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                             String telefono = snapCuidador.child("telefono").getValue(String.class);
                             String email = snapCuidador.child("correo").getValue(String.class);
@@ -715,6 +724,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             cuidador.setCalle(calle);
                             cuidador.setNoint(noInt);
                             cuidador.setNoext(noExt);
+                            cuidador.setColonia(colonia);
                             cuidador.setAlcaldia(alcaldia);
                             cuidador.setTelefono(telefono);
                             cuidador.setCorreo(email);
@@ -776,6 +786,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             String calle = snapCuidador.child("calle").getValue(String.class);
                             String noInt = snapCuidador.child("noint").getValue(String.class);
                             String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String colonia = snapCuidador.child("colonia").getValue(String.class);
                             String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                             String telefono = snapCuidador.child("telefono").getValue(String.class);
                             String email = snapCuidador.child("correo").getValue(String.class);
@@ -792,6 +803,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             cuidador.setCalle(calle);
                             cuidador.setNoint(noInt);
                             cuidador.setNoext(noExt);
+                            cuidador.setColonia(colonia);
                             cuidador.setAlcaldia(alcaldia);
                             cuidador.setTelefono(telefono);
                             cuidador.setCorreo(email);
@@ -866,6 +878,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             String calle = snapCuidador.child("calle").getValue(String.class);
                             String noInt = snapCuidador.child("noint").getValue(String.class);
                             String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String colonia = snapCuidador.child("colonia").getValue(String.class);
                             String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                             String telefono = snapCuidador.child("telefono").getValue(String.class);
                             String email = snapCuidador.child("correo").getValue(String.class);
@@ -882,6 +895,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             cuidador.setCalle(calle);
                             cuidador.setNoint(noInt);
                             cuidador.setNoext(noExt);
+                            cuidador.setColonia(colonia);
                             cuidador.setAlcaldia(alcaldia);
                             cuidador.setTelefono(telefono);
                             cuidador.setCorreo(email);
@@ -960,6 +974,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         Bundle  bundle = new Bundle();
                         Cuidador cuidador = listMarkerCuidador.get(j).getCuidador();
                         bundle.putSerializable("cuidador", cuidador);
+                        bundle.putDouble("lat", busqueda.getUbicacion().latitude);
+                        bundle.putDouble("lng", busqueda.getUbicacion().longitude);
                         intentCuidador.putExtras(bundle);
                         startActivity(intentCuidador);
                     }

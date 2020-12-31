@@ -122,6 +122,7 @@
     <string name="label_servicios">Servicios que brinda:</string>
     <string name="label_precio">Precio: $</string>
     <string name="label_descripcion_servicio">Descripción del servicio:</string>
+    <string name="label_distancia">Distancia:</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION
