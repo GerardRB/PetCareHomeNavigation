@@ -71,6 +71,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Locale;
 
@@ -84,7 +85,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     private GoogleMap mMap;
     private Busqueda busqueda;
 
-    private MarkerOptions marker;
+    //private Marker markerCurrent;
+    private Marker marker;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     private ArrayList<MarcadorCuidador> listMarkerCuidador;
 
@@ -94,6 +96,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference cuidadoresRef;
     private ArrayList<Cuidador> listCuidadores;
+    private ValueEventListener busquedaListener;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -138,6 +141,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         }
 
         listCuidadores = new ArrayList<>();
+        busquedaListener = null;
 
 
         //Botones flotates referencias y escuchador
@@ -148,6 +152,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         fablocation.setOnClickListener(this);
 
         marker = null;
+        //markerCurrent = null;
 
         /*Boton estado cuidador
         final ToggleButton switchEstado = root.findViewById(R.id.switch1);
@@ -285,6 +290,10 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     private void iniciarBusqueda(final Busqueda busqueda) {
         firebaseDatabase = FirebaseDatabase.getInstance();
         cuidadoresRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
+        mMap.clear();
+        MarkerOptions dueno = new MarkerOptions().position(busqueda.getUbicacion())
+                .title("Mi ubicación").snippet("Ubicación actual");
+        marker = mMap.addMarker(dueno);
         //String dist = String.valueOf(busqueda.getDistancia());
         if (busqueda.getTipoMascota().isEmpty()){
             if (busqueda.getTipoServicio().isEmpty()){
@@ -364,7 +373,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     //Busqueda solo por mascota
     private void busquedaMascota(DatabaseReference cuidadoresRef, final String tipoMascota) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -431,13 +440,14 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda solo por servicio
     private void busquedaServicio(DatabaseReference cuidadoresRef, final String tipoServicio) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -516,19 +526,20 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
 
     //Busqueda solo por distancia
     private void busquedaDistancia(DatabaseReference cuidadoresRef, final int distancia, final LatLng ubicacion) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
                 for (DataSnapshot snapCuidador:
-                     dataSnapshot.getChildren()) {
+                        dataSnapshot.getChildren()) {
                     String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
                     if (estado.equals("Activo")){
                         Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
@@ -570,7 +581,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                             cuidador.setLng(lng);
                             listCuidadores.add(cuidador);
                             for (DataSnapshot snapMascota:
-                                 snapCuidador.child("mascotas").getChildren()) {
+                                    snapCuidador.child("mascotas").getChildren()) {
                                 if (snapMascota.exists()){
                                     Mascota mascota = snapMascota.getValue(Mascota.class);
                                     listMascotas.add(mascota);
@@ -594,13 +605,14 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda por Mascota y servicio
     private void busquedaMascotaServicio(DatabaseReference cuidadoresRef, final String tipoMascota, final String tipoServicio) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -682,13 +694,14 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda por Mascota y distancia
     private void busquedaMascotaDistancia(DatabaseReference cuidadoresRef, final String tipoMascota, final int distancia, final LatLng ubicacion) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -761,13 +774,14 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda por Servicio y distancia
     private void busquedaServicioDistancia(DatabaseReference cuidadoresRef, final String tipoServicio, final int distancia, final LatLng ubicacion) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -846,6 +860,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     llenarMapa(listCuidadores);
                 } else {
                     Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+
                 }
             }
 
@@ -853,13 +868,14 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda por Mascota, Servicio y distancia
     private void busquedaMascotaServicioDistancia(DatabaseReference cuidadoresRef, final String tipoMascota, final String tipoServicio, final int distancia, final LatLng ubicacion) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -947,42 +963,48 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     private void llenarMapa(final ArrayList<Cuidador> listCuidadores) {
-        listMarkerCuidador = new ArrayList<>();
-        for (int i = 0; i < listCuidadores.size(); i++){
-            LatLng locationCuidador = new LatLng(listCuidadores.get(i).getLat(), listCuidadores.get(i).getLng());
-            String nombre;
-            nombre = listCuidadores.get(i).getNombre() + " " + listCuidadores.get(i).getApellidos();
+        if (busquedaListener != null){
+            listMarkerCuidador = new ArrayList<>();
+            for (int i = 0; i < listCuidadores.size(); i++){
+                LatLng locationCuidador = new LatLng(listCuidadores.get(i).getLat(), listCuidadores.get(i).getLng());
+                String nombre;
+                nombre = listCuidadores.get(i).getNombre() + " " + listCuidadores.get(i).getApellidos();
 
-            //String snippetMarker = nombre + "\n Datos de contacto:\nTeléfono: " + telefono + "\nEmail: " + email;
-            //Crear opciones para el marcador
-            MarkerOptions markerCuidador = new MarkerOptions().position(locationCuidador)
-                    .title(nombre).icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion));
-            Marker marcador = mMap.addMarker(markerCuidador);
-            listMarkerCuidador.add(new MarcadorCuidador(marcador.getId(), listCuidadores.get(i)));
-        }
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                String id = marker.getId();
-                for (int j = 0; j< listMarkerCuidador.size(); j++){
-                    if (id.equals(listMarkerCuidador.get(j).getIdMarker())){
-                        Intent intentCuidador = new Intent(getContext(), CuidadorInfoActivity.class);
-                        Bundle  bundle = new Bundle();
-                        Cuidador cuidador = listMarkerCuidador.get(j).getCuidador();
-                        bundle.putSerializable("cuidador", cuidador);
-                        bundle.putDouble("lat", busqueda.getUbicacion().latitude);
-                        bundle.putDouble("lng", busqueda.getUbicacion().longitude);
-                        intentCuidador.putExtras(bundle);
-                        startActivity(intentCuidador);
-                    }
-                }
-                return true;
+                //String snippetMarker = nombre + "\n Datos de contacto:\nTeléfono: " + telefono + "\nEmail: " + email;
+                //Crear opciones para el marcador
+                MarkerOptions markerCuidador = new MarkerOptions().position(locationCuidador)
+                        .title(nombre).icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion));
+                Marker marcador = mMap.addMarker(markerCuidador);
+                listMarkerCuidador.add(new MarcadorCuidador(marcador.getId(), listCuidadores.get(i)));
             }
-        });
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    String id = marker.getId();
+                    for (int j = 0; j< listMarkerCuidador.size(); j++){
+                        if (id.equals(listMarkerCuidador.get(j).getIdMarker())){
+                            Intent intentCuidador = new Intent(getContext(), CuidadorInfoActivity.class);
+                            Bundle  bundle = new Bundle();
+                            Cuidador cuidador = listMarkerCuidador.get(j).getCuidador();
+                            bundle.putSerializable("cuidador", cuidador);
+                            bundle.putDouble("lat", busqueda.getUbicacion().latitude);
+                            bundle.putDouble("lng", busqueda.getUbicacion().longitude);
+                            intentCuidador.putExtras(bundle);
+                            startActivity(intentCuidador);
+                        }
+                    }
+                    return true;
+                }
+            });
+        } else {
+            mMap.clear();
+        }
+
     }
 
 
@@ -994,9 +1016,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
 
         //creación de la solicitud de ubicacion
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(60000);
-        locationRequest.setFastestInterval(30000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
 
         //Devolucion de la llamada de la solicitud de la ubicacion
         locationCallback = new LocationCallback() {
@@ -1006,17 +1027,19 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    mMap.clear();
+                    if (marker != null){
+                        marker.remove();
+                    }
                     //Inicializar latitud y longitud
                     LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
 
                     //Crear opciones para el marcador
-                    marker = new MarkerOptions().position(current)
+                    MarkerOptions markerOptions = new MarkerOptions().position(current)
                             .title("Mi ubicación").snippet("Ubicación actual");
                     //Zoom en el mapa
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
                     //Añadir marcador en el mapa
-                    mMap.addMarker(marker);
+                    marker = mMap.addMarker(markerOptions);
                 }
             }
         };
@@ -1036,5 +1059,11 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         mMap.clear();
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (busquedaListener != null){
+            cuidadoresRef.removeEventListener(busquedaListener);
+        }
+    }
 }
