@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.InicioYRegistro.Dueno;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
@@ -149,7 +150,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         calle.setText(reporteP.getReportePerdidas().getCalle());
         descripcion.setText(reporteP.getReportePerdidas().getDescripcion());
         //correoUser.setText(reporteP.getReportePerdidas().getUsuario());
-        Glide.with(this).load(reporteP.getReportePerdidas().getFoto()).into(foto);
+        Glide.with(this).load(reporteP.getReportePerdidas().getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
 
 
 

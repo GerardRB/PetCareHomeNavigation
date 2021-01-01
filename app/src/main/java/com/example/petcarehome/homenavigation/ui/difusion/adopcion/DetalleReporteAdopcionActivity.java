@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.InicioYRegistro.Dueno;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
@@ -150,7 +151,7 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
         calle.setText(reporteA.getReporteAdopcion().getCalle());
         descripcion.setText(reporteA.getReporteAdopcion().getDescripcion());
         //correoUser.setText(reporteA.getReporteAdopcion().getIdUser());
-        Glide.with(this).load(reporteA.getReporteAdopcion().getFoto()).into(foto);
+        Glide.with(this).load(reporteA.getReporteAdopcion().getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
     }
 
     @Override

@@ -20,17 +20,16 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/idImagenME"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_gravity="center"
                 app:srcCompat="@android:mipmap/sym_def_app_icon" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="10dp">
+                android:layout_marginStart="15dp">
 
                 <TextView
                     android:id="@+id/idZonaME"
@@ -55,26 +54,28 @@
                     android:id="@+id/idDescripcionME"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Descripción"
+                    android:text="@string/descripcion"
                     android:textSize="11sp"/>
 
             </LinearLayout>
 
-            <LinearLayout
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/idVerMas"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/idVerMas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:gravity="center"
-                    android:text="Ver más"
-                    android:textColor="@color/colorAccent" />
-
-            </LinearLayout>
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:gravity="center|end"
+                android:text="@string/ver_mas"
+                android:textColor="@color/colorAccent" />
 
         </LinearLayout>
 
@@ -84,7 +85,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"/>
+        android:text="@string/line"/>
 
 
 

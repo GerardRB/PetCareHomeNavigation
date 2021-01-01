@@ -123,6 +123,10 @@
     <string name="label_precio">Precio: $</string>
     <string name="label_descripcion_servicio">Descripción del servicio:</string>
     <string name="label_distancia">Distancia:</string>
+    <string name="ver_mas">Ver más</string>
+    <string name="edad">Edad</string>
+    <string name="line">1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</string>
+    <string name="descripcion">Descripción</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION

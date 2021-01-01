@@ -22,10 +22,10 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/id_input_imageRMA"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:srcCompat="@android:drawable/ic_menu_gallery"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 tools:ignore="MissingConstraints,OnClick"
                 android:onClick="onClick"/>
 

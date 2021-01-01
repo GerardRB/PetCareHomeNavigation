@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradasID;
@@ -44,7 +45,7 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
         holder.etifecha.setText(listReportesEncontradas.get(position).getReporteEncontradas().getFecha());
         holder.etitipo.setText(listReportesEncontradas.get(position).getReporteEncontradas().getTipo());
         holder.etidescripcion.setText(listReportesEncontradas.get(position).getReporteEncontradas().getDescripcion());
-        Glide.with(context).load(listReportesEncontradas.get(position).getReporteEncontradas().getFoto()).into(holder.foto);
+        Glide.with(context).load(listReportesEncontradas.get(position).getReporteEncontradas().getFoto()).apply(RequestOptions.circleCropTransform()).into(holder.foto);
 
     }
 

@@ -10,21 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        tools:ignore="ExtraText,MissingConstraints">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/id_imageDRMP"
-            android:layout_marginTop="10dp"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_gravity="center_horizontal"
-            app:srcCompat="@drawable/ic_perro"
-            tools:ignore="MissingConstraints,VectorDrawableCompat" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -36,6 +24,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     tools:ignore="MissingConstraints">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/id_imageDRMP"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_perro"
+                        tools:ignore="MissingConstraints,VectorDrawableCompat" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -338,7 +335,7 @@
                                 android:layout_height="85dp"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="5dp"
-                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
                                 app:srcCompat="@drawable/ic_user"
                                 tools:ignore="VectorDrawableCompat" />
 
@@ -352,7 +349,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
-                                    android:text="Nombre de usuario"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
 
@@ -377,7 +373,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
-                                        android:layout_marginRight="15dp"
+                                        android:layout_marginEnd="15dp"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
 
@@ -404,7 +400,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
-                                        android:layout_marginRight="15dp"
+                                        android:layout_marginEnd="15dp"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
 
@@ -432,7 +428,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="10dp"
-                                        android:layout_marginRight="15dp"
+                                        android:layout_marginEnd="15dp"
                                         android:textSize="15sp"
                                         android:textStyle="bold" />
 
@@ -448,8 +444,6 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </ScrollView>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 |
     </androidx.appcompat.widget.LinearLayoutCompat>
 

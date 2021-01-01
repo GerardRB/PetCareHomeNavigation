@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcion;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcionID;
@@ -45,7 +46,7 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
         holder.etiedad.setText(listReportesAdopcion.get(position).getReporteAdopcion().getEdad());
         holder.etiRaza.setText(listReportesAdopcion.get(position).getReporteAdopcion().getRaza());
         holder.etidescripcion.setText(listReportesAdopcion.get(position).getReporteAdopcion().getDescripcion());
-        Glide.with(context).load(listReportesAdopcion.get(position).getReporteAdopcion().getFoto()).into(holder.foto);
+        Glide.with(context).load(listReportesAdopcion.get(position).getReporteAdopcion().getFoto()).apply(RequestOptions.circleCropTransform()).into(holder.foto);
 
     }
 
