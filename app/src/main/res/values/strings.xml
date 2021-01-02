@@ -52,7 +52,7 @@
     <string name="label_vacunas">Vacunas:</string>
     <string name="label_esterilizacion">Esterilización:</string>
     <string name="label_nombre_DRMP">Nombre:</string>
-    <string name="label_idDRMP">ID reporte:</string>
+    <string name="label_title_DRMP">¿Lo has visto?</string>
     <string name="label_tipoDRMP">Tipo de mascota:</string>
     <string name="label_edadDRMP">Edad:</string>
     <string name="label_fecha_extravio_DRMP">Fecha de extravío:</string>
@@ -127,6 +127,9 @@
     <string name="edad">Edad</string>
     <string name="line">1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</string>
     <string name="descripcion">Descripción</string>
+    <string name="label_title_DRME">¿Lo reconoces?</string>
+    <string name="label_title_DRMA">¿Te interesa adoptar?</string>
+    <string name="image_transition">imageTransition</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION

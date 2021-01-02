@@ -2,20 +2,21 @@ package com.example.petcarehome.homenavigation.ui.difusion.perdidas;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.petcarehome.InicioYRegistro.Cuidador;
-import com.example.petcarehome.InicioYRegistro.Dueno;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
-import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
+import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,8 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DetalleReportePerdidasActivity extends AppCompatActivity {
 
-    private ReportePerdidasID reporteP;
-    private TextView idReporte, nombreMascota, tipoMascota, edad, fechaExtravio, horaExtravio, alcaldia, colonia, calle, descripcion, correoUser, nombreUser, telefonoUser, domicilio;
+    private ReportePerdidas reporteP;
+    private TextView nombreMascota, tipoMascota, edad, fechaExtravio, horaExtravio, alcaldia, colonia, calle, descripcion, correoUser, nombreUser, telefonoUser, domicilio;
     private ImageView foto;
 
     private String correoU;
@@ -41,11 +42,10 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         Bundle reporteSeleccionado = getIntent().getExtras();
         reporteP = null;
         if (reporteSeleccionado != null){
-            reporteP = (ReportePerdidasID) reporteSeleccionado.getSerializable("reportePerdida");
+            reporteP = (ReportePerdidas) reporteSeleccionado.getSerializable("reportePerdida");
         }
 
         //Referencia a textviews
-        idReporte = findViewById(R.id.text_id_DRMP);
         nombreMascota = findViewById(R.id.text_nombre_DRMP);
         tipoMascota = findViewById(R.id.text_tipo_DRMP);
         edad = findViewById(R.id.text_edad_DRMP);
@@ -76,7 +76,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot:
                         dataSnapshot.getChildren()) {
                     String idUser = snapshot.getKey();
-                    if (idUser.equals(reporteP.getReportePerdidas().getUsuario())){
+                    if (idUser.equals(reporteP.getUsuario())){
                         //Cuidador cuidador = snapshot.getValue(Cuidador.class);
                         String nom, corr, tel, dir;
                         nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
@@ -113,7 +113,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
                         String idUser = snapshot.getKey();
-                        if (idUser.equals(reporteP.getReportePerdidas().getUsuario())){
+                        if (idUser.equals(reporteP.getUsuario())){
                             String nom, corr, tel, dir;
                             nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                             corr = snapshot.child("correo").getValue(String.class);
@@ -139,18 +139,30 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         }
 
         //Imprimir valores del objeto recibido
-        idReporte.setText(reporteP.getId());
-        nombreMascota.setText(reporteP.getReportePerdidas().getNombre());
-        tipoMascota.setText(reporteP.getReportePerdidas().getTipo());
-        edad.setText(reporteP.getReportePerdidas().getEdad());
-        fechaExtravio.setText(reporteP.getReportePerdidas().getFecha());
-        horaExtravio.setText(reporteP.getReportePerdidas().getHora());
-        alcaldia.setText(reporteP.getReportePerdidas().getAlcaldia());
-        colonia.setText(reporteP.getReportePerdidas().getColonia());
-        calle.setText(reporteP.getReportePerdidas().getCalle());
-        descripcion.setText(reporteP.getReportePerdidas().getDescripcion());
+        nombreMascota.setText(reporteP.getNombre());
+        tipoMascota.setText(reporteP.getTipo());
+        edad.setText(reporteP.getEdad());
+        fechaExtravio.setText(reporteP.getFecha());
+        horaExtravio.setText(reporteP.getHora());
+        alcaldia.setText(reporteP.getAlcaldia());
+        colonia.setText(reporteP.getColonia());
+        calle.setText(reporteP.getCalle());
+        descripcion.setText(reporteP.getDescripcion());
         //correoUser.setText(reporteP.getReportePerdidas().getUsuario());
-        Glide.with(this).load(reporteP.getReportePerdidas().getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
+        Glide.with(this).load(reporteP.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
+
+        foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetalleReportePerdidasActivity.this, FullScreenImageActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReportePerdidasActivity.this, foto, ViewCompat.getTransitionName(foto));
+                Bundle  bundle = new Bundle();
+                bundle.putString("title", reporteP.getNombre());
+                bundle.putString("foto", reporteP.getFoto());
+                intent.putExtras(bundle);
+                startActivity(intent, options.toBundle());
+            }
+        });
 
 
 

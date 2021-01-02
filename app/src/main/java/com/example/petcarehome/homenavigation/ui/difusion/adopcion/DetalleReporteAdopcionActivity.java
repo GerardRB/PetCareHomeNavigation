@@ -4,19 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.petcarehome.InicioYRegistro.Cuidador;
-import com.example.petcarehome.InicioYRegistro.Dueno;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcion;
 import com.example.petcarehome.R;
-import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcionID;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,8 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DetalleReporteAdopcionActivity extends AppCompatActivity {
 
-    private ReporteAdopcionID reporteA;
-    private TextView idReporte, tipoMascota, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion, correoUser, nombreUser, telefonoUser, domicilio;
+    private ReporteAdopcion reporteA;
+    private TextView tipoMascota, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion, correoUser, nombreUser, telefonoUser, domicilio;
     private ImageView foto;
 
     private String correoU;
@@ -42,11 +37,10 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
         Bundle reporteSeleccionado = getIntent().getExtras();
         reporteA = null;
         if (reporteSeleccionado != null){
-            reporteA = (ReporteAdopcionID) reporteSeleccionado.getSerializable("reporteAdopcion");
+            reporteA = (ReporteAdopcion) reporteSeleccionado.getSerializable("reporteAdopcion");
         }
 
         //Referencia a textviews
-        idReporte = findViewById(R.id.text_id_DRMA);
         tipoMascota = findViewById(R.id.text_tipo_DRMA);
         raza = findViewById(R.id.text_raza_DRMA);
         edad = findViewById(R.id.text_edad_DRMA);
@@ -76,7 +70,7 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot:
                         dataSnapshot.getChildren()) {
                     String idUser = snapshot.getKey();
-                    if (idUser.equals(reporteA.getReporteAdopcion().getIdUser())){
+                    if (idUser.equals(reporteA.getIdUser())){
                         String nom, corr, tel, dir;
                         nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                         corr = snapshot.child("correo").getValue(String.class);
@@ -112,7 +106,7 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
                         String idUser = snapshot.getKey();
-                        if (idUser.equals(reporteA.getReporteAdopcion().getIdUser())){
+                        if (idUser.equals(reporteA.getIdUser())){
                             String nom, corr, tel, dir;
                             nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                             corr = snapshot.child("correo").getValue(String.class);
@@ -140,18 +134,17 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
 
 
         //Imprimir valores del objeto recibido
-        idReporte.setText(reporteA.getId());
-        tipoMascota.setText(reporteA.getReporteAdopcion().getTipo());
-        raza.setText(reporteA.getReporteAdopcion().getRaza());
-        edad.setText(reporteA.getReporteAdopcion().getEdad());
-        vacunas.setText(reporteA.getReporteAdopcion().getVacunas());
-        esterilizacion.setText(reporteA.getReporteAdopcion().getEsterilizacion());
-        alcaldia.setText(reporteA.getReporteAdopcion().getAlcaldia());
-        colonia.setText(reporteA.getReporteAdopcion().getColonia());
-        calle.setText(reporteA.getReporteAdopcion().getCalle());
-        descripcion.setText(reporteA.getReporteAdopcion().getDescripcion());
+        tipoMascota.setText(reporteA.getTipo());
+        raza.setText(reporteA.getRaza());
+        edad.setText(reporteA.getEdad());
+        vacunas.setText(reporteA.getVacunas());
+        esterilizacion.setText(reporteA.getEsterilizacion());
+        alcaldia.setText(reporteA.getAlcaldia());
+        colonia.setText(reporteA.getColonia());
+        calle.setText(reporteA.getCalle());
+        descripcion.setText(reporteA.getDescripcion());
         //correoUser.setText(reporteA.getReporteAdopcion().getIdUser());
-        Glide.with(this).load(reporteA.getReporteAdopcion().getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
+        Glide.with(this).load(reporteA.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
     }
 
     @Override

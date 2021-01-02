@@ -14,16 +14,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.petcarehome.homenavigation.Objetos.Filtro;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.R;
-import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradasID;
-import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
-import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
-import com.example.petcarehome.homenavigation.ui.difusion.perdidas.AdapterReportesPerdidas;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,9 +36,9 @@ public class EncontradasFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private ArrayList<ReporteEncontradasID> listReportes;
+    private ArrayList<ReporteEncontradas> listReportes;
     private RecyclerView recycler;
-    private ReporteEncontradasID reporteEID;
+    private ReporteEncontradas reporteE;
     private AdapterReportesEncontradas adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Filtro filtro;
@@ -92,19 +87,6 @@ public class EncontradasFragment extends Fragment {
         llenarReportes(filtro, false);
 
 
-        //Abrir detalle del reporte
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getContext(), "Selección: Reporte #" + listReportesEncontradas.get(recycler.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
-                Intent intentDetalleRME = new Intent(getContext(), DetalleReporteEncontradaActivity.class);
-                Bundle  bundle = new Bundle();
-                bundle.putSerializable("reporteEncontrada", listReportes.get(recycler.getChildAdapterPosition(v)));
-                intentDetalleRME.putExtras(bundle);
-                startActivity(intentDetalleRME);
-            }
-        });
-
         //SwipeRefresh
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshEncontradas);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -142,19 +124,19 @@ public class EncontradasFragment extends Fragment {
                             if (filtro.getTipoM() != null){
                                 if (alcaldia.equals(filtro.getZona()) && tipo.equals(filtro.getTipoM())){
                                     //reporteP = snapshot.getValue(ReportePerdidas.class);
-                                    reporteEID = new ReporteEncontradasID(snapshot.getKey(), snapshot.getValue(ReporteEncontradas.class));
-                                    listReportes.add(0,reporteEID);
+                                    reporteE = snapshot.getValue(ReporteEncontradas.class);
+                                    listReportes.add(0,reporteE);
                                 }
                             } else if (alcaldia.equals(filtro.getZona())){
                                 //reporteP = snapshot.getValue(ReportePerdidas.class);
-                                reporteEID = new ReporteEncontradasID(snapshot.getKey(), snapshot.getValue(ReporteEncontradas.class));
-                                listReportes.add(0,reporteEID);
+                                reporteE = snapshot.getValue(ReporteEncontradas.class);
+                                listReportes.add(0,reporteE);
                             }
                         } else if (filtro.getTipoM() != null){
                             if (tipo.equals(filtro.getTipoM())){
                                 //reporteP = snapshot.getValue(ReportePerdidas.class);
-                                reporteEID = new ReporteEncontradasID(snapshot.getKey(), snapshot.getValue(ReporteEncontradas.class));
-                                listReportes.add(0,reporteEID);
+                                reporteE = snapshot.getValue(ReporteEncontradas.class);
+                                listReportes.add(0,reporteE);
                             }
                         }
                     }
@@ -174,8 +156,8 @@ public class EncontradasFragment extends Fragment {
                     listReportes.removeAll(listReportes);
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
-                        reporteEID = new ReporteEncontradasID(snapshot.getKey(), snapshot.getValue(ReporteEncontradas.class));
-                        listReportes.add(0,reporteEID);
+                        reporteE = snapshot.getValue(ReporteEncontradas.class);
+                        listReportes.add(0,reporteE);
                     }
                     adapter.notifyDataSetChanged();
                 }

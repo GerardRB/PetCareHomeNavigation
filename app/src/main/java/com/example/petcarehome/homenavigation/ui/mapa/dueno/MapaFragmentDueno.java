@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,12 +17,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +31,7 @@ import com.example.petcarehome.homenavigation.Objetos.Busqueda;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.MarcadorCuidador;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
-import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
-import com.example.petcarehome.homenavigation.ui.difusion.perdidas.DetalleReportePerdidasActivity;
 import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -68,12 +62,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.List;
-import java.util.Locale;
 
 public class MapaFragmentDueno extends Fragment implements View.OnClickListener {
 

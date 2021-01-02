@@ -27,37 +27,20 @@
                         android:id="@+id/id_imageDRMA"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
+                        android:layout_marginTop="10dp"
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/ic_gato"
                         tools:ignore="MissingConstraints,VectorDrawableCompat" />
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/label_id_reporte_DRMA"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        tools:ignore="MissingConstraints">
-
-                        <TextView
-                            android:id="@+id/label_id_reporte_DRMA"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginRight="15dp"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/label_idDRMP"
-                            android:textSize="25sp"
-                            android:textStyle="bold"/>
-                        <TextView
-                            android:id="@+id/text_id_DRMA"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginRight="15dp"
-                            android:layout_marginTop="10dp"
-                            android:textSize="25sp"
-                            android:textStyle="bold"/>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/label_title_DRMA"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
 
 
                     <androidx.appcompat.widget.LinearLayoutCompat

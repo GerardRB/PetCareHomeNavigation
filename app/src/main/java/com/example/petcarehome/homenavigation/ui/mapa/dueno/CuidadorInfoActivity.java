@@ -1,13 +1,9 @@
 package com.example.petcarehome.homenavigation.ui.mapa.dueno;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,17 +11,10 @@ import android.widget.TextView;
 import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
-import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
-import com.example.petcarehome.homenavigation.ui.difusion.encontradas.AdapterReportesEncontradas;
-import com.example.petcarehome.homenavigation.ui.difusion.perdidas.AdapterReportesPerdidas;
-import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

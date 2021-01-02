@@ -32,35 +32,19 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/ic_perro"
-                        tools:ignore="MissingConstraints,VectorDrawableCompat" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    tools:ignore="MissingConstraints">
+                        android:transitionName="@string/image_transition"
+                        tools:ignore="MissingConstraints,VectorDrawableCompat"
+                        tools:targetApi="lollipop" />
 
                     <TextView
                         android:id="@+id/label_id_reporte_DRMP"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
+                        android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="@string/label_idDRMP"
+                        android:text="@string/label_title_DRMP"
                         android:textSize="25sp"
                         android:textStyle="bold"/>
-                    <TextView
-                        android:id="@+id/text_id_DRMP"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="10dp"
-                        android:textSize="25sp"
-                        android:textStyle="bold"/>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"

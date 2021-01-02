@@ -1,6 +1,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DADCE8"
@@ -23,9 +24,12 @@
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:layout_gravity="center"
-                app:srcCompat="@android:mipmap/sym_def_app_icon" />
+                android:transitionName="@string/image_transition"
+                app:srcCompat="@android:mipmap/sym_def_app_icon"
+                tools:targetApi="lollipop" />
 
             <LinearLayout
+                android:id="@id/layout_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

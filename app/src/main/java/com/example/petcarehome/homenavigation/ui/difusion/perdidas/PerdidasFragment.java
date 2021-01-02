@@ -17,7 +17,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.petcarehome.homenavigation.Objetos.Filtro;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
-import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.example.petcarehome.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,9 +35,9 @@ public class PerdidasFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private ArrayList<ReportePerdidasID> listReportes;
+    private ArrayList<ReportePerdidas> listReportes;
     private RecyclerView recyclerPerdidas;
-    private ReportePerdidasID reportePID;
+    private ReportePerdidas reporteP;
     private AdapterReportesPerdidas adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Filtro filtro;
@@ -95,18 +94,6 @@ public class PerdidasFragment extends Fragment {
         llenarReportes(filtro, false);
 
 
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getContext(), "Selección: Reporte #" + listReportes.get(recyclerPerdidas.getChildAdapterPosition(v)).getId(), Toast.LENGTH_SHORT).show();
-                Intent intentDetalleRMP = new Intent(getContext(), DetalleReportePerdidasActivity.class);
-                Bundle  bundle = new Bundle();
-                bundle.putSerializable("reportePerdida", listReportes.get(recyclerPerdidas.getChildAdapterPosition(v)));
-                intentDetalleRMP.putExtras(bundle);
-                startActivity(intentDetalleRMP);
-            }
-        });
-
         //SwipeRefresh
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshPerdidas);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -146,19 +133,19 @@ public class PerdidasFragment extends Fragment {
                             if (filtro.getTipoM() != null){
                                 if (alcaldia.equals(filtro.getZona()) && tipo.equals(filtro.getTipoM())){
                                     //reporteP = snapshot.getValue(ReportePerdidas.class);
-                                    reportePID = new ReportePerdidasID(snapshot.getKey(), snapshot.getValue(ReportePerdidas.class));
-                                    listReportes.add(0,reportePID);
+                                    reporteP = snapshot.getValue(ReportePerdidas.class);
+                                    listReportes.add(0,reporteP);
                                 }
                             } else if (alcaldia.equals(filtro.getZona())){
                                 //reporteP = snapshot.getValue(ReportePerdidas.class);
-                                reportePID = new ReportePerdidasID(snapshot.getKey(), snapshot.getValue(ReportePerdidas.class));
-                                listReportes.add(0,reportePID);
+                                reporteP = snapshot.getValue(ReportePerdidas.class);
+                                listReportes.add(0,reporteP);
                             }
                         } else if (filtro.getTipoM() != null){
                             if (tipo.equals(filtro.getTipoM())){
                                 //reporteP = snapshot.getValue(ReportePerdidas.class);
-                                reportePID = new ReportePerdidasID(snapshot.getKey(), snapshot.getValue(ReportePerdidas.class));
-                                listReportes.add(0,reportePID);
+                                reporteP = snapshot.getValue(ReportePerdidas.class);
+                                listReportes.add(0,reporteP);
                             }
                         }
                     }
@@ -179,8 +166,8 @@ public class PerdidasFragment extends Fragment {
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
                         //reporteP = snapshot.getValue(ReportePerdidas.class);
-                        reportePID = new ReportePerdidasID(snapshot.getKey(), snapshot.getValue(ReportePerdidas.class));
-                        listReportes.add(0,reportePID);
+                        reporteP = snapshot.getValue(ReportePerdidas.class);
+                        listReportes.add(0,reporteP);
                     }
                     adapter.notifyDataSetChanged();
                 }
