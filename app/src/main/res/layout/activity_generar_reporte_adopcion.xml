@@ -24,9 +24,9 @@
                 android:id="@+id/id_input_imageRMA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_gallery"
+                app:srcCompat="@drawable/ic_addphoto"
                 android:layout_gravity="center"
-                tools:ignore="MissingConstraints,OnClick"
+                tools:ignore="MissingConstraints,OnClick,VectorDrawableCompat"
                 android:onClick="onClick"/>
 
             <TextView
