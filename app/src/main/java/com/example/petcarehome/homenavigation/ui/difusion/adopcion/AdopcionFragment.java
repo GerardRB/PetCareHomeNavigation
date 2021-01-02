@@ -29,54 +29,37 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AdopcionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class AdopcionFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
 
     private ArrayList<ReporteAdopcion> listReportes;
-    private RecyclerView recycler;
     private AdapterReportesAdopcion adapter;
     private ReporteAdopcion reporteA;
     private SwipeRefreshLayout swipeRefreshLayout;
     private FirebaseDatabase firebaseDatabase;
     private Filtro filtro;
 
-    public static AdopcionFragment newInstance(int index) {
-        AdopcionFragment fragment = new AdopcionFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(ARG_SECTION_NUMBER, index);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        int index = 3;
-        if (getArguments() != null) {
-            index = getArguments().getInt(ARG_SECTION_NUMBER);
-        }
 
-    }
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_adopcion, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_adopcion, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        firebaseDatabase =FirebaseDatabase.getInstance();
+
         //Construir el recycler
         listReportes = new ArrayList<>();
-        recycler = view.findViewById(R.id.recyclerAdopcionId);
+        RecyclerView recycler = view.findViewById(R.id.recyclerAdopcionId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
         adapter = new AdapterReportesAdopcion(listReportes, getContext());
@@ -92,13 +75,9 @@ public class AdopcionFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                if (filtro != null){
-                    llenarReportes(filtro, true);
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    llenarReportes(filtro, false);
-                    swipeRefreshLayout.setRefreshing(false);
-                }
+                llenarReportes(filtro,
+                        filtro != null);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
         });
@@ -106,15 +85,15 @@ public class AdopcionFragment extends Fragment {
 
     private void llenarReportes(final Filtro filtro, boolean filtrada) {
         //Instanciar la base de datos y referenciarla
-        final DatabaseReference reportePerdidaReference = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE);
+        final DatabaseReference reportePerdidaReference = firebaseDatabase.getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE);
         reportePerdidaReference.keepSynced(true);
 
-        if (filtrada == true){
+        if (filtrada){
             //Llenar lista desde la base con filtro
             reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listReportes.removeAll(listReportes);
+                    listReportes.clear();
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
                         String alcaldia = snapshot.child("alcaldia").getValue(String.class);
@@ -152,7 +131,7 @@ public class AdopcionFragment extends Fragment {
             reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listReportes.removeAll(listReportes);
+                    listReportes.clear();
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
                         reporteA = snapshot.getValue(ReporteAdopcion.class);
@@ -173,14 +152,12 @@ public class AdopcionFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case 0:
-                if (resultCode == Activity.RESULT_OK){
-                    Bundle bundle = data.getExtras();
-                    filtro = (Filtro) bundle.getSerializable("filtro");
-                    llenarReportes(filtro, true);
-                }
-                break;
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                filtro = (Filtro) bundle.getSerializable("filtro");
+                llenarReportes(filtro, true);
+            }
         }
     }
 

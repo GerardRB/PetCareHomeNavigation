@@ -21,11 +21,10 @@ import com.google.firebase.database.ValueEventListener;
 public class DetalleReporteAdopcionActivity extends AppCompatActivity {
 
     private ReporteAdopcion reporteA;
-    private TextView tipoMascota, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion, correoUser, nombreUser, telefonoUser, domicilio;
-    private ImageView foto;
-
-    private String correoU;
-    private FirebaseDatabase firebaseDatabase;
+    private TextView correoUser;
+    private TextView nombreUser;
+    private TextView telefonoUser;
+    private TextView domicilio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +40,22 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
         }
 
         //Referencia a textviews
-        tipoMascota = findViewById(R.id.text_tipo_DRMA);
-        raza = findViewById(R.id.text_raza_DRMA);
-        edad = findViewById(R.id.text_edad_DRMA);
-        vacunas = findViewById(R.id.text_vacunas_DRMA);
-        esterilizacion = findViewById(R.id.text_esterilizacion_DRMA);
-        alcaldia = findViewById(R.id.text_alcaldia_DRMA);
-        colonia = findViewById(R.id.text_colonia_DRMA);
-        calle = findViewById(R.id.text_calle_DRMA);
-        descripcion = findViewById(R.id.text_descricpion_DRMA);
+        TextView tipoMascota = findViewById(R.id.text_tipo_DRMA);
+        TextView raza = findViewById(R.id.text_raza_DRMA);
+        TextView edad = findViewById(R.id.text_edad_DRMA);
+        TextView vacunas = findViewById(R.id.text_vacunas_DRMA);
+        TextView esterilizacion = findViewById(R.id.text_esterilizacion_DRMA);
+        TextView alcaldia = findViewById(R.id.text_alcaldia_DRMA);
+        TextView colonia = findViewById(R.id.text_colonia_DRMA);
+        TextView calle = findViewById(R.id.text_calle_DRMA);
+        TextView descripcion = findViewById(R.id.text_descricpion_DRMA);
         correoUser = findViewById(R.id.text_id_user_DRMA);
-        foto = findViewById(R.id.id_imageDRMA);
+        ImageView foto = findViewById(R.id.id_imageDRMA);
         nombreUser = findViewById(R.id.text_nombre_user_DRMA);
         telefonoUser = findViewById(R.id.text_telefono_user_DRMA);
         domicilio = findViewById(R.id.text_domicilio_user_DRMA);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference duenoRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
         final DatabaseReference cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
 
@@ -95,7 +94,7 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
         });
 
 
-        correoU = correoUser.getText().toString();
+        String correoU = correoUser.getText().toString();
 
         if (correoU.isEmpty()){
             duenoRef.addListenerForSingleValueEvent(new ValueEventListener() {
