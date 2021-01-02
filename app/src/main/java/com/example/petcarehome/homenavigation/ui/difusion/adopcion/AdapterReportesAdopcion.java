@@ -1,5 +1,6 @@
 package com.example.petcarehome.homenavigation.ui.difusion.adopcion;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,15 +22,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcion;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
-import com.example.petcarehome.homenavigation.ui.difusion.encontradas.DetalleReporteEncontradaActivity;
 
 import java.util.ArrayList;
 
-public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReportesAdopcion.ViewHolderReportesAdopcion> implements  View.OnClickListener{
+public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReportesAdopcion.ViewHolderReportesAdopcion>{
 
     ArrayList<ReporteAdopcion> listReportesAdopcion;
-    private View.OnClickListener listener;
-    private Context context;
+    private final Context context;
 
     public AdapterReportesAdopcion(ArrayList<ReporteAdopcion> listReportesAdopcion, Context context) {
         this.listReportesAdopcion = listReportesAdopcion;
@@ -39,9 +38,9 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
     @NonNull
     @Override
     public AdapterReportesAdopcion.ViewHolderReportesAdopcion onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_adopcion_list, null, false);
-        view.setOnClickListener(this);
-        ViewHolderReportesAdopcion holder = new ViewHolderReportesAdopcion(view);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_adopcion_list, null, false);
+        ViewHolderReportesAdopcion holder;
+        holder = new ViewHolderReportesAdopcion(view);
         return holder;
     }
 
@@ -83,19 +82,8 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
         return listReportesAdopcion.size();
     }
 
-    public void setOnClickListener(View.OnClickListener listener){
-        this.listener = listener;
-    }
 
-    @Override
-    public void onClick(View v) {
-        if(listener != null){
-            listener.onClick(v);
-        }
-
-    }
-
-    public class ViewHolderReportesAdopcion extends RecyclerView.ViewHolder {
+    public static class ViewHolderReportesAdopcion extends RecyclerView.ViewHolder {
 
         TextView etitipo, etiedad, etiRaza, etidescripcion;
         ImageView foto;

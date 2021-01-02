@@ -1,5 +1,6 @@
 package com.example.petcarehome.homenavigation.ui.difusion.perdidas;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +28,6 @@ import java.util.ArrayList;
 public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReportesPerdidas.ViewHolderReportesPerdidas> {
 
     ArrayList<ReportePerdidas> listReportesPerdidas;
-    private View.OnClickListener listener;
     Context context;
 
     public AdapterReportesPerdidas(ArrayList<ReportePerdidas> listReportesPerdidas, Context context) {
@@ -38,9 +38,9 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
     @NonNull
     @Override
     public ViewHolderReportesPerdidas onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_perdidas_list, null, false);
-        //view.setOnClickListener(this);
-        ViewHolderReportesPerdidas holder = new ViewHolderReportesPerdidas(view);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_perdidas_list, null, false);
+        ViewHolderReportesPerdidas holder;
+        holder = new ViewHolderReportesPerdidas(view);
         return holder;
     }
 
@@ -83,7 +83,7 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
     }
 
 
-    public class ViewHolderReportesPerdidas extends RecyclerView.ViewHolder {
+    public static class ViewHolderReportesPerdidas extends RecyclerView.ViewHolder {
 
         TextView etinombre, etifecha, etizona, etidescripcion;
         ImageView foto;

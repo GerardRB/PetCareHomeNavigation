@@ -1,5 +1,6 @@
 package com.example.petcarehome.homenavigation.ui.difusion.encontradas;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,15 +22,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
-import com.example.petcarehome.homenavigation.ui.difusion.perdidas.DetalleReportePerdidasActivity;
 
 import java.util.ArrayList;
 
-public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterReportesEncontradas.ViewHolderReportesEncontradas> implements View.OnClickListener{
+public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterReportesEncontradas.ViewHolderReportesEncontradas>{
 
     ArrayList<ReporteEncontradas> listReportesEncontradas;
-    private View.OnClickListener listener;
-    private Context context;
+    private final Context context;
 
     public AdapterReportesEncontradas(ArrayList<ReporteEncontradas> listReportesEncontradas, Context context) {
         this.listReportesEncontradas = listReportesEncontradas;
@@ -39,9 +38,9 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
     @NonNull
     @Override
     public AdapterReportesEncontradas.ViewHolderReportesEncontradas onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_encontradas_list, null, false);
-        view.setOnClickListener(this);
-        ViewHolderReportesEncontradas holder =  new ViewHolderReportesEncontradas(view);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_encontradas_list, null, false);
+        ViewHolderReportesEncontradas holder;
+        holder = new ViewHolderReportesEncontradas(view);
         return holder;
     }
 
@@ -82,19 +81,8 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
         return listReportesEncontradas.size();
     }
 
-    public void setOnClickListener(View.OnClickListener listener){
-        this.listener = listener;
-    }
 
-    @Override
-    public void onClick(View v) {
-        if(listener != null){
-            listener.onClick(v);
-        }
-
-    }
-
-    public class ViewHolderReportesEncontradas extends RecyclerView.ViewHolder {
+    public static class ViewHolderReportesEncontradas extends RecyclerView.ViewHolder {
 
         TextView etizona, etifecha, etitipo, etidescripcion;
         ImageView foto;
