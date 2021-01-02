@@ -24,6 +24,7 @@ import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReportesAdopcion.ViewHolderReportesAdopcion>{
 
@@ -65,7 +66,7 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, FullScreenImageActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.foto, ViewCompat.getTransitionName(holder.foto));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.foto, Objects.requireNonNull(ViewCompat.getTransitionName(holder.foto)));
                 Bundle  bundle = new Bundle();
                 bundle.putString("title", "");
                 bundle.putString("foto", listReportesAdopcion.get(position).getFoto());
@@ -91,12 +92,12 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
 
         public ViewHolderReportesAdopcion(@NonNull View itemView) {
             super(itemView);
-            etitipo = (TextView) itemView.findViewById(R.id.idTipoMA);
-            etiedad = (TextView) itemView.findViewById(R.id.idEdadMA);
-            etiRaza = (TextView) itemView.findViewById(R.id.idRazaMA);
-            etidescripcion = (TextView) itemView.findViewById(R.id.idDescripcionMA);
-            foto = (ImageView) itemView.findViewById(R.id.idImagenMA);
-            info = (LinearLayout) itemView.findViewById(R.id.layout_info);
+            etitipo = itemView.findViewById(R.id.idTipoMA);
+            etiedad = itemView.findViewById(R.id.idEdadMA);
+            etiRaza = itemView.findViewById(R.id.idRazaMA);
+            etidescripcion = itemView.findViewById(R.id.idDescripcionMA);
+            foto = itemView.findViewById(R.id.idImagenMA);
+            info = itemView.findViewById(R.id.layout_info);
         }
 
     }

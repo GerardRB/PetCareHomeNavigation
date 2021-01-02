@@ -27,10 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
+
 public class AdopcionFragment extends Fragment {
 
 
@@ -67,7 +64,7 @@ public class AdopcionFragment extends Fragment {
 
         filtro = null;
 
-        llenarReportes(filtro, false);
+        llenarReportes(null, false);
 
         //SwipeRefresh
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshAdopcion);

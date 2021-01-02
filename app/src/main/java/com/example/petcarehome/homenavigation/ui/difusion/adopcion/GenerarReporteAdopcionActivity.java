@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,8 +19,6 @@ import android.widget.Toast;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcion;
 import com.example.petcarehome.R;
-import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
-import com.example.petcarehome.homenavigation.ui.difusion.encontradas.GenerarReporteEncontradaActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,24 +32,20 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class GenerarReporteAdopcionActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final int COD_SELECCIONA = 10;
-    //private static final int COD_SELECCIONA = 10;
 
     private Spinner comboAlcaldias, comboTipoMascota, comboVacunas, comboEsterilizacion;
     private EditText raza, edad, colonia, calle, descripcion;
     private ImageView imageView;
     private Button button;
-    private FirebaseDatabase firebaseDatabase;
 
     private Uri resultUri;
-    private ArrayList<Uri> listImagesRec = new ArrayList<Uri>();
-    private FirebaseStorage firebaseStorage;
+    //private ArrayList<Uri> listImagesRec;
     private Uri downloadUri;
-    private ArrayList<String> listDwonloadUri;
+    //private ArrayList<String> listDwonloadUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +92,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     //Acceso a la galería
     private void cargarImagen() {
         Intent intent = new Intent();
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, 10);
@@ -109,9 +102,11 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 10 && resultCode == Activity.RESULT_OK){
+        //listImagesRec = new ArrayList<>();
+        if (requestCode == 10 && resultCode == Activity.RESULT_OK){ //Para abrir y recortar imagen
 
-            if (data.getClipData() != null){
+            /*Para recortar varias fotos
+            if (data.getClipData() != null){ //Cuando se seleccionan varias fotos
                 for (int i = 0; i < data.getClipData().getItemCount(); i++){
                     CropImage.activity(data.getClipData().getItemAt(i).getUri())
                             .setGuidelines(CropImageView.Guidelines.ON)
@@ -119,30 +114,27 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                             .setAspectRatio(3,3).start(GenerarReporteAdopcionActivity.this);
                 }
 
-            } else {
+            } else { //Cuando se selecciona solo una foto
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setRequestedSize(1024, 1024)
                         .setAspectRatio(3,3).start(GenerarReporteAdopcionActivity.this);
-            }
+            }*/
 
-            /*
-            //Uri imageUri = CropImage.getPickImageResultUri(this, data);
-            Uri imageUri = data.getData();
+            //Uri imageUri = data.getData();
             //Recortar imagen
-            CropImage.activity(imageUri)
+            CropImage.activity(data.getData())
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setRequestedSize(1024, 1024)
-                    .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
-            //imageView.setImageURI(imageUri);*/
+                    .setAspectRatio(3,3).start(GenerarReporteAdopcionActivity.this);
         }
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){ //Para obtener la imagen ya recortada
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK){
                 resultUri = result.getUri();
-                listImagesRec.add(resultUri);
-                imageView.setImageURI(listImagesRec.get(0));
+                //listImagesRec.add(resultUri);
+                imageView.setImageURI(resultUri);
                 //Toast.makeText(getApplicationContext(), "Fotos seleccionadas: " + listImagesRec.size(), Toast.LENGTH_LONG).show();
             }
         }
@@ -167,6 +159,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     }
 
 
+    /*
     public String SubirFoto(String idUser, String idRep, int noFoto){
         final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEADOPCION_REFERENCE).child(idUser).child("img" + idRep + noFoto + ".jpg");
         //final Uri[] downloadUri = new Uri[1];
@@ -186,7 +179,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
 
         String stringUrl = "Url " + noFoto;
         return stringUrl;
-    }
+    }*/
 
     private void validarCampos() {
         final String tipoM, razaM, edadM, vacunas, esterilizacion, alcaldiaA, coloniaA, calleA, descripcionA, idRep;
@@ -205,7 +198,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
         descripcionA = descripcion.getText().toString();
 
         //validacion
-        if(tipoM.equals("Seleccionar") || razaM.isEmpty() || edadM.isEmpty() || vacunas.equals("Seleccionar") || esterilizacion.equals("Seleccionar") || alcaldiaA.equals("Seleccionar") || descripcionA.isEmpty()){
+        if(tipoM.equals("Seleccionar") || razaM.isEmpty() || edadM.isEmpty() || vacunas.equals("Seleccionar") || esterilizacion.equals("Seleccionar") || alcaldiaA.equals("Seleccionar") || descripcionA.isEmpty() || resultUri == null){
             if (tipoM.equals("Seleccionar"))
                 mensaje += "\nSeleccione un tipo de mascota";
             if (razaM.isEmpty())
@@ -220,34 +213,32 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                 mensaje += "\nSeleccione una alcaldía";
             if (descripcionA.isEmpty())
                 descripcion.setError("Obligatorio");
+            if (resultUri == null)
+                mensaje += "\nSeleccione una imagen de la galería";
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
 
-            //Referencia al Storage de reportes
-            firebaseStorage = FirebaseStorage.getInstance();
-            firebaseDatabase = FirebaseDatabase.getInstance();
+
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null){
                 idUser = user.getUid();
             }
-            final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE).push();
+            final DatabaseReference reportesPReference = FirebaseDatabase.getInstance().getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE).push();
             idRep = reportesPReference.getKey();
 
 
             //Bien una foto
             //final String finalIdUser = idUser;
-            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEADOPCION_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
+            final StorageReference storageReportesReference = FirebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEADOPCION_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isSuccessful());
+                    while(!uriTask.isSuccessful());
                     downloadUri = uriTask.getResult();
                     String idUserf = user.getUid();
                     ReporteAdopcion reporteA = new ReporteAdopcion(tipoM, razaM, edadM, vacunas, esterilizacion, alcaldiaA, coloniaA, calleA, descripcionA, downloadUri.toString(), idUserf);
                     //Guardar en base de datos
-
-
                     reportesPReference.setValue(reporteA, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
@@ -259,6 +250,10 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                             }
                         }
                     });
+
+
+
+
                 }
             });//Fin una foto
 
