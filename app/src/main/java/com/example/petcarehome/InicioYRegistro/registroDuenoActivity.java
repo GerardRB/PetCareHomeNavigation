@@ -24,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class   registroDuenoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     EditText mnombre_dueno, mapellidos_dueno, mcontrasena, mcalle_dueno,
-            mnoext_dueno, mnoint_dueno, mcorreo_dueno, mtel_dueno;
+            mnoext_dueno, mnoint_dueno, mcorreo_dueno, mtel_dueno, mcolonia_dueno;
     Button mRegistroDueno;
 
     //Para la base de datos
@@ -45,6 +45,7 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
         mcalle_dueno = findViewById(R.id.calle_dueno);
         mnoext_dueno = findViewById(R.id.noext_dueno);
         mnoint_dueno = findViewById(R.id.noint_dueno);
+        mcalle_dueno = findViewById(R.id.colonia_dueno);
 
         mcorreo_dueno = findViewById(R.id.correo2_dueno);
         mtel_dueno = findViewById(R.id.tel_dueno);
@@ -82,13 +83,14 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
                             String calle = mcalle_dueno.getText().toString();
                             String noext = mnoext_dueno.getText().toString();
                             String noint = mnoint_dueno.getText().toString();
+                            String colonia = mcolonia_dueno.getText().toString();
                             String alcaldia = spinneralcal.getSelectedItem().toString();
                             //  String correo = mcorreo_dueno.getText().toString();
                             // String contrasena = mcontrasena.getText().toString();
                             String telefono = mtel_dueno.getText().toString();
                             String email = mcorreo_dueno.getText().toString();
 
-                            Dueno Dueno = new Dueno(nombre, apellido, calle, noext, noint, alcaldia, telefono, email, "", "Dueno");
+                            Dueno Dueno = new Dueno(nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Dueno");
 
                             //Creando referencia al usuario actual -> a los dueños en la bd
                             DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("dueno");

@@ -33,9 +33,13 @@ import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.Busqueda;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.example.petcarehome.homenavigation.Objetos.MarcadorCuidador;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidasID;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
+import com.example.petcarehome.homenavigation.ui.difusion.perdidas.DetalleReportePerdidasActivity;
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -52,6 +56,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,6 +71,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,8 +85,10 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     private GoogleMap mMap;
     private Busqueda busqueda;
 
-    private MarkerOptions marker;
+    //private Marker markerCurrent;
+    private Marker marker;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private ArrayList<MarcadorCuidador> listMarkerCuidador;
 
     private String currentAddress;
 
@@ -88,6 +96,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference cuidadoresRef;
     private ArrayList<Cuidador> listCuidadores;
+    private ValueEventListener busquedaListener;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -132,6 +141,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         }
 
         listCuidadores = new ArrayList<>();
+        busquedaListener = null;
 
 
         //Botones flotates referencias y escuchador
@@ -142,6 +152,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         fablocation.setOnClickListener(this);
 
         marker = null;
+        //markerCurrent = null;
 
         /*Boton estado cuidador
         final ToggleButton switchEstado = root.findViewById(R.id.switch1);
@@ -279,6 +290,10 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     private void iniciarBusqueda(final Busqueda busqueda) {
         firebaseDatabase = FirebaseDatabase.getInstance();
         cuidadoresRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
+        mMap.clear();
+        MarkerOptions dueno = new MarkerOptions().position(busqueda.getUbicacion())
+                .title("Mi ubicación").snippet("Ubicación actual");
+        marker = mMap.addMarker(dueno);
         //String dist = String.valueOf(busqueda.getDistancia());
         if (busqueda.getTipoMascota().isEmpty()){
             if (busqueda.getTipoServicio().isEmpty()){
@@ -358,7 +373,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
     //Busqueda solo por mascota
     private void busquedaMascota(DatabaseReference cuidadoresRef, final String tipoMascota) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -371,6 +386,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         String calle = snapCuidador.child("calle").getValue(String.class);
                         String noInt = snapCuidador.child("noint").getValue(String.class);
                         String noExt = snapCuidador.child("noext").getValue(String.class);
+                        String colonia = snapCuidador.child("colonia").getValue(String.class);
                         String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                         String telefono = snapCuidador.child("telefono").getValue(String.class);
                         String email = snapCuidador.child("correo").getValue(String.class);
@@ -387,6 +403,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         cuidador.setCalle(calle);
                         cuidador.setNoint(noInt);
                         cuidador.setNoext(noExt);
+                        cuidador.setColonia(colonia);
                         cuidador.setAlcaldia(alcaldia);
                         cuidador.setTelefono(telefono);
                         cuidador.setCorreo(email);
@@ -423,13 +440,14 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda solo por servicio
     private void busquedaServicio(DatabaseReference cuidadoresRef, final String tipoServicio) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -442,6 +460,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         String calle = snapCuidador.child("calle").getValue(String.class);
                         String noInt = snapCuidador.child("noint").getValue(String.class);
                         String noExt = snapCuidador.child("noext").getValue(String.class);
+                        String colonia = snapCuidador.child("colonia").getValue(String.class);
                         String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                         String telefono = snapCuidador.child("telefono").getValue(String.class);
                         String email = snapCuidador.child("correo").getValue(String.class);
@@ -458,6 +477,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         cuidador.setCalle(calle);
                         cuidador.setNoint(noInt);
                         cuidador.setNoext(noExt);
+                        cuidador.setColonia(colonia);
                         cuidador.setAlcaldia(alcaldia);
                         cuidador.setTelefono(telefono);
                         cuidador.setCorreo(email);
@@ -506,19 +526,93 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
 
     //Busqueda solo por distancia
-    private void busquedaDistancia(DatabaseReference cuidadoresRef, int distancia, LatLng ubicacion) {
+    private void busquedaDistancia(DatabaseReference cuidadoresRef, final int distancia, final LatLng ubicacion) {
+        listCuidadores = new ArrayList<>();
+        busquedaListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapCuidador:
+                        dataSnapshot.getChildren()) {
+                    String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
+                        Double lngCuidador = snapCuidador.child("lng").getValue(Double.class);
+                        GeoLocation locDueno = new GeoLocation(ubicacion.latitude, ubicacion.longitude);
+                        GeoLocation locCuidador = new GeoLocation(latCuidador, lngCuidador);
+                        Double distance = (GeoFireUtils.getDistanceBetween(locDueno, locCuidador))/1000;
+                        if (distance.intValue() <= distancia){
+                            String nombre = snapCuidador.child("nombre").getValue(String.class);
+                            String apellidos = snapCuidador.child("apellidos").getValue(String.class);
+                            String calle = snapCuidador.child("calle").getValue(String.class);
+                            String noInt = snapCuidador.child("noint").getValue(String.class);
+                            String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String colonia = snapCuidador.child("colonia").getValue(String.class);
+                            String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
+                            String telefono = snapCuidador.child("telefono").getValue(String.class);
+                            String email = snapCuidador.child("correo").getValue(String.class);
+                            String foto = snapCuidador.child("foto").getValue(String.class);
+                            String comentarios = snapCuidador.child("comentarios").getValue(String.class);
+                            ArrayList<Mascota> listMascotas = new ArrayList<>();
+                            Double calif = snapCuidador.child("calificacion").getValue(Double.class);
+                            Double lat = snapCuidador.child("lat").getValue(Double.class);
+                            Double lng = snapCuidador.child("lng").getValue(Double.class);
 
+                            Cuidador cuidador = new Cuidador();
+                            cuidador.setNombre(nombre);
+                            cuidador.setApellidos(apellidos);
+                            cuidador.setCalle(calle);
+                            cuidador.setNoint(noInt);
+                            cuidador.setNoext(noExt);
+                            cuidador.setColonia(colonia);
+                            cuidador.setAlcaldia(alcaldia);
+                            cuidador.setTelefono(telefono);
+                            cuidador.setCorreo(email);
+                            cuidador.setFoto(foto);
+                            cuidador.setComentarios(comentarios);
+                            cuidador.setCalificacion(calif);
+                            cuidador.setLat(lat);
+                            cuidador.setLng(lng);
+                            listCuidadores.add(cuidador);
+                            for (DataSnapshot snapMascota:
+                                    snapCuidador.child("mascotas").getChildren()) {
+                                if (snapMascota.exists()){
+                                    Mascota mascota = snapMascota.getValue(Mascota.class);
+                                    listMascotas.add(mascota);
+                                }
+                            }
+                            if (!listMascotas.isEmpty()){
+                                cuidador.setMascotas(listMascotas);
+                                listCuidadores.add(cuidador);
+                            }
+                        }
+                    }
+                }
+                if (!listCuidadores.isEmpty()){
+                    llenarMapa(listCuidadores);
+                } else {
+                    Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda por Mascota y servicio
     private void busquedaMascotaServicio(DatabaseReference cuidadoresRef, final String tipoMascota, final String tipoServicio) {
         listCuidadores = new ArrayList<>();
-        cuidadoresRef.addValueEventListener(new ValueEventListener() {
+        busquedaListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listCuidadores.removeAll(listCuidadores);
@@ -531,6 +625,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         String calle = snapCuidador.child("calle").getValue(String.class);
                         String noInt = snapCuidador.child("noint").getValue(String.class);
                         String noExt = snapCuidador.child("noext").getValue(String.class);
+                        String colonia = snapCuidador.child("colonia").getValue(String.class);
                         String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
                         String telefono = snapCuidador.child("telefono").getValue(String.class);
                         String email = snapCuidador.child("correo").getValue(String.class);
@@ -547,6 +642,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                         cuidador.setCalle(calle);
                         cuidador.setNoint(noInt);
                         cuidador.setNoext(noExt);
+                        cuidador.setColonia(colonia);
                         cuidador.setAlcaldia(alcaldia);
                         cuidador.setTelefono(telefono);
                         cuidador.setCorreo(email);
@@ -598,35 +694,317 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda por Mascota y distancia
-    private void busquedaMascotaDistancia(DatabaseReference cuidadoresRef, final String tipoMascota, int distancia, LatLng ubicacion) {
+    private void busquedaMascotaDistancia(DatabaseReference cuidadoresRef, final String tipoMascota, final int distancia, final LatLng ubicacion) {
+        listCuidadores = new ArrayList<>();
+        busquedaListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapCuidador:
+                        dataSnapshot.getChildren()) {
+                    String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
+                        Double lngCuidador = snapCuidador.child("lng").getValue(Double.class);
+                        GeoLocation locDueno = new GeoLocation(ubicacion.latitude, ubicacion.longitude);
+                        GeoLocation locCuidador = new GeoLocation(latCuidador, lngCuidador);
+                        Double distance = (GeoFireUtils.getDistanceBetween(locDueno, locCuidador))/1000;
+                        if (distance <= distancia){
+                            String nombre = snapCuidador.child("nombre").getValue(String.class);
+                            String apellidos = snapCuidador.child("apellidos").getValue(String.class);
+                            String calle = snapCuidador.child("calle").getValue(String.class);
+                            String noInt = snapCuidador.child("noint").getValue(String.class);
+                            String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String colonia = snapCuidador.child("colonia").getValue(String.class);
+                            String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
+                            String telefono = snapCuidador.child("telefono").getValue(String.class);
+                            String email = snapCuidador.child("correo").getValue(String.class);
+                            String foto = snapCuidador.child("foto").getValue(String.class);
+                            String comentarios = snapCuidador.child("comentarios").getValue(String.class);
+                            ArrayList<Mascota> listMascotas = new ArrayList<>();
+                            Double calif = snapCuidador.child("calificacion").getValue(Double.class);
+                            Double lat = snapCuidador.child("lat").getValue(Double.class);
+                            Double lng = snapCuidador.child("lng").getValue(Double.class);
+
+                            Cuidador cuidador = new Cuidador();
+                            cuidador.setNombre(nombre);
+                            cuidador.setApellidos(apellidos);
+                            cuidador.setCalle(calle);
+                            cuidador.setNoint(noInt);
+                            cuidador.setNoext(noExt);
+                            cuidador.setColonia(colonia);
+                            cuidador.setAlcaldia(alcaldia);
+                            cuidador.setTelefono(telefono);
+                            cuidador.setCorreo(email);
+                            cuidador.setFoto(foto);
+                            cuidador.setComentarios(comentarios);
+                            cuidador.setCalificacion(calif);
+                            cuidador.setLat(lat);
+                            cuidador.setLng(lng);
+                            for (DataSnapshot snapMascota:
+                                    snapCuidador.child("mascotas").getChildren()) {
+                                if (snapMascota.exists()){
+                                    String tiopM = snapMascota.getKey();
+                                    if (tiopM.equals(tipoMascota)) {
+                                        Mascota mascota = snapMascota.getValue(Mascota.class);
+                                        listMascotas.add(mascota);
+                                    }
+                                }
+                            }
+                            if (!listMascotas.isEmpty()){
+                                cuidador.setMascotas(listMascotas);
+                                listCuidadores.add(cuidador);
+                            }
+                        }
+                    }
+                }
+                if (!listCuidadores.isEmpty()){
+                    llenarMapa(listCuidadores);
+                } else {
+                    Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda por Servicio y distancia
-    private void busquedaServicioDistancia(DatabaseReference cuidadoresRef, String tipoServicio, int distancia, LatLng ubicacion) {
+    private void busquedaServicioDistancia(DatabaseReference cuidadoresRef, final String tipoServicio, final int distancia, final LatLng ubicacion) {
+        listCuidadores = new ArrayList<>();
+        busquedaListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapCuidador:
+                        dataSnapshot.getChildren()) {
+                    String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
+                        Double lngCuidador = snapCuidador.child("lng").getValue(Double.class);
+                        GeoLocation locDueno = new GeoLocation(ubicacion.latitude, ubicacion.longitude);
+                        GeoLocation locCuidador = new GeoLocation(latCuidador, lngCuidador);
+                        Double distance = (GeoFireUtils.getDistanceBetween(locDueno, locCuidador))/1000;
+                        if (distance <= distancia){
+                            String nombre = snapCuidador.child("nombre").getValue(String.class);
+                            String apellidos = snapCuidador.child("apellidos").getValue(String.class);
+                            String calle = snapCuidador.child("calle").getValue(String.class);
+                            String noInt = snapCuidador.child("noint").getValue(String.class);
+                            String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String colonia = snapCuidador.child("colonia").getValue(String.class);
+                            String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
+                            String telefono = snapCuidador.child("telefono").getValue(String.class);
+                            String email = snapCuidador.child("correo").getValue(String.class);
+                            String foto = snapCuidador.child("foto").getValue(String.class);
+                            String comentarios = snapCuidador.child("comentarios").getValue(String.class);
+                            ArrayList<Mascota> listMascotas = new ArrayList<>();
+                            Double calif = snapCuidador.child("calificacion").getValue(Double.class);
+                            Double lat = snapCuidador.child("lat").getValue(Double.class);
+                            Double lng = snapCuidador.child("lng").getValue(Double.class);
+
+                            Cuidador cuidador = new Cuidador();
+                            cuidador.setNombre(nombre);
+                            cuidador.setApellidos(apellidos);
+                            cuidador.setCalle(calle);
+                            cuidador.setNoint(noInt);
+                            cuidador.setNoext(noExt);
+                            cuidador.setColonia(colonia);
+                            cuidador.setAlcaldia(alcaldia);
+                            cuidador.setTelefono(telefono);
+                            cuidador.setCorreo(email);
+                            cuidador.setFoto(foto);
+                            cuidador.setComentarios(comentarios);
+                            cuidador.setCalificacion(calif);
+                            cuidador.setLat(lat);
+                            cuidador.setLng(lng);
+                            for (DataSnapshot snapMascota:
+                                    snapCuidador.child("mascotas").getChildren()) {
+                                if (snapMascota.exists()){
+                                    String tMascota = snapMascota.getKey();
+                                    Mascota mascota = new Mascota();
+                                    mascota.setTipo(tMascota);
+                                    ArrayList<Servicio> listServicios = new ArrayList<>();
+                                    for (DataSnapshot snapServicio:
+                                            snapMascota.child("servicios").getChildren()) {
+                                        if (snapServicio.exists()){
+                                            String servicio = snapServicio.child("tipoServicio").getValue(String.class);
+                                            if (servicio.equals(tipoServicio)){
+                                                Servicio serv = snapServicio.getValue(Servicio.class);
+                                                listServicios.add(serv);
+                                            }
+                                        }
+                                    }
+                                    if(!listServicios.isEmpty()){
+                                        mascota.setServicios(listServicios);
+                                        listMascotas.add(mascota);
+                                    }
+                                }
+                            }
+                            if (!listMascotas.isEmpty()){
+                                cuidador.setMascotas(listMascotas);
+                                listCuidadores.add(cuidador);
+                            }
+                        }
+                    }
+                }
+                if (!listCuidadores.isEmpty()){
+                    llenarMapa(listCuidadores);
+                } else {
+                    Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
     //Busqueda por Mascota, Servicio y distancia
-    private void busquedaMascotaServicioDistancia(DatabaseReference cuidadoresRef, String tipoMascota, String tipoServicio, int distancia, LatLng ubicacion) {
+    private void busquedaMascotaServicioDistancia(DatabaseReference cuidadoresRef, final String tipoMascota, final String tipoServicio, final int distancia, final LatLng ubicacion) {
+        listCuidadores = new ArrayList<>();
+        busquedaListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCuidadores.removeAll(listCuidadores);
+                for (DataSnapshot snapCuidador:
+                        dataSnapshot.getChildren()) {
+                    String estado = snapCuidador.child(FirebaseReferences.CUIDADOR_ESTADO_REFERENCE).getValue(String.class);
+                    if (estado.equals("Activo")){
+                        Double latCuidador = snapCuidador.child("lat").getValue(Double.class);
+                        Double lngCuidador = snapCuidador.child("lng").getValue(Double.class);
+                        GeoLocation locDueno = new GeoLocation(ubicacion.latitude, ubicacion.longitude);
+                        GeoLocation locCuidador = new GeoLocation(latCuidador, lngCuidador);
+                        Double distance = (GeoFireUtils.getDistanceBetween(locDueno, locCuidador))/1000;
+                        if (distance <= distancia){
+                            String nombre = snapCuidador.child("nombre").getValue(String.class);
+                            String apellidos = snapCuidador.child("apellidos").getValue(String.class);
+                            String calle = snapCuidador.child("calle").getValue(String.class);
+                            String noInt = snapCuidador.child("noint").getValue(String.class);
+                            String noExt = snapCuidador.child("noext").getValue(String.class);
+                            String colonia = snapCuidador.child("colonia").getValue(String.class);
+                            String alcaldia = snapCuidador.child("alcaldia").getValue(String.class);
+                            String telefono = snapCuidador.child("telefono").getValue(String.class);
+                            String email = snapCuidador.child("correo").getValue(String.class);
+                            String foto = snapCuidador.child("foto").getValue(String.class);
+                            String comentarios = snapCuidador.child("comentarios").getValue(String.class);
+                            ArrayList<Mascota> listMascotas = new ArrayList<>();
+                            Double calif = snapCuidador.child("calificacion").getValue(Double.class);
+                            Double lat = snapCuidador.child("lat").getValue(Double.class);
+                            Double lng = snapCuidador.child("lng").getValue(Double.class);
+
+                            Cuidador cuidador = new Cuidador();
+                            cuidador.setNombre(nombre);
+                            cuidador.setApellidos(apellidos);
+                            cuidador.setCalle(calle);
+                            cuidador.setNoint(noInt);
+                            cuidador.setNoext(noExt);
+                            cuidador.setColonia(colonia);
+                            cuidador.setAlcaldia(alcaldia);
+                            cuidador.setTelefono(telefono);
+                            cuidador.setCorreo(email);
+                            cuidador.setFoto(foto);
+                            cuidador.setComentarios(comentarios);
+                            cuidador.setCalificacion(calif);
+                            cuidador.setLat(lat);
+                            cuidador.setLng(lng);
+                            for (DataSnapshot snapMascota:
+                                    snapCuidador.child("mascotas").getChildren()) {
+                                if (snapMascota.exists()){
+                                    String tipoM = snapMascota.getKey();
+                                    if (tipoM.equals(tipoMascota)){
+                                        Mascota mascota = new Mascota();
+                                        mascota.setTipo(tipoM);
+                                        ArrayList<Servicio> listServicios = new ArrayList<>();
+                                        for (DataSnapshot snapServicio:
+                                                snapMascota.child("servicios").getChildren()) {
+                                            if (snapServicio.exists()){
+                                                String servicio = snapServicio.child("tipoServicio").getValue(String.class);
+                                                if (servicio.equals(tipoServicio)){
+                                                    Servicio serv = snapServicio.getValue(Servicio.class);
+                                                    listServicios.add(serv);
+                                                }
+                                            }
+                                        }
+                                        if (!listServicios.isEmpty()) {
+                                            mascota.setServicios(listServicios);
+                                            listMascotas.add(mascota);
+                                        }
+                                    }
+                                }
+                            }
+                            if (!listMascotas.isEmpty()){
+                                cuidador.setMascotas(listMascotas);
+                                listCuidadores.add(cuidador);
+                            }
+                        }
+                    }
+                }
+                if (!listCuidadores.isEmpty()){
+                    llenarMapa(listCuidadores);
+                } else {
+                    Toast.makeText(getContext(), "No se encontraron cuidadores", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        cuidadoresRef.addValueEventListener(busquedaListener);
     }
 
-    private void llenarMapa(ArrayList<Cuidador> listCuidadores) {
-        for (int i = 0; i < listCuidadores.size(); i++){
-            LatLng locationCuidador = new LatLng(listCuidadores.get(i).getLat(), listCuidadores.get(i).getLng());
-            String nombre, telefono, email;
-            nombre = listCuidadores.get(i).getNombre() + " " + listCuidadores.get(i).getApellidos();
-            telefono = listCuidadores.get(i).getTelefono();
-            email = listCuidadores.get(i).getCorreo();
+    private void llenarMapa(final ArrayList<Cuidador> listCuidadores) {
+        if (busquedaListener != null){
+            listMarkerCuidador = new ArrayList<>();
+            for (int i = 0; i < listCuidadores.size(); i++){
+                LatLng locationCuidador = new LatLng(listCuidadores.get(i).getLat(), listCuidadores.get(i).getLng());
+                String nombre;
+                nombre = listCuidadores.get(i).getNombre() + " " + listCuidadores.get(i).getApellidos();
 
-            String snippetMarker = nombre + "\n Datos de contacto:\nTeléfono: " + telefono + "\nEmail: " + email;
-            //Crear opciones para el marcador
-            MarkerOptions markerCuidador = new MarkerOptions().position(locationCuidador)
-                    .title(nombre).icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion)).snippet(snippetMarker);
-            mMap.addMarker(markerCuidador);
+                //String snippetMarker = nombre + "\n Datos de contacto:\nTeléfono: " + telefono + "\nEmail: " + email;
+                //Crear opciones para el marcador
+                MarkerOptions markerCuidador = new MarkerOptions().position(locationCuidador)
+                        .title(nombre).icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_marcador_de_posicion));
+                Marker marcador = mMap.addMarker(markerCuidador);
+                listMarkerCuidador.add(new MarcadorCuidador(marcador.getId(), listCuidadores.get(i)));
+            }
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    String id = marker.getId();
+                    for (int j = 0; j< listMarkerCuidador.size(); j++){
+                        if (id.equals(listMarkerCuidador.get(j).getIdMarker())){
+                            Intent intentCuidador = new Intent(getContext(), CuidadorInfoActivity.class);
+                            Bundle  bundle = new Bundle();
+                            Cuidador cuidador = listMarkerCuidador.get(j).getCuidador();
+                            bundle.putSerializable("cuidador", cuidador);
+                            bundle.putDouble("lat", busqueda.getUbicacion().latitude);
+                            bundle.putDouble("lng", busqueda.getUbicacion().longitude);
+                            intentCuidador.putExtras(bundle);
+                            startActivity(intentCuidador);
+                        }
+                    }
+                    return true;
+                }
+            });
+        } else {
+            mMap.clear();
         }
+
     }
 
 
@@ -638,9 +1016,8 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
 
         //creación de la solicitud de ubicacion
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(60000);
-        locationRequest.setFastestInterval(30000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
 
         //Devolucion de la llamada de la solicitud de la ubicacion
         locationCallback = new LocationCallback() {
@@ -650,17 +1027,19 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    mMap.clear();
+                    if (marker != null){
+                        marker.remove();
+                    }
                     //Inicializar latitud y longitud
                     LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
 
                     //Crear opciones para el marcador
-                    marker = new MarkerOptions().position(current)
+                    MarkerOptions markerOptions = new MarkerOptions().position(current)
                             .title("Mi ubicación").snippet("Ubicación actual");
                     //Zoom en el mapa
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
                     //Añadir marcador en el mapa
-                    mMap.addMarker(marker);
+                    marker = mMap.addMarker(markerOptions);
                 }
             }
         };
@@ -680,5 +1059,11 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
         mMap.clear();
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (busquedaListener != null){
+            cuidadoresRef.removeEventListener(busquedaListener);
+        }
+    }
 }

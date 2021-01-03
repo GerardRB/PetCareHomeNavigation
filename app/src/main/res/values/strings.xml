@@ -118,6 +118,11 @@
     <string name="label_dialog_ubicacion">Ubicación:</string>
     <string name="text_dialog_km">Km</string>
     <string name="label_buscar_por">Buscar por:</string>
+    <string name="label_datos_contacto">Datos de contacto:</string>
+    <string name="label_servicios">Servicios que brinda:</string>
+    <string name="label_precio">Precio: $</string>
+    <string name="label_descripcion_servicio">Descripción del servicio:</string>
+    <string name="label_distancia">Distancia:</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION

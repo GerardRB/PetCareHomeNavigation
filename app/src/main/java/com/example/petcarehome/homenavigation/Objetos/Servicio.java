@@ -1,6 +1,8 @@
 package com.example.petcarehome.homenavigation.Objetos;
 
-public class Servicio {
+import java.io.Serializable;
+
+public class Servicio implements Serializable {
     String tipoServicio;
     Double precio;
     String descripcion;

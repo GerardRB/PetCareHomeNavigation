@@ -5,14 +5,14 @@ import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cuidador {
-    String nombre, apellidos, calle, noext, noint, alcaldia, telefono, correo, foto, comentarios, estado, tipo;
+public class Cuidador implements Serializable {
+    String nombre, apellidos, calle, noext, noint, colonia, alcaldia, telefono, correo, foto, comentarios, estado, tipo;
     ArrayList<Mascota> mascotas;
-    Servicio servicio;
     Double calificacion, lat, lng;
 
 
@@ -20,24 +20,24 @@ public class Cuidador {
 
     }
 
-    public Cuidador(String nombre, String apellidos, String calle, String noext, String noint, String alcaldia, String telefono, String correo, String foto, String comentarios, String estado, ArrayList<Mascota> mascotas, Servicio servicio, Double calificacion, Double lat, Double lng, String tipo) {
+    public Cuidador(String nombre, String apellidos, String calle, String noext, String noint, String colonia, String alcaldia, String telefono, String correo, String foto, String comentarios, String estado, String tipo, ArrayList<Mascota> mascotas, Double calificacion, Double lat, Double lng) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.calle = calle;
         this.noext = noext;
         this.noint = noint;
+        this.colonia = colonia;
         this.alcaldia = alcaldia;
         this.telefono = telefono;
         this.correo = correo;
         this.foto = foto;
         this.comentarios = comentarios;
         this.estado = estado;
+        this.tipo = tipo;
         this.mascotas = mascotas;
-        this.servicio = servicio;
         this.calificacion = calificacion;
         this.lat = lat;
         this.lng = lng;
-        this.tipo = tipo;
     }
 
 
@@ -83,6 +83,14 @@ public class Cuidador {
 
     public void setNoint(String noint) {
         this.noint = noint;
+    }
+
+    public String getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(String colonia) {
+        this.colonia = colonia;
     }
 
     public String getAlcaldia() {
@@ -139,14 +147,6 @@ public class Cuidador {
 
     public void setMascotas(ArrayList<Mascota> mascotas) {
         this.mascotas = mascotas;
-    }
-
-    public Servicio getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
     }
 
     public Double getCalificacion() {

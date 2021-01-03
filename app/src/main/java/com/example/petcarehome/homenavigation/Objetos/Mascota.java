@@ -1,8 +1,9 @@
 package com.example.petcarehome.homenavigation.Objetos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Mascota {
+public class Mascota implements Serializable {
     String tipo;
     ArrayList<Servicio> servicios;
 

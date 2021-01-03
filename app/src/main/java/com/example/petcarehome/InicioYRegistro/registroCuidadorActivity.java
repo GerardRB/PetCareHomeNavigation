@@ -24,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class registroCuidadorActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     EditText mnombre_cuidador, mapellidos_cuidador, mcontrasena, mcalle_cuidador,
-            mnoext_cuidador, mnoint_cuidador, mcorreo_cuidador, mtel_cuidador;
+            mnoext_cuidador, mnoint_cuidador, mcorreo_cuidador, mtel_cuidador, mcolonia_cuidador;
 
     Button mRegistrocuidador;
 
@@ -45,6 +45,7 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
         mcalle_cuidador = findViewById(R.id.calle_dueno);
         mnoext_cuidador = findViewById(R.id.noext_dueno);
         mnoint_cuidador = findViewById(R.id.noint_dueno);
+        mcolonia_cuidador = findViewById(R.id.colonia_dueno);
 
         mcorreo_cuidador = findViewById(R.id.correo2_dueno);
         mtel_cuidador = findViewById(R.id.tel_dueno);
@@ -82,13 +83,14 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
                             String calle = mcalle_cuidador.getText().toString();
                             String noext = mnoext_cuidador.getText().toString();
                             String noint = mnoint_cuidador.getText().toString();
+                            String colonia = mcolonia_cuidador.getText().toString();
                             String alcaldia = spinneralcal.getSelectedItem().toString();
                             //  String correo = mcorreo_dueno.getText().toString();
                             // String contrasena = mcontrasena.getText().toString();
                             String telefono = mtel_cuidador.getText().toString();
                             String email = mcorreo_cuidador.getText().toString();
 
-                            Cuidador Cuidador = new Cuidador(nombre, apellido, calle, noext, noint, alcaldia, telefono, email, "", "", "Inactivo", null, null, null, null, null, "Cuidador");
+                            Cuidador Cuidador = new Cuidador(nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "", "Inactivo", "Cuidador", null, null, null, null);
 
                             //Creando referencia al usuario actual -> a los dueños en la bd
                             DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("cuidador");
