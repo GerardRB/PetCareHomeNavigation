@@ -19,15 +19,37 @@
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/id_input_imageRMA"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_addphoto"
-                android:layout_gravity="center"
-                tools:ignore="MissingConstraints,OnClick,VectorDrawableCompat"
-                android:onClick="onClick"/>
+                android:layout_marginTop="10dp"
+                >
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/id_input_imageRMA"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    app:srcCompat="@drawable/ic_perro_photo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:transitionName="@string/image_transition"
+                    tools:ignore="MissingConstraints,OnClick,VectorDrawableCompat"
+                    android:onClick="onClick"
+                    tools:targetApi="lollipop">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/fab_addphoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClick"
+                    app:backgroundTint="@color/colorAccent"
+                    app:iconTint="#FFFFFF"
+                    app:layout_constraintEnd_toEndOf="@id/id_input_imageRMA"
+                    app:layout_constraintBottom_toBottomOf="@id/id_input_imageRMA"
+                    tools:ignore="MissingConstraints"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <TextView
                 android:id="@+id/label_tipoRMA"

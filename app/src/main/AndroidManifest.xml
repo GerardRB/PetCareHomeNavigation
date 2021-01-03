@@ -73,42 +73,36 @@
         <activity
             android:name=".homenavigation.ui.difusion.adopcion.DetalleReporteAdopcionActivity"
             android:label="Mascota en Adopción"
-            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.encontradas.DetalleReporteEncontradaActivity"
             android:label="Mascota Encontrada"
-            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.perdidas.DetalleReportePerdidasActivity"
             android:label="Mascota Extraviada"
-            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.adopcion.GenerarReporteAdopcionActivity"
             android:label="Reporte mascota en adopción"
-            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/MaterialAppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.encontradas.GenerarReporteEncontradaActivity"
             android:label="Reporte mascota encontrada"
-            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.perdidas.GenerarReporteExtravioActivity"
             android:label="Reporte mascota extraviada"
-            android:parentActivityName=".homenavigation.HomeActivity_Dueno"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />

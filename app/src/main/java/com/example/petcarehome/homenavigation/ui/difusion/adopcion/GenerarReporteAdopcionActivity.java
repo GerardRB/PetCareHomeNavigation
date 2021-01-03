@@ -3,7 +3,10 @@ package com.example.petcarehome.homenavigation.ui.difusion.adopcion;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,11 +19,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcion;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +39,7 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+
 //import java.util.ArrayList;
 
 public class GenerarReporteAdopcionActivity extends AppCompatActivity implements View.OnClickListener{
@@ -40,7 +48,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     private Spinner comboAlcaldias, comboTipoMascota, comboVacunas, comboEsterilizacion;
     private EditText raza, edad, colonia, calle, descripcion;
     private ImageView imageView;
-    private Button button;
+    private ExtendedFloatingActionButton fabAddPhoto;
 
     private Uri resultUri;
     //private ArrayList<Uri> listImagesRec;
@@ -58,13 +66,20 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
         colonia = findViewById(R.id.id_input_coloniaRMA);
         calle = findViewById(R.id.id_input_calleRMA);
         descripcion = findViewById(R.id.id_input_descripcionRMA);
+        resultUri =  null;
 
         //Referencia al componente ImageView en xml
         imageView = findViewById(R.id.id_input_imageRMA);
         imageView.setOnClickListener(this);
 
+        fabAddPhoto = findViewById(R.id.fab_addphoto);
+        fabAddPhoto.setIconResource(R.drawable.ic_cameraadd);
+        fabAddPhoto.setOnClickListener(this);
+
+
+
         //Referencia al Boton generar reporte en xml
-        button = findViewById(R.id.id_btn_generarRMA);
+        Button button = findViewById(R.id.id_btn_generarRMA);
         button.setOnClickListener(this);
 
         //spinner de alcaldias
@@ -134,7 +149,8 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
             if (resultCode == RESULT_OK){
                 resultUri = result.getUri();
                 //listImagesRec.add(resultUri);
-                imageView.setImageURI(resultUri);
+                Glide.with(this).load(resultUri).apply(RequestOptions.circleCropTransform()).into(imageView);
+                fabAddPhoto.setIconResource(R.drawable.ic_editar);
                 //Toast.makeText(getApplicationContext(), "Fotos seleccionadas: " + listImagesRec.size(), Toast.LENGTH_LONG).show();
             }
         }
@@ -148,13 +164,33 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     }
 
     //Eventos Onclick dentro de la actividad
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        if (v.getId()==button.getId()){
-            validarCampos();
-        }
-        if(v.getId()==imageView.getId()){
-            cargarImagen();
+        switch (v.getId()){
+            case R.id.id_btn_generarRMA:
+                validarCampos();
+                break;
+            case  R.id.fab_addphoto:
+                cargarImagen();
+                break;
+            case R.id.id_input_imageRMA:
+                String foto;
+                if (resultUri == null){
+                    foto = "";
+                } else{
+                    foto = resultUri.toString();
+                }
+                Intent intent = new Intent(getApplicationContext(), FullScreenImageActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(GenerarReporteAdopcionActivity.this, imageView, ViewCompat.getTransitionName(imageView));
+                Bundle  bundle = new Bundle();
+                bundle.putString("title", "");
+                bundle.putString("foto", foto);
+                intent.putExtras(bundle);
+                startActivity(intent, options.toBundle());
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
         }
     }
 
