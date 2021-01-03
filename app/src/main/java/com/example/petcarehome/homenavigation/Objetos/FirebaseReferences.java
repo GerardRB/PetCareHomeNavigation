@@ -1,5 +1,7 @@
 package com.example.petcarehome.homenavigation.Objetos;
 
+import com.google.firebase.storage.StorageReference;
+
 public class FirebaseReferences {
     final public static String REPORTES_REFERENCE = "Reportes";
     final public static String REPORTEPERDIDA_REFERENCE = "Perdidas";
@@ -15,8 +17,9 @@ public class FirebaseReferences {
     final public static String CUIDADOR_LATITUD_REFERENCE = "lat";
     final public static String CUIDADOR_LONGITUD_REFERENCE = "lng";
     final public static String CUIDADOR_ESTADO_REFERENCE = "estado";
-
-
+    final public static String STORAGE_IMAGENPERFIL_REFERENCE = "imagenPerfil";
+    final public static String STORAGE_IMAGENPERFILCUIDADOR_REFERENCE = "imagenPerfilCuidador";
+    final public static String STORAGE_IMAGENPERFILDUENO_REFERENCE = "imagenPerfilDueno";
 
 
     final public static String MASCOTAS_CUIDADOR_REFERENCE = "mascotas";

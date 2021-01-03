@@ -3,8 +3,11 @@ package com.example.petcarehome.InicioYRegistro;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
+import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Cuidador {
     String nombre, apellidos, calle, noext, noint, alcaldia, telefono, correo, foto, comentarios, estado, tipo;
@@ -37,7 +40,12 @@ public class Cuidador {
         this.tipo = tipo;
     }
 
-    public String getNombre() {
+
+
+
+
+
+        public String getNombre() {
         return nombre;
     }
 

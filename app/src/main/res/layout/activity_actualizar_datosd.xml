@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".homenavigation.ui.config.clases_fragmentos.actualizar_datosd">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
+        android:paddingTop="5dp"
+        android:text="Actualizar mis datos"
+        android:textSize="25sp"
+        android:paddingBottom="20dp"
+        />
+
+    <ImageView
+        android:id="@+id/profile_imaged"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:src="@android:drawable/ic_menu_gallery">
+    </ImageView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:text="Datos generales "
+        android:textColor="@color/textogris"
+        android:textStyle="bold"></TextView>
+
+    <EditText
+        android:id="@+id/nombre_actualizard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Nombre"
+        android:paddingTop="20dp" />
+
+    <EditText
+        android:id="@+id/apellidos_actualizard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Apellidos" />
+
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:text="Domicilio "
+        android:textColor="@color/textogris"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/calle_actualizard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Calle" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+
+        <EditText
+            android:id="@+id/noext_actualizard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/ColorLinea"
+            android:paddingRight="50dp"
+            android:text="No. Exterior"
+            android:textColor="@color/textogris"></EditText>
+
+        <EditText
+            android:id="@+id/noint_actualizard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/ColorLinea"
+            android:paddingRight="50dp"
+            android:text="No. Interior"
+            android:textColor="@color/textogris"></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="11dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alcaldía"
+            android:textColor="@color/textogris"
+            android:textStyle="bold"></TextView>
+
+        <Spinner
+            android:id="@+id/delegacion_spinner_actualizard"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            ></Spinner>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Datos de la cuenta"
+        android:textColor="@color/textogris"
+        android:textStyle="bold">
+
+    </TextView>
+
+
+    <EditText
+        android:id="@+id/tel_actualizard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:backgroundTint="@color/ColorLinea"
+        android:hint="Teléfono celular" />
+
+
+
+    <Button
+        android:id="@+id/registrarse2_actualizard"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/miboton"
+        android:text="Actualizar"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"/>
+</LinearLayout>

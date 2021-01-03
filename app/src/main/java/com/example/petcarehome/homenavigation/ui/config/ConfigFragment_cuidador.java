@@ -19,17 +19,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.petcarehome.InicioYRegistro.TipoUserActivity;
 import com.example.petcarehome.R;
-import com.example.petcarehome.homenavigation.ui.config.FragmentOnBackPressedListener;
+import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.ayuda;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasena;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.idioma;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.mascotas_cuidador;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.notificaciones;
-import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario_cuidador;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.terminos_y_condiciones;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,14 +40,21 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackPressedListener, NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout_confi_cuidador;
     private Toolbar toolbar_confi_cuidador;
     private ActionBarDrawerToggle actionBarDrawerToggle_confi_cuidador;
     private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
+    private ImageView imagenHeaderc;
+    FirebaseUser user;
+    FirebaseStorage firebaseStorage;
     FragmentManager fragmentManager;
     // private TextView textView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,9 +69,7 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         //textView.setText("Fragmento de Configuración_cuidador");
-
 
         //LLamando y asignando la toolbar de configuración (se encuentra en su xml (fragment_config_dueno.xml))
         toolbar_confi_cuidador = (Toolbar) view.findViewById(R.id.toolar_configuracion_cuidador);
@@ -89,9 +96,10 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
         //Que se guarde este fragmento al volver/ir a configuración y que se guarde al girar el dispositivo
         if (savedInstanceState == null) {
 
-            //Fragmento principal perfil - perfil_usuario() = fragmento del perfil, el que se muestra al ir al apartado de configuración
-            getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new perfil_usuario()).commit();
+            //Fragmento principal perfil - perfil_usuario_cuidador() = fragmento del perfil, el que se muestra al ir al apartado de configuración
+            getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new perfil_usuario_cuidador()).commit();
             navigationView.setCheckedItem(R.id.volver_menuconfig);
+
 
         }
     }
@@ -114,7 +122,7 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
         switch (item.getItemId()) {
             //Primer icono, volver a apartado de configuración
             case R.id.volver_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new perfil_usuario()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new perfil_usuario_cuidador()).commit();
                 break;
             //Segundo icono, ir a fragmento para cambiar la contraseña
             case R.id.contrasena_menuconfig:
@@ -197,6 +205,7 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
 
     //Función para borrar la cuenta y al presionar el icono elimine o no la cuenta
     public void alertBorrarCuenta() {
+
         AlertDialog.Builder alertDialog2 = new
                 AlertDialog.Builder(
                 getActivity());
@@ -212,32 +221,25 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
         alertDialog2.setPositiveButton("SÍ",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        mAuth = FirebaseAuth.getInstance();
+                        firebaseUser = mAuth.getCurrentUser();
                         // Lo que se va a ejecutar después de dar sí
-                        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                        AuthCredential authCredential = EmailAuthProvider.getCredential("", "");
-
-                        firebaseUser.reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Intent i = new Intent(getActivity(),
-                                                    TipoUserActivity.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                                                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(i);
-                                            Toast.makeText(getActivity(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(getActivity(), "No se pudo borrar el usuario", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getActivity(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
+
+                                    Intent i = new Intent(getActivity(),
+                                            TipoUserActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
+                                   } else {
+                                    Toast.makeText(getActivity(), "No se pudo borrar el usuario", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
-
-
                     }
                 });
 
