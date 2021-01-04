@@ -3,12 +3,14 @@ package com.example.petcarehome.homenavigation.ui.difusion.perdidas;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -23,67 +25,49 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
 import com.example.petcarehome.R;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.Objects;
 
 public class GenerarReporteExtravioActivity extends AppCompatActivity implements View.OnClickListener{
-
-    private static final int COD_SELECCIONA = 10;
-    //private static final int COD_SELECCIONA = 10;
 
     private Spinner comboAlcaldias, comboTipoMascota;
     private EditText fecha, hora, nombre, edad, colonia, calle, descripcion;
     private DatePickerDialog.OnDateSetListener fechaSetListener;
     private TimePickerDialog.OnTimeSetListener horaSetListener;
     private ImageView imageView;
-    private Button buttonGenerar;
-    private ArrayList<ReportePerdidas> listReportes;
+    private ExtendedFloatingActionButton fabAddPhoto;
 
-    private Bitmap thumbBitmap;
-    private byte [] thumb_byte;
     private Uri downloadUri;
     private Uri resultUri;
-    private String aleatorio;
-    private ArrayList<Uri> listImagesRec = new ArrayList<Uri>();;
-    private ArrayList<String> listDwonloadUri;
-    //private List fotosList;
+    //private ArrayList<Uri> listImagesRec;
+    //private ArrayList<String> listDwonloadUri;
 
-
-    private FirebaseDatabase firebaseDatabase;
-    private FirebaseStorage firebaseStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generar_reporte_extravio);
-
-
-
 
         //Referencia a elementos
         nombre = findViewById(R.id.id_input_nombreRMP);
@@ -91,13 +75,18 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         colonia = findViewById(R.id.id_input_coloniaRMP);
         calle = findViewById(R.id.id_input_calleRMP);
         descripcion = findViewById(R.id.id_input_descripcionRMP);
+        resultUri = null;
 
         //Referencia al componente ImageView en xml
         imageView = findViewById(R.id.id_input_imageRMP);
         imageView.setOnClickListener(this);
 
+        fabAddPhoto = findViewById(R.id.fab_addphotoRMP);
+        fabAddPhoto.setIconResource(R.drawable.ic_cameraadd);
+        fabAddPhoto.setOnClickListener(this);
+
         //Referencia al Boton generar reporte en xml
-        buttonGenerar = findViewById(R.id.id_btn_generarRMP);
+        Button buttonGenerar = findViewById(R.id.id_btn_generarRMP);
         buttonGenerar.setOnClickListener(this);
 
         //spinner de alcaldias
@@ -112,7 +101,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
 
         //fecha con dialogo date picker
-        fecha = (EditText) findViewById(R.id.id_input_fechaRMP);
+        fecha = findViewById(R.id.id_input_fechaRMP);
         fecha.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -125,7 +114,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                     DatePickerDialog dialog = new DatePickerDialog(GenerarReporteExtravioActivity.this,
                             android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                             fechaSetListener, myear, mmonth, mday);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
                 }
@@ -190,7 +179,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
 
         //hora con dialogo time picker
-        hora = (EditText) findViewById(R.id.id_input_horaRMP);
+        hora = findViewById(R.id.id_input_horaRMP);
         hora.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -200,7 +189,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                     int mminute = cal.get(Calendar.MINUTE);
 
                     TimePickerDialog dialog = new TimePickerDialog(GenerarReporteExtravioActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, horaSetListener, mhour, mminute, android.text.format.DateFormat.is24HourFormat(GenerarReporteExtravioActivity.this));
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
                 }
@@ -314,21 +303,13 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
     //Acceso a la galería
     private void cargarImagen() {
-        /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/");
-        startActivityForResult(intent.createChooser(intent, "Seleccione la Aplicación"), 10);*/
-
-
-
         Intent intent = new Intent();
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, 10);
-
-        //CropImage.startPickImageActivity(GenerarReporteExtravioActivity.this);
-
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -336,8 +317,9 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
 
         if (requestCode == 10 && resultCode == Activity.RESULT_OK){
-
-            if (data.getClipData() != null){
+            //listImagesRec = = new ArrayList<>();
+            /*Para varias imagenes
+            if (data.getClipData() != null){//cuando se seleccionan varias imagenes
                 for (int i = 0; i < data.getClipData().getItemCount(); i++){
                     CropImage.activity(data.getClipData().getItemAt(i).getUri())
                             .setGuidelines(CropImageView.Guidelines.ON)
@@ -345,32 +327,28 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                             .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
                 }
 
-            } else {
+            } else {//cuando se selecciona una imagen
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setRequestedSize(1024, 1024)
                         .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
-            }
+            }*/
 
-            /*
-            //Uri imageUri = CropImage.getPickImageResultUri(this, data);
-            Uri imageUri = data.getData();
             //Recortar imagen
-            CropImage.activity(imageUri)
+            CropImage.activity(data.getData())
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setRequestedSize(1024, 1024)
                     .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
-            //imageView.setImageURI(imageUri);*/
         }
 
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){//Para recibir imagen recortada
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK){
                 resultUri = result.getUri();
-                listImagesRec.add(resultUri);
-                imageView.setImageURI(listImagesRec.get(0));
-                //Toast.makeText(getApplicationContext(), "Fotos seleccionadas: " + listImagesRec.size(), Toast.LENGTH_LONG).show();
+                //listImagesRec.add(resultUri);
+                Glide.with(this).load(resultUri).apply(RequestOptions.circleCropTransform()).into(imageView);
+                fabAddPhoto.setIconResource(R.drawable.ic_editar);
             }
         }
 
@@ -386,6 +364,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
 
     //Eventos Onclick dentro de la actividad
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -393,17 +372,34 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                 //Toast.makeText(getApplicationContext(), "Reporte generado exitosamente", Toast.LENGTH_LONG).show();
                 ValidarCampos();
                 break;
-            case R.id.id_input_imageRMP:
+            case R.id.fab_addphotoRMP:
                 cargarImagen();
                 break;
+            case R.id.id_input_imageRMP:
+                String foto;
+                if (resultUri == null){
+                    foto = "";
+                } else{
+                    foto = resultUri.toString();
+                }
+                Intent intent = new Intent(getApplicationContext(), FullScreenImageActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(GenerarReporteExtravioActivity.this, imageView, Objects.requireNonNull(ViewCompat.getTransitionName(imageView)));
+                Bundle  bundle = new Bundle();
+                bundle.putString("title", "la mascota");
+                bundle.putString("foto", foto);
+                intent.putExtras(bundle);
+                startActivity(intent, options.toBundle());
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
         }
 
 
     }
 
-
+    /*
     public String SubirFoto(String idUser, String idRep, int noFoto){
-        final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + noFoto + ".jpg");
+        final StorageReference storageReportesReference = FirebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + noFoto + ".jpg");
         //final Uri[] downloadUri = new Uri[1];
         final UploadTask subeFoto = (UploadTask) storageReportesReference.putFile(listImagesRec.get(noFoto))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -421,11 +417,11 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
 
         String stringUrl = "Url " + noFoto;
         return stringUrl;
-    }
+    }*/
 
     public void ValidarCampos() {
         final String nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idRep;
-        listDwonloadUri = new ArrayList<String>();
+        //listDwonloadUri = new ArrayList<>();
         String mensaje = "Faltan campos por ingresar";
         String idUser = null;
         nombreM = nombre.getText().toString();
@@ -457,55 +453,16 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
 
-            //Referencia al Storage de reportes
-            firebaseStorage = FirebaseStorage.getInstance();
-            firebaseDatabase = FirebaseDatabase.getInstance();
+            //Referencia al usuario actual
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null){
                 idUser = user.getUid();
             }
-            final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push();
+            final DatabaseReference reportesPReference = FirebaseDatabase.getInstance().getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE).push();
             idRep = reportesPReference.getKey();
 
-            /*
-            //Varias fotos(error: no sube al realtime el atributo list String fotos
-            //Subir las fotos al Storage y guardar su url en listDownloaduri
-            for (int i = 0; i < listImagesRec.size(); i++){
-                String downUri = SubirFoto(idUser, idRep, i);
-                listDwonloadUri.add(downUri);
-                //Toast.makeText(getApplicationContext(), "Foto subida URL:" + downUri, Toast.LENGTH_LONG).show();
-            }
-
-
-            //Convertir el array en list y creacion del reporte
-            List<String> fotosList = new ArrayList<String>(Arrays.<String>asList(String.valueOf(listDwonloadUri)));
-            String idUserf = user.getEmail();
-            ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idUserf, fotosList);
-
-
-            //Subir reporte al realtime database
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference reportesReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(idRep);
-            reportesReference.setValue(reporteP, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                    if (databaseError != null){
-                        Toast.makeText(getApplicationContext(), "No se pudo generar el reporte", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Reporte generado con éxito", Toast.LENGTH_LONG).show();
-                        onBackPressed();
-                    }
-                }
-            });//Fin varias Fotos
-
-             */
-
-
-
-
             //Bien una foto
-            //final String finalIdUser = idUser;
-            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
+            final StorageReference storageReportesReference = FirebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

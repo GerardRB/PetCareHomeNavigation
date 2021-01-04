@@ -2,8 +2,12 @@ package com.example.petcarehome.homenavigation.ui.difusion.adopcion;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,11 +16,14 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcion;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class DetalleReporteAdopcionActivity extends AppCompatActivity {
 
@@ -50,7 +57,7 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
         TextView calle = findViewById(R.id.text_calle_DRMA);
         TextView descripcion = findViewById(R.id.text_descricpion_DRMA);
         correoUser = findViewById(R.id.text_id_user_DRMA);
-        ImageView foto = findViewById(R.id.id_imageDRMA);
+        final ImageView foto = findViewById(R.id.id_imageDRMA);
         nombreUser = findViewById(R.id.text_nombre_user_DRMA);
         telefonoUser = findViewById(R.id.text_telefono_user_DRMA);
         domicilio = findViewById(R.id.text_domicilio_user_DRMA);
@@ -144,6 +151,18 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
         descripcion.setText(reporteA.getDescripcion());
         //correoUser.setText(reporteA.getReporteAdopcion().getIdUser());
         Glide.with(this).load(reporteA.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
+        foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetalleReporteAdopcionActivity.this, FullScreenImageActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReporteAdopcionActivity.this, foto, Objects.requireNonNull(ViewCompat.getTransitionName(foto)));
+                Bundle  bundle = new Bundle();
+                bundle.putString("title", "la mascota");
+                bundle.putString("foto", reporteA.getFoto());
+                intent.putExtras(bundle);
+                startActivity(intent, options.toBundle());
+            }
+        });
     }
 
     @Override

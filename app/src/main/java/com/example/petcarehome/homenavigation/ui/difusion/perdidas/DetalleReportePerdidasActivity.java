@@ -23,15 +23,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class DetalleReportePerdidasActivity extends AppCompatActivity {
 
     private ReportePerdidas reporteP;
-    private TextView nombreMascota, tipoMascota, edad, fechaExtravio, horaExtravio, alcaldia, colonia, calle, descripcion, correoUser, nombreUser, telefonoUser, domicilio;
+    private TextView correoUser;
+    private TextView nombreUser;
+    private TextView telefonoUser;
+    private TextView domicilio;
     private ImageView foto;
-
-    private String correoU;
-    private FirebaseDatabase firebaseDatabase;
-    //private ayudaRegistroDuenoCuidador userRep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +47,15 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         }
 
         //Referencia a textviews
-        nombreMascota = findViewById(R.id.text_nombre_DRMP);
-        tipoMascota = findViewById(R.id.text_tipo_DRMP);
-        edad = findViewById(R.id.text_edad_DRMP);
-        fechaExtravio = findViewById(R.id.text_fecha_extravio_DRMP);
-        horaExtravio = findViewById(R.id.text_hora_Extravio_DRMP);
-        alcaldia = findViewById(R.id.text_alcaldia_DRMP);
-        colonia = findViewById(R.id.text_colonia_DRMP);
-        calle = findViewById(R.id.text_calle_DRMP);
-        descripcion = findViewById(R.id.text_descricpion_DRMP);
+        TextView nombreMascota = findViewById(R.id.text_nombre_DRMP);
+        TextView tipoMascota = findViewById(R.id.text_tipo_DRMP);
+        TextView edad = findViewById(R.id.text_edad_DRMP);
+        TextView fechaExtravio = findViewById(R.id.text_fecha_extravio_DRMP);
+        TextView horaExtravio = findViewById(R.id.text_hora_Extravio_DRMP);
+        TextView alcaldia = findViewById(R.id.text_alcaldia_DRMP);
+        TextView colonia = findViewById(R.id.text_colonia_DRMP);
+        TextView calle = findViewById(R.id.text_calle_DRMP);
+        TextView descripcion = findViewById(R.id.text_descricpion_DRMP);
         foto = findViewById(R.id.id_imageDRMP);
         correoUser = findViewById(R.id.text_email_user_DRMP);
         nombreUser = findViewById(R.id.text_nombre_user_DRMP);
@@ -62,7 +63,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         domicilio = findViewById(R.id.text_domicilio_user_DRMP);
 
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference duenoRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
         final DatabaseReference cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE);
 
@@ -102,7 +103,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         });
 
 
-        correoU = correoUser.getText().toString();
+        String correoU = correoUser.getText().toString();
 
         if (correoU.isEmpty()){
             duenoRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -155,7 +156,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetalleReportePerdidasActivity.this, FullScreenImageActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReportePerdidasActivity.this, foto, ViewCompat.getTransitionName(foto));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReportePerdidasActivity.this, foto, Objects.requireNonNull(ViewCompat.getTransitionName(foto)));
                 Bundle  bundle = new Bundle();
                 bundle.putString("title", reporteP.getNombre());
                 bundle.putString("foto", reporteP.getFoto());

@@ -68,7 +68,7 @@ public class AdapterReportesAdopcion extends RecyclerView.Adapter<AdapterReporte
                 Intent intent = new Intent(context, FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.foto, Objects.requireNonNull(ViewCompat.getTransitionName(holder.foto)));
                 Bundle  bundle = new Bundle();
-                bundle.putString("title", "");
+                bundle.putString("title", "la mascota");
                 bundle.putString("foto", listReportesAdopcion.get(position).getFoto());
                 intent.putExtras(bundle);
                 context.startActivity(intent, options.toBundle());

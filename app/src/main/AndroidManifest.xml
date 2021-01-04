@@ -98,13 +98,13 @@
             android:name=".homenavigation.ui.difusion.encontradas.GenerarReporteEncontradaActivity"
             android:label="Reporte mascota encontrada"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/MaterialAppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.ui.difusion.perdidas.GenerarReporteExtravioActivity"
             android:label="Reporte mascota extraviada"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
+            android:theme="@style/MaterialAppTheme"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".homenavigation.HomeActivity_Dueno"

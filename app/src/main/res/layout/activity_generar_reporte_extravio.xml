@@ -21,14 +21,36 @@
             tools:ignore="MissingConstraints">
 
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/id_input_imageRMP"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_gallery"
-                android:layout_gravity="center"
-                tools:ignore="MissingConstraints"
-                android:onClick="onClick"/>
+                android:layout_marginTop="10dp"
+                >
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/id_input_imageRMP"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    app:srcCompat="@drawable/ic_perro_photo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:transitionName="@string/image_transition"
+                    tools:ignore="MissingConstraints,OnClick,VectorDrawableCompat"
+                    android:onClick="onClick"
+                    tools:targetApi="lollipop">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/fab_addphotoRMP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClick"
+                    app:backgroundTint="@color/colorAccent"
+                    app:iconTint="#FFFFFF"
+                    app:layout_constraintEnd_toEndOf="@id/id_input_imageRMP"
+                    app:layout_constraintBottom_toBottomOf="@id/id_input_imageRMP"
+                    tools:ignore="MissingConstraints"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

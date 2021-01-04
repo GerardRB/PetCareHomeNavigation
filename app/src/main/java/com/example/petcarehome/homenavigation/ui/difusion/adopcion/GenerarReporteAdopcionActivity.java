@@ -39,6 +39,8 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Objects;
+
 
 //import java.util.ArrayList;
 
@@ -182,9 +184,9 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                     foto = resultUri.toString();
                 }
                 Intent intent = new Intent(getApplicationContext(), FullScreenImageActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(GenerarReporteAdopcionActivity.this, imageView, ViewCompat.getTransitionName(imageView));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(GenerarReporteAdopcionActivity.this, imageView, Objects.requireNonNull(ViewCompat.getTransitionName(imageView)));
                 Bundle  bundle = new Bundle();
-                bundle.putString("title", "");
+                bundle.putString("title", "la mascota");
                 bundle.putString("foto", foto);
                 intent.putExtras(bundle);
                 startActivity(intent, options.toBundle());

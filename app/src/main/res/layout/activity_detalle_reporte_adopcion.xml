@@ -30,7 +30,9 @@
                         android:layout_marginTop="10dp"
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/ic_gato"
-                        tools:ignore="MissingConstraints,VectorDrawableCompat" />
+                        android:transitionName="@string/image_transition"
+                        tools:ignore="MissingConstraints,VectorDrawableCompat"
+                        tools:targetApi="lollipop" />
 
                     <TextView
                         android:id="@+id/label_id_reporte_DRMA"

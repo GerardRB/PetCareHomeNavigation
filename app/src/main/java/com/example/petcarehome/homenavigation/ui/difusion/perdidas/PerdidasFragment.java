@@ -27,47 +27,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class PerdidasFragment extends Fragment {
 
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
-
     private ArrayList<ReportePerdidas> listReportes;
-    private RecyclerView recyclerPerdidas;
     private ReportePerdidas reporteP;
     private AdapterReportesPerdidas adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Filtro filtro;
 
 
-    public static PerdidasFragment newInstance(int index) {
-        PerdidasFragment fragment = new PerdidasFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(ARG_SECTION_NUMBER, index);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        int index = 1;
-        if (getArguments() != null) {
-            index = getArguments().getInt(ARG_SECTION_NUMBER);
-        }
-
-
-    }
-
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_perdidas, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_perdidas, container, false);
 
     }
 
@@ -80,7 +54,7 @@ public class PerdidasFragment extends Fragment {
 
         //Construir Recycler
         listReportes = new ArrayList<>();
-        recyclerPerdidas = view.findViewById(R.id.recyclerPerdidasId);
+        RecyclerView recyclerPerdidas = view.findViewById(R.id.recyclerPerdidasId);
         recyclerPerdidas.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new AdapterReportesPerdidas(listReportes, getContext());
@@ -91,7 +65,7 @@ public class PerdidasFragment extends Fragment {
 
         //final DatabaseReference reportePerdidaReference = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
 
-        llenarReportes(filtro, false);
+        llenarReportes(null, false);
 
 
         //SwipeRefresh
@@ -100,13 +74,8 @@ public class PerdidasFragment extends Fragment {
             @Override
             public void onRefresh() {
 
-                if (filtro != null){
-                    llenarReportes(filtro, true);
-                    swipeRefreshLayout.setRefreshing(false);
-                } else {
-                    llenarReportes(filtro, false);
-                    swipeRefreshLayout.setRefreshing(false);
-                }
+                llenarReportes(filtro, filtro != null);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
         });
@@ -119,12 +88,12 @@ public class PerdidasFragment extends Fragment {
         final DatabaseReference reportePerdidaReference = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEPERDIDA_REFERENCE);
         reportePerdidaReference.keepSynced(true);
 
-        if (filtrada == true){
+        if (filtrada){
             //Llenar lista desde la base con filtro
             reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listReportes.removeAll(listReportes);
+                    listReportes.clear();
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
                         String alcaldia = snapshot.child("alcaldia").getValue(String.class);
@@ -162,7 +131,7 @@ public class PerdidasFragment extends Fragment {
             reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listReportes.removeAll(listReportes);
+                    listReportes.clear();
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
                         //reporteP = snapshot.getValue(ReportePerdidas.class);
@@ -185,14 +154,12 @@ public class PerdidasFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case 0:
-                if (resultCode == Activity.RESULT_OK){
-                    Bundle bundle = data.getExtras();
-                    filtro = (Filtro) bundle.getSerializable("filtro");
-                    llenarReportes(filtro, true);
-                }
-                break;
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                filtro = (Filtro) bundle.getSerializable("filtro");
+                llenarReportes(filtro, true);
+            }
         }
     }
 

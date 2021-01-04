@@ -24,6 +24,7 @@ import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterReportesEncontradas.ViewHolderReportesEncontradas>{
 
@@ -65,9 +66,9 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, FullScreenImageActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.foto, ViewCompat.getTransitionName(holder.foto));
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.foto, Objects.requireNonNull(ViewCompat.getTransitionName(holder.foto)));
                 Bundle  bundle = new Bundle();
-                bundle.putString("title", "");
+                bundle.putString("title", "la mascota");
                 bundle.putString("foto", listReportesEncontradas.get(position).getFoto());
                 intent.putExtras(bundle);
                 context.startActivity(intent, options.toBundle());
@@ -90,12 +91,12 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
 
         public ViewHolderReportesEncontradas(@NonNull View itemView) {
             super(itemView);
-            etizona = (TextView) itemView.findViewById(R.id.idZonaME);
-            etifecha = (TextView) itemView.findViewById(R.id.idFechaME);
-            etitipo = (TextView) itemView.findViewById(R.id.idTipoME);
-            etidescripcion = (TextView) itemView.findViewById(R.id.idDescripcionME);
-            foto = (ImageView) itemView.findViewById(R.id.idImagenME);
-            info = (LinearLayout) itemView.findViewById(R.id.layout_info);
+            etizona = itemView.findViewById(R.id.idZonaME);
+            etifecha = itemView.findViewById(R.id.idFechaME);
+            etitipo = itemView.findViewById(R.id.idTipoME);
+            etidescripcion = itemView.findViewById(R.id.idDescripcionME);
+            foto = itemView.findViewById(R.id.idImagenME);
+            info = itemView.findViewById(R.id.layout_info);
         }
 
     }

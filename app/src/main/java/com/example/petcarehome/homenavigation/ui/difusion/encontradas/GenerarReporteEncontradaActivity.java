@@ -3,7 +3,10 @@ package com.example.petcarehome.homenavigation.ui.difusion.encontradas;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -12,7 +15,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,13 +25,15 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.R;
-import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
-import com.example.petcarehome.homenavigation.ui.difusion.perdidas.GenerarReporteExtravioActivity;
+import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
@@ -41,27 +45,23 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class GenerarReporteEncontradaActivity extends AppCompatActivity implements View.OnClickListener{
-
-    private static final int COD_SELECCIONA = 10;
-    //private static final int COD_SELECCIONA = 10;
 
     private Spinner comboAlcaldias, comboTipoMascota;
     private EditText fecha, hora, colonia, calle, descripcion;
     private DatePickerDialog.OnDateSetListener fechaSetListener;
     private TimePickerDialog.OnTimeSetListener horaSetListener;
     private ImageView imageView;
-    private Button button;
-    private FirebaseDatabase firebaseDatabase;
+    private ExtendedFloatingActionButton fabAddPhoto;
 
     private Uri resultUri;
-    private ArrayList<Uri> listImagesRec = new ArrayList<Uri>();;
-    private FirebaseStorage firebaseStorage;
+    //private ArrayList<Uri> listImagesRec;
     private Uri downloadUri;
-    private ArrayList<String> listDwonloadUri;
+    //private ArrayList<String> listDwonloadUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +73,18 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
         calle = findViewById(R.id.id_input_calleRME);
         descripcion = findViewById(R.id.id_input_descripcionRME);
 
+        resultUri = null;
+
         //Referencia al componente ImageView en xml
         imageView = findViewById(R.id.id_input_imageRME);
         imageView.setOnClickListener(this);
 
+        fabAddPhoto = findViewById(R.id.fab_addphotoRME);
+        fabAddPhoto.setIconResource(R.drawable.ic_cameraadd);
+        fabAddPhoto.setOnClickListener(this);
+
         //Referencia al Boton generar reporte en xml
-        button = findViewById(R.id.id_btn_generarRME);
+        Button button = findViewById(R.id.id_btn_generarRME);
         button.setOnClickListener(this);
 
         //spinner de alcaldias
@@ -92,7 +98,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
         comboTipoMascota.setAdapter(adapterTipoMascota);
 
         //fecha con dialogo date picker
-        fecha = (EditText) findViewById(R.id.id_input_fechaRME);
+        fecha = findViewById(R.id.id_input_fechaRME);
         fecha.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -105,7 +111,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                     DatePickerDialog dialog = new DatePickerDialog(GenerarReporteEncontradaActivity.this,
                             android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                             fechaSetListener, myear, mmonth, mday);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
                 }
@@ -169,7 +175,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
         };
 
         //hora con dialogo time picker
-        hora = (EditText) findViewById(R.id.id_input_horaRME);
+        hora = findViewById(R.id.id_input_horaRME);
         hora.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -179,7 +185,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                     int mminute = cal.get(Calendar.MINUTE);
 
                     TimePickerDialog dialog = new TimePickerDialog(GenerarReporteEncontradaActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, horaSetListener, mhour, mminute, android.text.format.DateFormat.is24HourFormat(GenerarReporteEncontradaActivity.this));
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
                 }
@@ -293,7 +299,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     //Acceso a la galería
     private void cargarImagen() {
         Intent intent = new Intent();
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, 10);
@@ -304,9 +310,11 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 10 && resultCode == Activity.RESULT_OK){
+        //listImagesRec = new ArrayList<>();
+        if (requestCode == 10 && resultCode == Activity.RESULT_OK){//Recortar imagenes
 
-            if (data.getClipData() != null){
+            /*Para varias imagenes
+            if (data.getClipData() != null){//cuando se seleccionan varias
                 for (int i = 0; i < data.getClipData().getItemCount(); i++){
                     CropImage.activity(data.getClipData().getItemAt(i).getUri())
                             .setGuidelines(CropImageView.Guidelines.ON)
@@ -314,31 +322,27 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                             .setAspectRatio(3,3).start(GenerarReporteEncontradaActivity.this);
                 }
 
-            } else {
+            } else { //cuando se selecciona una
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setRequestedSize(1024, 1024)
                         .setAspectRatio(3,3).start(GenerarReporteEncontradaActivity.this);
-            }
+            }*/
 
-            /*
-            //Uri imageUri = CropImage.getPickImageResultUri(this, data);
-            Uri imageUri = data.getData();
-            //Recortar imagen
-            CropImage.activity(imageUri)
+            //Para una imagen
+            CropImage.activity(data.getData())
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setRequestedSize(1024, 1024)
-                    .setAspectRatio(3,3).start(GenerarReporteExtravioActivity.this);
-            //imageView.setImageURI(imageUri);*/
+                    .setAspectRatio(3,3).start(GenerarReporteEncontradaActivity.this);
         }
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){//Recibir imagen recortada
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK){
                 resultUri = result.getUri();
-                listImagesRec.add(resultUri);
-                imageView.setImageURI(listImagesRec.get(0));
-                //Toast.makeText(getApplicationContext(), "Fotos seleccionadas: " + listImagesRec.size(), Toast.LENGTH_LONG).show();
+                //listImagesRec.add(resultUri);
+                Glide.with(this).load(resultUri).apply(RequestOptions.circleCropTransform()).into(imageView);
+                fabAddPhoto.setIconResource(R.drawable.ic_editar);
             }
         }
 
@@ -352,20 +356,40 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     }
 
     //Eventos Onclick dentro de la actividad
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        if (v.getId()==button.getId()){
-            validarCampos();
-        }
-        if(v.getId()==imageView.getId()){
-            cargarImagen();
-        }
+        switch (v.getId()){
+            case R.id.id_btn_generarRME:
+                validarCampos();
+                break;
+            case R.id.fab_addphotoRME:
+                cargarImagen();
+                break;
+            case R.id.id_input_imageRME:
+                String foto;
+                if (resultUri == null){
+                    foto = "";
+                } else{
+                    foto = resultUri.toString();
+                }
+                Intent intent = new Intent(getApplicationContext(), FullScreenImageActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(GenerarReporteEncontradaActivity.this, imageView, Objects.requireNonNull(ViewCompat.getTransitionName(imageView)));
+                Bundle  bundle = new Bundle();
+                bundle.putString("title", "la mascota");
+                bundle.putString("foto", foto);
+                intent.putExtras(bundle);
+                startActivity(intent, options.toBundle());
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
 
+        }
     }
 
-
+    /*
     public String SubirFoto(String idUser, String idRep, int noFoto){
-        final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + noFoto + ".jpg");
+        final StorageReference storageReportesReference = FirebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(idUser).child("img" + idRep + noFoto + ".jpg");
         //final Uri[] downloadUri = new Uri[1];
         final UploadTask subeFoto = (UploadTask) storageReportesReference.putFile(listImagesRec.get(noFoto))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -383,13 +407,12 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
 
         String stringUrl = "Url " + noFoto;
         return stringUrl;
-    }
+    }*/
 
     private void validarCampos() {
         final String tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, idRep;
-        listDwonloadUri = new ArrayList<String>();
+        //listDwonloadUri = new ArrayList<String>();
         String mensaje = "Faltan campos por ingresar";
-        String reporte = "";
         String idUser = null;
         tipoM = comboTipoMascota.getSelectedItem().toString();
         fechaE = fecha.getText().toString();
@@ -413,20 +436,18 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
 
-            //Referencia al Storage de reportes
-            firebaseStorage = FirebaseStorage.getInstance();
-            firebaseDatabase = FirebaseDatabase.getInstance();
+            //Referencia al usuario actual
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null){
                 idUser = user.getUid();
             }
-            final DatabaseReference reportesPReference = firebaseDatabase.getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE).push();
+            final DatabaseReference reportesPReference = FirebaseDatabase.getInstance().getReference(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEENCONTRADA_REFERENCE).push();
             idRep = reportesPReference.getKey();
 
 
             //Bien una foto
             //final String finalIdUser = idUser;
-            final StorageReference storageReportesReference = firebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEENCONTRADA_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
+            final StorageReference storageReportesReference = FirebaseStorage.getInstance().getReference(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEENCONTRADA_REFERENCE).child(idUser).child("img" + idRep  + ".jpg");
             storageReportesReference.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

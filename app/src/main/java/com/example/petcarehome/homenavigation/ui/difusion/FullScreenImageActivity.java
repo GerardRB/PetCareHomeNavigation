@@ -25,11 +25,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.id_image_reporte);
 
-        if (titulo.isEmpty()){
-            setTitle("Foto de la mascota");
-        } else {
-            setTitle("Foto de " + titulo);
-        }
+        setTitle("Foto de " + titulo);
 
         if (foto.isEmpty()){
             Glide.with(this).load(R.drawable.ic_gallery_error).into(imageView);
