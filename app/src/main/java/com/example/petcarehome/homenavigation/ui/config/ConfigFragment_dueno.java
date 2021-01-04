@@ -3,12 +3,10 @@ package com.example.petcarehome.homenavigation.ui.config;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,14 +21,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.petcarehome.InicioYRegistro.TipoUserActivity;
-import com.example.petcarehome.InicioYRegistro.registroCuidadorActivity;
 import com.example.petcarehome.R;
-import com.example.petcarehome.homenavigation.HomeActivity_Cuidador;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.ayuda;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasena;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.idioma;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.notificaciones;
-import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario_cuidador;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario_dueno;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.terminos_y_condiciones;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -86,8 +83,8 @@ public class ConfigFragment_dueno extends Fragment implements FragmentOnBackPres
         //Que se guarde este fragmento al volver/ir a configuración y que se guarde al girar el dispositivo
         if (savedInstanceState == null) {
 
-            //Fragmento principal perfil - perfil_usuario() = fragmento del perfil, el que se muestra al ir al apartado de configuración
-            getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new perfil_usuario()).commit();
+            //Fragmento principal perfil - perfil_usuario_cuidador() = fragmento del perfil, el que se muestra al ir al apartado de configuración
+            getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new perfil_usuario_cuidador()).commit();
             navigationView.setCheckedItem(R.id.volver_menuconfig);
 
         }
@@ -111,7 +108,7 @@ public class ConfigFragment_dueno extends Fragment implements FragmentOnBackPres
         switch (item.getItemId()) {
             //Primer icono, volver a apartado de configuración
             case R.id.volver_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new perfil_usuario()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new perfil_usuario_dueno()).commit();
                 break;
             //Segundo icono, ir a fragmento para cambiar la contraseña
             case R.id.contrasena_menuconfig:

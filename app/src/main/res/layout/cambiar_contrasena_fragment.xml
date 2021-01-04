@@ -1,10 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@drawable/background_config2"
+    >
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="100dp"
+        android:paddingBottom="50dp">
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:src="@drawable/contrasena"
+    app:tint="@color/colorblanco">
+
+</ImageView>
+    </LinearLayout>
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CAMBIAR CONTRASENA"
-        ></TextView>
-</RelativeLayout>
+        android:text="Nueva contraseña: "
+        android:textColor="@color/colorblanco"
+        />
+    <EditText
+        android:id="@+id/contrasena_modif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:textColor="@color/colorblanco"
+        android:backgroundTint="@color/colorblanco"
+        android:inputType="textPassword"
+        >
+    </EditText>
+  </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="25dp">
+
+    </LinearLayout>
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirmar contraseña: "
+        android:textColor="@color/colorblanco"
+        />
+    <EditText
+        android:id="@+id/contrasena_modif2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:textColor="@color/colorblanco"
+        android:backgroundTint="@color/colorblanco"
+        android:inputType="textPassword"
+
+        >
+    </EditText>
+  </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:paddingBottom="50dp">
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/actualizarContra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cambiar contraseña"
+        android:backgroundTint="@color/colorAccent"
+        >
+
+    </Button>
+</LinearLayout>

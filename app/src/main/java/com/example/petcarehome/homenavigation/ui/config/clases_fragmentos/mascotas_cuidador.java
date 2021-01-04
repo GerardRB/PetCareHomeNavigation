@@ -40,6 +40,7 @@ public class mascotas_cuidador extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
+    String tipoServicio;
 
     @Nullable
     @Override
@@ -53,8 +54,9 @@ public class mascotas_cuidador extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final List <Mascota> mascotas = new ArrayList();
-        //  final List <Servicio> servicios = new ArrayList();
-        Servicio servicio = new Servicio();
+        final List <Servicio> servicios = new ArrayList();
+        final Servicio servicio = new Servicio();
+        servicios.add(servicio);
         recyclerView = view.findViewById(R.id.recyclerMascotas);
         recyclerView.setHasFixedSize(true);
 
@@ -75,14 +77,21 @@ public class mascotas_cuidador extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mascotas.removeAll(mascotas);
-             //   servicios.removeAll(servicios);
                 for(DataSnapshot snapshot:
                 dataSnapshot.getChildren()){
               Mascota m = snapshot.getValue(Mascota.class);
-           //   Servicio s = snapshot.child("servicios").getValue(Servicio.class);
               mascotas.add(m);
-             // mascotas.add(s);
-             // servicios.add(s);
+                    for (DataSnapshot snapServicio:
+                            snapshot.child("servicios").getChildren()) {
+                        if (snapServicio.exists()){
+                            String tipservicio = snapServicio.child("tipoServicio").getValue(String.class);
+                            String preservicio = snapServicio.child("Precio").getValue(String.class);
+                            if (servicio.equals(tipoServicio)){
+                                Servicio serv = snapServicio.getValue(Servicio.class);
+                                servicios.add(serv);
+                            }
+                        }
+                    }
                 }
                     mAdapter.notifyDataSetChanged();
             }
