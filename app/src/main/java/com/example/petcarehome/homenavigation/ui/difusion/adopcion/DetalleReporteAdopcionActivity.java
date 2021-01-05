@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,13 +26,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-public class DetalleReporteAdopcionActivity extends AppCompatActivity {
+public class DetalleReporteAdopcionActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ReporteAdopcion reporteA;
-    private TextView correoUser;
-    private TextView nombreUser;
-    private TextView telefonoUser;
-    private TextView domicilio;
+    private TextView nombreUser, telefonoUser, domicilio, correoUser;
+    private ImageView foto, fotoUser;
+    private String nom, corr, tel, dir, fotoUsr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,8 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
             reporteA = (ReporteAdopcion) reporteSeleccionado.getSerializable("reporteAdopcion");
         }
 
+        fotoUsr = "";
+
         //Referencia a textviews
         TextView tipoMascota = findViewById(R.id.text_tipo_DRMA);
         TextView raza = findViewById(R.id.text_raza_DRMA);
@@ -57,7 +59,8 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
         TextView calle = findViewById(R.id.text_calle_DRMA);
         TextView descripcion = findViewById(R.id.text_descricpion_DRMA);
         correoUser = findViewById(R.id.text_id_user_DRMA);
-        final ImageView foto = findViewById(R.id.id_imageDRMA);
+        foto = findViewById(R.id.id_imageDRMA);
+        fotoUser = findViewById(R.id.id_imagen_user_DRMA);
         nombreUser = findViewById(R.id.text_nombre_user_DRMA);
         telefonoUser = findViewById(R.id.text_telefono_user_DRMA);
         domicilio = findViewById(R.id.text_domicilio_user_DRMA);
@@ -77,7 +80,6 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
                         dataSnapshot.getChildren()) {
                     String idUser = snapshot.getKey();
                     if (idUser.equals(reporteA.getIdUser())){
-                        String nom, corr, tel, dir;
                         nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                         corr = snapshot.child("correo").getValue(String.class);
                         tel = snapshot.child("telefono").getValue(String.class);
@@ -85,6 +87,9 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
                                 + snapshot.child("noext").getValue(String.class) + ""
                                 + snapshot.child("noint").getValue(String.class) + ", "
                                 + snapshot.child("alcaldia").getValue(String.class);
+                        if (dataSnapshot.child("foto").exists()){
+                            fotoUsr = snapshot.child("foto").getValue(String.class);
+                        }
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
@@ -108,12 +113,10 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
                     for (DataSnapshot snapshot:
                             dataSnapshot.getChildren()) {
                         String idUser = snapshot.getKey();
                         if (idUser.equals(reporteA.getIdUser())){
-                            String nom, corr, tel, dir;
                             nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                             corr = snapshot.child("correo").getValue(String.class);
                             tel = snapshot.child("telefono").getValue(String.class);
@@ -121,6 +124,9 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
                                     + snapshot.child("noext").getValue(String.class) + ""
                                     + snapshot.child("noint").getValue(String.class) + ", "
                                     + snapshot.child("alcaldia").getValue(String.class);
+                            if (dataSnapshot.child("foto").exists()){
+                                fotoUsr = snapshot.child("foto").getValue(String.class);
+                            }
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
@@ -149,11 +155,29 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
         colonia.setText(reporteA.getColonia());
         calle.setText(reporteA.getCalle());
         descripcion.setText(reporteA.getDescripcion());
-        //correoUser.setText(reporteA.getReporteAdopcion().getIdUser());
         Glide.with(this).load(reporteA.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
-        foto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        foto.setOnClickListener(this);
+        //correoUser.setText(reporteA.getReporteAdopcion().getIdUser());
+
+        if (fotoUsr.isEmpty()){
+            Glide.with(this).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+        } else {
+            Glide.with(this).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+        }
+        fotoUser.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.idImagenMA:
                 Intent intent = new Intent(DetalleReporteAdopcionActivity.this, FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReporteAdopcionActivity.this, foto, Objects.requireNonNull(ViewCompat.getTransitionName(foto)));
                 Bundle  bundle = new Bundle();
@@ -161,13 +185,18 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity {
                 bundle.putString("foto", reporteA.getFoto());
                 intent.putExtras(bundle);
                 startActivity(intent, options.toBundle());
-            }
-        });
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+                break;
+            case R.id.id_imagen_user_DRMA:
+                Intent intentUser = new Intent(DetalleReporteAdopcionActivity.this, FullScreenImageActivity.class);
+                ActivityOptionsCompat optionsUser = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReporteAdopcionActivity.this, fotoUser, Objects.requireNonNull(ViewCompat.getTransitionName(fotoUser)));
+                Bundle  bundleUser = new Bundle();
+                bundleUser.putString("title", nom);
+                bundleUser.putString("foto", fotoUsr);
+                intentUser.putExtras(bundleUser);
+                startActivity(intentUser, optionsUser.toBundle());
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
+        }
     }
 }
