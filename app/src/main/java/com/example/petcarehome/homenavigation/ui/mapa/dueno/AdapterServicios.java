@@ -1,5 +1,6 @@
 package com.example.petcarehome.homenavigation.ui.mapa.dueno;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +28,11 @@ public class AdapterServicios extends RecyclerView.Adapter<AdapterServicios.View
     @NonNull
     @Override
     public ViewHolderServicios onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_servicios_info, null, false);
-        ViewHolderServicios holder = new ViewHolderServicios(view);
-        return holder;
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_servicios_info, null, false);
+        return new ViewHolderServicios(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AdapterServicios.ViewHolderServicios holder, int position) {
         holder.tipoServicio.setText(listServicios.get(position).getTipoServicio());
@@ -44,15 +45,15 @@ public class AdapterServicios extends RecyclerView.Adapter<AdapterServicios.View
         return listServicios.size();
     }
 
-    public class ViewHolderServicios extends RecyclerView.ViewHolder {
+    public static class ViewHolderServicios extends RecyclerView.ViewHolder {
         TextView tipoServicio, precio, descipcion;
 
         public ViewHolderServicios(@NonNull View itemView) {
             super(itemView);
 
-            tipoServicio = (TextView) itemView.findViewById(R.id.text_tipo_servicio);
-            precio = (TextView) itemView.findViewById(R.id.text_precio);
-            descipcion = (TextView) itemView.findViewById(R.id.text_descripcion_servicio);
+            tipoServicio = itemView.findViewById(R.id.text_tipo_servicio);
+            precio = itemView.findViewById(R.id.text_precio);
+            descipcion = itemView.findViewById(R.id.text_descripcion_servicio);
         }
     }
 }

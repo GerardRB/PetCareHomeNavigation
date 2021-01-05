@@ -54,7 +54,8 @@
         <activity android:name=".homenavigation.ui.petfriendly.activities.DetallePetfriendlyActivity" />
         <activity android:name=".homenavigation.ui.petfriendly.activities.AgregarPetfriendlyActivity" />
         <activity android:name=".InicioYRegistro.registroCuidadorActivity" />
-        <activity android:name=".homenavigation.HomeActivity_Cuidador" />
+        <activity android:name=".homenavigation.HomeActivity_Cuidador"
+            android:theme="@style/MaterialAppTheme"/>
         <activity android:name=".InicioYRegistro.registroDuenoActivity" />
         <activity android:name=".InicioYRegistro.cuidadorLoginActivity" />
         <activity android:name=".InicioYRegistro.duenoLoginActivity" />

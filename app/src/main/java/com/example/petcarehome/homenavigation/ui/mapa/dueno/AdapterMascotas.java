@@ -1,5 +1,6 @@
 package com.example.petcarehome.homenavigation.ui.mapa.dueno;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +30,8 @@ public class AdapterMascotas extends RecyclerView.Adapter<AdapterMascotas.ViewHo
     @NonNull
     @Override
     public ViewHolderMascotas onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mascotas_cuidador_info, null, false);
-        ViewHolderMascotas holder = new ViewHolderMascotas(view);
-        return holder;
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mascotas_cuidador_info, null, false);
+        return new ViewHolderMascotas(view);
     }
 
     @Override
@@ -48,14 +48,14 @@ public class AdapterMascotas extends RecyclerView.Adapter<AdapterMascotas.ViewHo
         return listMascotas.size();
     }
 
-    public class ViewHolderMascotas extends RecyclerView.ViewHolder {
+    public static class ViewHolderMascotas extends RecyclerView.ViewHolder {
         TextView tipoMascota;
         RecyclerView recyclerServicios;
 
         public ViewHolderMascotas(@NonNull View itemView) {
             super(itemView);
-            tipoMascota = (TextView) itemView.findViewById(R.id.text_tipo_mascota_cuidador);
-            recyclerServicios = (RecyclerView) itemView.findViewById(R.id.recyclerServiciosInfo);
+            tipoMascota = itemView.findViewById(R.id.text_tipo_mascota_cuidador);
+            recyclerServicios = itemView.findViewById(R.id.recyclerServiciosInfo);
         }
     }
 }

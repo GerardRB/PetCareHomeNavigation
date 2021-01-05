@@ -21,6 +21,8 @@ import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
 import com.example.petcarehome.homenavigation.ui.difusion.perdidas.GenerarReporteExtravioActivity;
+import com.example.petcarehome.homenavigation.ui.mapa.dueno.AdapterMascotas;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,9 +36,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class mascotas_cuidador extends Fragment {
-    FloatingActionButton agregarMasco;
+    ExtendedFloatingActionButton agregarMasco;
     RecyclerView recyclerView;
-    RecyclerView.Adapter mAdapter;
+    AdapterMascotas adapterMsaccotas;
     RecyclerView.LayoutManager layoutManager;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
@@ -53,18 +55,18 @@ public class mascotas_cuidador extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final List <Mascota> mascotas = new ArrayList();
+        final ArrayList <Mascota> mascotas = new ArrayList();
         final List <Servicio> servicios = new ArrayList();
         final Servicio servicio = new Servicio();
         servicios.add(servicio);
         recyclerView = view.findViewById(R.id.recyclerMascotas);
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new AdaptadorMascotasCuidador(mascotas, servicio);
-        recyclerView.setAdapter(mAdapter);
+        adapterMsaccotas= new AdapterMascotas(mascotas, getContext());
+        recyclerView.setAdapter(adapterMsaccotas);
 
         //Referencias a la BD.
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -79,21 +81,12 @@ public class mascotas_cuidador extends Fragment {
                 mascotas.removeAll(mascotas);
                 for(DataSnapshot snapshot:
                 dataSnapshot.getChildren()){
-              Mascota m = snapshot.getValue(Mascota.class);
-              mascotas.add(m);
-                    for (DataSnapshot snapServicio:
-                            snapshot.child("servicios").getChildren()) {
-                        if (snapServicio.exists()){
-                            String tipservicio = snapServicio.child("tipoServicio").getValue(String.class);
-                            String preservicio = snapServicio.child("Precio").getValue(String.class);
-                            if (servicio.equals(tipoServicio)){
-                                Servicio serv = snapServicio.getValue(Servicio.class);
-                                servicios.add(serv);
-                            }
-                        }
+                    if (snapshot.exists()){
+                        Mascota m = snapshot.getValue(Mascota.class);
+                        mascotas.add(m);
                     }
                 }
-                    mAdapter.notifyDataSetChanged();
+                    adapterMsaccotas.notifyDataSetChanged();
             }
 
             @Override
