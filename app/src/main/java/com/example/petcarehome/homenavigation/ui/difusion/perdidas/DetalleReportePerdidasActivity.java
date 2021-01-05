@@ -88,13 +88,13 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                                 + snapshot.child("noext").getValue(String.class) + ""
                                 + snapshot.child("noint").getValue(String.class) + ", "
                                 + snapshot.child("alcaldia").getValue(String.class);
-                        if (snapshot.child("foto").exists()){
-                            fotoUsr = snapshot.child("foto").getValue(String.class);
-                        }
+                        fotoUsr = snapshot.child("foto").getValue(String.class);
+
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
                         domicilio.setText(dir);
+                        Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                     }
 
                 }
@@ -126,13 +126,13 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                                     + snapshot.child("noext").getValue(String.class) + ""
                                     + snapshot.child("noint").getValue(String.class) + ", "
                                     + snapshot.child("alcaldia").getValue(String.class);
-                            if (snapshot.child("foto").exists()){
-                                fotoUsr = snapshot.child("foto").getValue(String.class);
-                            }
+                            fotoUsr = snapshot.child("foto").getValue(String.class);
+
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
                             domicilio.setText(dir);
+                            Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                         }
                     }
                 }
@@ -156,24 +156,8 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
         descripcion.setText(reporteP.getDescripcion());
         //correoUser.setText(reporteP.getReportePerdidas().getUsuario());
         Glide.with(this).load(reporteP.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
-        foto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetalleReportePerdidasActivity.this, FullScreenImageActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReportePerdidasActivity.this, foto, Objects.requireNonNull(ViewCompat.getTransitionName(foto)));
-                Bundle  bundle = new Bundle();
-                bundle.putString("title", reporteP.getNombre());
-                bundle.putString("foto", reporteP.getFoto());
-                intent.putExtras(bundle);
-                startActivity(intent, options.toBundle());
-            }
-        });
+        foto.setOnClickListener(this);
 
-        if (fotoUsr.isEmpty()){
-            Glide.with(this).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
-        } else {
-            Glide.with(this).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
-        }
         fotoUser.setOnClickListener(this);
 
 

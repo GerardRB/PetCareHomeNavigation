@@ -46,7 +46,6 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
         }
 
         fotoUsr = "";
-        nom = "";
 
         //Referencia a textviews
         TextView tipoMascota = findViewById(R.id.text_tipo_DRME);
@@ -87,13 +86,13 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
                                 + snapshot.child("noext").getValue(String.class) + ""
                                 + snapshot.child("noint").getValue(String.class) + ", "
                                 + snapshot.child("alcaldia").getValue(String.class);
-                        if (snapshot.child("foto").exists()){
-                            fotoUsr = snapshot.child("foto").getValue(String.class);
-                        }
+                        fotoUsr = snapshot.child("foto").getValue(String.class);
+
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
                         domicilio.setText(dir);
+                        //Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                     }
                 }
             }
@@ -124,13 +123,12 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
                                     + snapshot.child("noext").getValue(String.class) + ""
                                     + snapshot.child("noint").getValue(String.class) + ", "
                                     + snapshot.child("alcaldia").getValue(String.class);
-                            if (snapshot.child("foto").exists()){
                                 fotoUsr = snapshot.child("foto").getValue(String.class);
-                            }
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
                             domicilio.setText(dir);
+                            Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                         }
                     }
                 }
@@ -156,12 +154,6 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
         //correoUser.setText(reporteE.getReporteEncontradas().getIdUser());
         Glide.with(this).load(reporteE.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
         foto.setOnClickListener(this);
-
-        if (fotoUsr.isEmpty()){
-            Glide.with(this).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
-        } else {
-            Glide.with(this).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
-        }
         fotoUser.setOnClickListener(this);
 
     }
