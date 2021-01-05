@@ -52,7 +52,6 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
     FirebaseDatabase firebaseDatabase;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,13 +83,13 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
         paseo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (paseo.isChecked()==true){
+                if (paseo.isChecked() == true) {
 
                     preciopaseo.setVisibility(View.VISIBLE);
                     comentariospaseo.setVisibility(View.VISIBLE);
 
 
-            }else{
+                } else {
                     preciopaseo.setVisibility(View.INVISIBLE);
                     comentariospaseo.setVisibility(View.INVISIBLE);
                 }
@@ -102,11 +101,11 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
 
-                if (estancia.isChecked()==true){
+                if (estancia.isChecked() == true) {
 
                     preciohospedaje.setVisibility(View.VISIBLE);
                     comentarioshospedaje.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     preciohospedaje.setVisibility(View.INVISIBLE);
                     comentarioshospedaje.setVisibility(View.INVISIBLE);
                 }
@@ -210,162 +209,191 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
     public void onCheckboxClicked() {
 
         //Referencias a la BD.
-          firebaseDatabase = FirebaseDatabase.getInstance();
-          user = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-          final DatabaseReference cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE)
-              .child(FirebaseReferences.CUIDADOR_REFERENCE).child(user.getUid()).child(FirebaseReferences.MASCOTAS_CUIDADOR_REFERENCE);
+        final DatabaseReference cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE)
+                .child(FirebaseReferences.CUIDADOR_REFERENCE).child(user.getUid()).child(FirebaseReferences.MASCOTAS_CUIDADOR_REFERENCE);
 
 
         // Is the view now checked?
-            //Crear mascota que solo tendrá paseo
-                if (paseo.isChecked()==true){
 
-                    String tipopaseo = paseo.getText().toString();
-        Double prepaseo = Double.parseDouble(preciopaseo.getText().toString());
-        String comenpaseo = comentariospaseo.getText().toString();
-        String tipomasco = spinnermascotas.getSelectedItem().toString();
+        //Crear mascota que solo tendrá paseo
+        if (paseo.isChecked() == true) {
 
+            String mensaje = "Faltan campos por ingresar";
+            String tipopaseo = paseo.getText().toString();
+            Double prepaseo = Double.parseDouble(preciopaseo.getText().toString());
+            String comenpaseo = comentariospaseo.getText().toString();
+            String tipomasco = spinnermascotas.getSelectedItem().toString();
 
-        if(prepaseo.isNaN()){
-            preciopaseo.setError("El campo debe ser un número");
-        }else {
-           // if(prepaseo(String.format(%3f,(double)prepaseo)){
-           //     preciopaseo.setError("El precio debe ser menor de 3 digitos");
-          // }
-        }
-
-        Servicio s = new Servicio(tipopaseo,prepaseo,comenpaseo);
-        ArrayList<Servicio> servip = new ArrayList<>();
-        servip.add(s);
-
-        Mascota mp = new Mascota(tipomasco,servip);
-        List<Mascota> mascop = new ArrayList<>();
-        mascop.add(mp);
-
-        for(Mascota masco : mascop) {
-            cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(!task.isSuccessful()){
-                        Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
-                    }else{
-                        Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
-                        startActivity(intent);
-                        finish();
-                        return;
-                    }
+            //Validaciones
+            if(tipomasco.equals("Seleccionar")|| comenpaseo.isEmpty()||comenpaseo.length()<=50) {
+                if (prepaseo.isNaN()) {
+                    preciopaseo.setError("El campo debe ser un número");
                 }
-            });
-        }
+                if (tipomasco.equals("Seleccionar")) {
+                    Toast.makeText(this, "Seleccione un tipo de mascota", Toast.LENGTH_SHORT).show();
                 }
+                if (comenpaseo.isEmpty()) {
+                    comentariospaseo.setError("La descripción no puede estar vacía");
+                }
+                if (comenpaseo.length() <= 50) {
+                    comentariospaseo.setError("La descripción debe ser mayor a 50 caracteres");
+                }
+            } else {
 
-            //Crear mascota que solo tendrá hospedaje
-                if (estancia.isChecked()==true){
-                    String tipohospe = estancia.getText().toString();
-                    Double prehospe = Double.parseDouble(preciohospedaje.getText().toString());
-                    String comenhospe = comentarioshospedaje.getText().toString();
-                    String tipomasco = spinnermascotas.getSelectedItem().toString();
+                Servicio s = new Servicio(tipopaseo, prepaseo, comenpaseo);
+                ArrayList<Servicio> servip = new ArrayList<>();
+                servip.add(s);
 
+                Mascota mp = new Mascota(tipomasco, servip);
+                List<Mascota> mascop = new ArrayList<>();
+                mascop.add(mp);
 
-                    if(prehospe.isNaN()){
-                        preciohospedaje.setError("El campo debe ser un número");
-                    }else {
-                        // if(prepaseo(String.format(%3f,(double)prepaseo)){
-                        //     preciopaseo.setError("El precio debe ser menor de 3 digitos");
-                        // }
-                    }
-
-                    Servicio s = new Servicio(tipohospe,prehospe,comenhospe);
-                    ArrayList<Servicio> servih = new ArrayList<>();
-                    servih.add(s);
-
-                    Mascota mh = new Mascota(tipomasco,servih);
-                    List<Mascota> mascoh = new ArrayList<>();
-                    mascoh.add(mh);
-                    //  Map<String, Object> cuidadorMap = new HashMap<>();
-                    // cuidadorMap.put("Mascotas", mascop);
-
-                    for(Mascota masco : mascoh) {
-                        cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(!task.isSuccessful()){
-                                    Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
-                                }else{
-                                    Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
-                                    Intent i = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
-                                    startActivity(i);
-                                    finish();
-                                    return;
-                                }
+                for (Mascota masco : mascop) {
+                    cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
+                                startActivity(intent);
+                                finish();
+                                return;
                             }
-                        });
-                    }
+                        }
+                    });
+                }
+            }
+        }
+
+        //Crear mascota que solo tendrá hospedaje
+        if (estancia.isChecked() == true) {
+
+            String tipohospe = estancia.getText().toString();
+            Double prehospe = Double.parseDouble(preciohospedaje.getText().toString());
+            String comenhospe = comentarioshospedaje.getText().toString();
+            String tipomasco = spinnermascotas.getSelectedItem().toString();
+
+            //Validaciones
+            if(tipomasco.equals("Seleccionar")|| comenhospe.isEmpty()||comenhospe.length()<=50) {
+                if (prehospe.isNaN()) {
+                    preciopaseo.setError("El campo debe ser un número");
+                }
+                if (tipomasco.equals("Seleccionar")) {
+                    Toast.makeText(this, "Seleccione un tipo de mascota", Toast.LENGTH_SHORT).show();
+                }
+                if (comenhospe.isEmpty()) {
+                    comentarioshospedaje.setError("La descripción no puede estar vacía");
+                }
+                if (comenhospe.length() <= 50) {
+                    comentarioshospedaje.setError("La descripción debe ser mayor a 50 caracteres");
+                }
+            } else {
+
+                Servicio s = new Servicio(tipohospe, prehospe, comenhospe);
+                ArrayList<Servicio> servih = new ArrayList<>();
+                servih.add(s);
+
+                Mascota mh = new Mascota(tipomasco, servih);
+                List<Mascota> mascoh = new ArrayList<>();
+                mascoh.add(mh);
+                //  Map<String, Object> cuidadorMap = new HashMap<>();
+                // cuidadorMap.put("Mascotas", mascop);
+
+                for (Mascota masco : mascoh) {
+                    cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
+                                startActivity(i);
+                                finish();
+                                return;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        //Crear mascota que tendrá paseo y hospedaje
+        if ((paseo.isChecked() == true && estancia.isChecked() == true)) {
+            String tipopaseo = paseo.getText().toString();
+            Double prepaseo = Double.parseDouble(preciopaseo.getText().toString());
+            String comenpaseo = comentariospaseo.getText().toString();
+            String tipomasco = spinnermascotas.getSelectedItem().toString();
+
+            String tipohospe = estancia.getText().toString();
+            Double prehospe = Double.parseDouble(preciohospedaje.getText().toString());
+            String comenhospe = comentarioshospedaje.getText().toString();
+
+
+            //Validaciones
+            if (tipomasco.equals("Seleccionar") || comenpaseo.isEmpty()
+                    || comenpaseo.length() <= 50 ||
+                    comenhospe.isEmpty() || comenhospe.length() <= 50) {
+
+                //Validaciones paseo
+                if (tipomasco.equals("Seleccionar")) {
+                    Toast.makeText(this, "Seleccione un tipo de mascota", Toast.LENGTH_SHORT).show();
+                }
+                if (comenpaseo.isEmpty()) {
+                    comentariospaseo.setError("La descripción no puede estar vacía");
+                }
+                if (comenpaseo.length() <= 50) {
+                    comentariospaseo.setError("La descripción debe ser mayor a 50 caracteres");
                 }
 
-            //Crear mascota que tendrá paseo y hospedaje
-                if ((paseo.isChecked()==true && estancia.isChecked()==true)){
-                    String tipopaseo = paseo.getText().toString();
-                    Double prepaseo = Double.parseDouble(preciopaseo.getText().toString());
-                    String comenpaseo = comentariospaseo.getText().toString();
-                    String tipomasco = spinnermascotas.getSelectedItem().toString();
+                //Validaciones hospedaje
+                if (comenhospe.isEmpty()) {
+                    comentarioshospedaje.setError("La descripción no puede estar vacía");
+                }
+                if (comenhospe.length() <= 50) {
+                    comentarioshospedaje.setError("La descripción debe ser mayor a 50 caracteres");
+                }
 
-                    String tipohospe = estancia.getText().toString();
-                    Double prehospe = Double.parseDouble(preciohospedaje.getText().toString());
-                    String comenhospe = comentarioshospedaje.getText().toString();
+            } else {
 
+                Servicio s = new Servicio(tipopaseo, prepaseo, comenpaseo);
 
-                    if(prepaseo.isNaN()){
-                        preciopaseo.setError("El campo debe ser un número");
-                    }else {
-                        // if(prepaseo(String.format(%3f,(double)prepaseo)){
-                        //     preciopaseo.setError("El precio debe ser menor de 3 digitos");
-                        // }
-                    }
+                Servicio s1 = new Servicio(tipohospe, prehospe, comenhospe);
 
-                    if(prehospe.isNaN()){
-                        preciohospedaje.setError("El campo debe ser un número");
-                    }else {
-                        // if(prepaseo(String.format(%3f,(double)prepaseo)){
-                        //     preciopaseo.setError("El precio debe ser menor de 3 digitos");
-                        // }
-                    }
+                ArrayList<Servicio> servip = new ArrayList<>();
+                servip.add(s);
+                servip.add(s1);
 
-                    Servicio s = new Servicio(tipopaseo,prepaseo,comenpaseo);
+                Mascota mph = new Mascota(tipomasco, servip);
 
-                    Servicio s1 = new Servicio(tipohospe,prehospe,comenhospe);
-
-                    ArrayList<Servicio> servip = new ArrayList<>();
-                    servip.add(s);
-                    servip.add(s1);
-
-                    Mascota mph = new Mascota(tipomasco,servip);
-
-                    List<Mascota> mascop = new ArrayList<>();
-                    mascop.add(mph);
+                List<Mascota> mascop = new ArrayList<>();
+                mascop.add(mph);
 
 
-                    for(Mascota masco : mascop) {
-                        cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(!task.isSuccessful()){
-                                    Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
-                                }else{
-                                    Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
-                                    Intent ii = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
-                                    startActivity(ii);
-                                    finish();
-                                    return;
-                                }
+                for (Mascota masco : mascop) {
+                    cuidadorRef.child(tipomasco).setValue(masco).addOnCompleteListener(FormularioMascotas.this, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(FormularioMascotas.this, "Error al registrar mascota", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(FormularioMascotas.this, "Mascota registrada", Toast.LENGTH_LONG).show();
+                                Intent ii = new Intent(FormularioMascotas.this, mascotas_cuidador.class);
+                                startActivity(ii);
+                                finish();
+                                return;
                             }
-                        });
-                    }
+                        }
+                    });
+                }
+            }
         }
-        }
-
+    }
 
 
     @Override
