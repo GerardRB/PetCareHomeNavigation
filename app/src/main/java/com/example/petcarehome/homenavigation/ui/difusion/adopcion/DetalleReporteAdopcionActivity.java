@@ -48,6 +48,7 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
 
         fotoUsr = "";
 
+
         //Referencia a textviews
         TextView tipoMascota = findViewById(R.id.text_tipo_DRMA);
         TextView raza = findViewById(R.id.text_raza_DRMA);
@@ -87,13 +88,13 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
                                 + snapshot.child("noext").getValue(String.class) + ""
                                 + snapshot.child("noint").getValue(String.class) + ", "
                                 + snapshot.child("alcaldia").getValue(String.class);
-                        if (dataSnapshot.child("foto").exists()){
-                            fotoUsr = snapshot.child("foto").getValue(String.class);
-                        }
+                        fotoUsr = snapshot.child("foto").getValue(String.class);
+
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
                         domicilio.setText(dir);
+                        Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                     }
 
                 }
@@ -124,13 +125,13 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
                                     + snapshot.child("noext").getValue(String.class) + ""
                                     + snapshot.child("noint").getValue(String.class) + ", "
                                     + snapshot.child("alcaldia").getValue(String.class);
-                            if (dataSnapshot.child("foto").exists()){
-                                fotoUsr = snapshot.child("foto").getValue(String.class);
-                            }
+                            fotoUsr = snapshot.child("foto").getValue(String.class);
+
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
                             domicilio.setText(dir);
+                            Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                         }
 
                     }
@@ -159,11 +160,7 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
         foto.setOnClickListener(this);
         //correoUser.setText(reporteA.getReporteAdopcion().getIdUser());
 
-        if (fotoUsr.isEmpty()){
-            Glide.with(this).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
-        } else {
-            Glide.with(this).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
-        }
+
         fotoUser.setOnClickListener(this);
     }
 
@@ -177,7 +174,7 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.idImagenMA:
+            case R.id.id_imageDRMA:
                 Intent intent = new Intent(DetalleReporteAdopcionActivity.this, FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReporteAdopcionActivity.this, foto, Objects.requireNonNull(ViewCompat.getTransitionName(foto)));
                 Bundle  bundle = new Bundle();

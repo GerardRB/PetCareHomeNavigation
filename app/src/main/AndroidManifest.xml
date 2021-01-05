@@ -35,7 +35,8 @@
         <activity android:name=".homenavigation.ui.mapa.dueno.CuidadorInfoActivity" />
         <activity android:name=".homenavigation.ui.config.clases_fragmentos.FormularioMascotas" />
         <activity android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosd"></activity>
-        <activity android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosc" />
+        <activity android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosc"
+            android:theme="@style/MaterialAppTheme"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

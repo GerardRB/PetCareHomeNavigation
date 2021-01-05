@@ -12,11 +12,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -32,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class perfil_usuario_cuidador extends Fragment {
     private FirebaseDatabase firebaseDatabase;
@@ -39,6 +44,7 @@ public class perfil_usuario_cuidador extends Fragment {
     FirebaseStorage firebaseStorage;
     TextView tipo_userc, nombre_userc, correo_userc, tel_userc, domicilio_userc;
     ImageView fotoc;
+    String foto;
 
 
     Button Actualizarc;
@@ -64,6 +70,8 @@ public class perfil_usuario_cuidador extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        foto = "";
+
         final DatabaseReference cuidadorRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE)
                 .child(FirebaseReferences.CUIDADOR_REFERENCE).child(user.getUid());
 
@@ -88,6 +96,7 @@ public class perfil_usuario_cuidador extends Fragment {
                             + dataSnapshot.child("noext").getValue(String.class) + " "
                             + dataSnapshot.child("noint").getValue(String.class) + ", "
                             + dataSnapshot.child("alcaldia").getValue(String.class);
+                    foto = dataSnapshot.child("foto").getValue(String.class);
 
 
                     tipo_userc.setText(tipo);
@@ -96,6 +105,7 @@ public class perfil_usuario_cuidador extends Fragment {
                     correo_userc.setText(correo);
                     tel_userc.setText(tel);
                     domicilio_userc.setText(domicilio);
+                    Glide.with(getContext()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotoc);
 
 
               //  }
@@ -108,7 +118,18 @@ public class perfil_usuario_cuidador extends Fragment {
             }
         });
 
-
+        fotoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), fotoc, Objects.requireNonNull(ViewCompat.getTransitionName(fotoc)));
+                Bundle  bundle = new Bundle();
+                bundle.putString("title", "la mascota");
+                bundle.putString("foto", foto);
+                intent.putExtras(bundle);
+                startActivity(intent, options.toBundle());
+            }
+        });
 
 
 
@@ -118,7 +139,6 @@ public class perfil_usuario_cuidador extends Fragment {
             public void onClick(View v) {
 
               startActivity(new Intent(getActivity(), actualizar_datosc.class));
-                Glide.with(getContext()).load(storagePerfilCuidadorReference).into(fotoc);
                 return;
             }
         });
