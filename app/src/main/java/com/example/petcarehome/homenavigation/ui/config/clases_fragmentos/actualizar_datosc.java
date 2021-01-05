@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.petcarehome.InicioYRegistro.Cuidador;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.example.petcarehome.homenavigation.ui.difusion.perdidas.GenerarReporteExtravioActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +38,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,8 +136,27 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
 
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-                Uri imageUri = data.getData();
+                // Uri imageUri = data.getData();
                 //  profileImage.setImageURI(imageUri);
+                //  subirImagenFirebase(imageUri);
+                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                    CropImage.activity(data.getClipData().getItemAt(i).getUri())
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .setRequestedSize(1024, 1024)
+                            .setAspectRatio(3, 3).start(actualizar_datosc.this);
+                }
+
+            } else {
+                CropImage.activity(data.getData())
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setRequestedSize(1024, 1024)
+                        .setAspectRatio(3, 3).start(actualizar_datosc.this);
+            }
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri imageUri = result.getUri();
                 subirImagenFirebase(imageUri);
             }
         }

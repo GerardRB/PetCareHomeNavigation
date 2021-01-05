@@ -33,6 +33,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class actualizar_datosd extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     EditText nombre_d, apellido_d, calle_d, noext_d, noint_d, tel_d;
@@ -123,8 +125,27 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
 
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-                Uri imageUri = data.getData();
+              //  Uri imageUri = data.getData();
                 //  profileImage.setImageURI(imageUri);
+               // subirImagenFirebase(imageUri);
+                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
+                    CropImage.activity(data.getClipData().getItemAt(i).getUri())
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .setRequestedSize(1024, 1024)
+                            .setAspectRatio(3, 3).start(actualizar_datosd.this);
+                }
+
+            } else {
+                CropImage.activity(data.getData())
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setRequestedSize(1024, 1024)
+                        .setAspectRatio(3, 3).start(actualizar_datosd.this);
+            }
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri imageUri = result.getUri();
                 subirImagenFirebase(imageUri);
             }
         }
