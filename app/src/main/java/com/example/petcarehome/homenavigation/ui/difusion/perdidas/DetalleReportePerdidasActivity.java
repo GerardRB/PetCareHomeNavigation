@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,14 +26,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-public class DetalleReportePerdidasActivity extends AppCompatActivity {
+public class DetalleReportePerdidasActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ReportePerdidas reporteP;
-    private TextView correoUser;
-    private TextView nombreUser;
-    private TextView telefonoUser;
-    private TextView domicilio;
-    private ImageView foto;
+    private TextView correoUser, nombreUser, telefonoUser, domicilio;
+    private ImageView foto, fotoUser;
+    private String fotoUsr, nom, corr, tel, dir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +45,8 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
             reporteP = (ReportePerdidas) reporteSeleccionado.getSerializable("reportePerdida");
         }
 
+        fotoUsr = "";
+
         //Referencia a textviews
         TextView nombreMascota = findViewById(R.id.text_nombre_DRMP);
         TextView tipoMascota = findViewById(R.id.text_tipo_DRMP);
@@ -57,6 +58,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         TextView calle = findViewById(R.id.text_calle_DRMP);
         TextView descripcion = findViewById(R.id.text_descricpion_DRMP);
         foto = findViewById(R.id.id_imageDRMP);
+        fotoUser = findViewById(R.id.id_imagen_user_DRMP);
         correoUser = findViewById(R.id.text_email_user_DRMP);
         nombreUser = findViewById(R.id.text_nombre_user_DRMP);
         telefonoUser = findViewById(R.id.text_telefono_user_DRMP);
@@ -79,7 +81,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
                     String idUser = snapshot.getKey();
                     if (idUser.equals(reporteP.getUsuario())){
                         //Cuidador cuidador = snapshot.getValue(Cuidador.class);
-                        String nom, corr, tel, dir;
                         nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                         corr = snapshot.child("correo").getValue(String.class);
                         tel = snapshot.child("telefono").getValue(String.class);
@@ -87,6 +88,9 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
                                 + snapshot.child("noext").getValue(String.class) + ""
                                 + snapshot.child("noint").getValue(String.class) + ", "
                                 + snapshot.child("alcaldia").getValue(String.class);
+                        if (snapshot.child("foto").exists()){
+                            fotoUsr = snapshot.child("foto").getValue(String.class);
+                        }
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
@@ -115,7 +119,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
                             dataSnapshot.getChildren()) {
                         String idUser = snapshot.getKey();
                         if (idUser.equals(reporteP.getUsuario())){
-                            String nom, corr, tel, dir;
                             nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                             corr = snapshot.child("correo").getValue(String.class);
                             tel = snapshot.child("telefono").getValue(String.class);
@@ -123,12 +126,14 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
                                     + snapshot.child("noext").getValue(String.class) + ""
                                     + snapshot.child("noint").getValue(String.class) + ", "
                                     + snapshot.child("alcaldia").getValue(String.class);
+                            if (snapshot.child("foto").exists()){
+                                fotoUsr = snapshot.child("foto").getValue(String.class);
+                            }
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
                             domicilio.setText(dir);
                         }
-
                     }
                 }
 
@@ -151,7 +156,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
         descripcion.setText(reporteP.getDescripcion());
         //correoUser.setText(reporteP.getReportePerdidas().getUsuario());
         Glide.with(this).load(reporteP.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
-
         foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +169,13 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
             }
         });
 
+        if (fotoUsr.isEmpty()){
+            Glide.with(this).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+        } else {
+            Glide.with(this).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+        }
+        fotoUser.setOnClickListener(this);
+
 
 
     }
@@ -173,5 +184,32 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.id_imageDRMP:
+                Intent intent = new Intent(DetalleReportePerdidasActivity.this, FullScreenImageActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReportePerdidasActivity.this, foto, Objects.requireNonNull(ViewCompat.getTransitionName(foto)));
+                Bundle  bundle = new Bundle();
+                bundle.putString("title", "la mascota");
+                bundle.putString("foto", reporteP.getFoto());
+                intent.putExtras(bundle);
+                startActivity(intent, options.toBundle());
+                break;
+            case R.id.id_imagen_user_DRMP:
+                Intent intentUser = new Intent(DetalleReportePerdidasActivity.this, FullScreenImageActivity.class);
+                ActivityOptionsCompat optionsUser = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReportePerdidasActivity.this, fotoUser, Objects.requireNonNull(ViewCompat.getTransitionName(fotoUser)));
+                Bundle  bundleUser = new Bundle();
+                bundleUser.putString("title", nom);
+                bundleUser.putString("foto", fotoUsr);
+                intentUser.putExtras(bundleUser);
+                startActivity(intentUser, optionsUser.toBundle());
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + v.getId());
+        }
     }
 }
