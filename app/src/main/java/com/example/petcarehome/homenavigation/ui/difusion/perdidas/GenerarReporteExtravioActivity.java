@@ -378,7 +378,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
             case R.id.id_input_imageRMP:
                 String foto;
                 if (resultUri == null){
-                    foto = "";
+                    foto = "mascota";
                 } else{
                     foto = resultUri.toString();
                 }

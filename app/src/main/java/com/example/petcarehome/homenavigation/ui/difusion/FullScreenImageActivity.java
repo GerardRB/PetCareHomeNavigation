@@ -30,7 +30,13 @@ public class FullScreenImageActivity extends AppCompatActivity {
         if (foto.isEmpty()){
             Glide.with(this).load(R.drawable.ic_gallery_error).into(imageView);
         } else {
-            Glide.with(this).load(foto).into(imageView);
+            if (foto.equals("user")){
+                Glide.with(this).load(R.drawable.ic_user).into(imageView);
+            } else if (foto.equals("mascota")){
+                Glide.with(this).load(R.drawable.ic_perro_photo).into(imageView);
+            } else {
+                Glide.with(this).load(foto).into(imageView);
+            }
         }
 
 

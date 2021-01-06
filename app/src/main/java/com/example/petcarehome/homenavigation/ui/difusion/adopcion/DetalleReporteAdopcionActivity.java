@@ -46,7 +46,6 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
             reporteA = (ReporteAdopcion) reporteSeleccionado.getSerializable("reporteAdopcion");
         }
 
-        fotoUsr = "";
 
 
         //Referencia a textviews
@@ -88,13 +87,17 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
                                 + snapshot.child("noext").getValue(String.class) + ""
                                 + snapshot.child("noint").getValue(String.class) + ", "
                                 + snapshot.child("alcaldia").getValue(String.class);
-                        fotoUsr = snapshot.child("foto").getValue(String.class);
-
+                        if (snapshot.child("foto").getValue(String.class).isEmpty()){
+                            Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+                            fotoUsr = "user";
+                        } else {
+                            fotoUsr = snapshot.child("foto").getValue(String.class);
+                            Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+                        }
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
                         domicilio.setText(dir);
-                        Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                     }
 
                 }
@@ -125,13 +128,17 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
                                     + snapshot.child("noext").getValue(String.class) + ""
                                     + snapshot.child("noint").getValue(String.class) + ", "
                                     + snapshot.child("alcaldia").getValue(String.class);
-                            fotoUsr = snapshot.child("foto").getValue(String.class);
-
+                            if (snapshot.child("foto").getValue(String.class).isEmpty()){
+                                Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+                                fotoUsr = "user";
+                            } else {
+                                fotoUsr = snapshot.child("foto").getValue(String.class);
+                                Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+                            }
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
                             domicilio.setText(dir);
-                            Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                         }
 
                     }
@@ -158,7 +165,6 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
         descripcion.setText(reporteA.getDescripcion());
         Glide.with(this).load(reporteA.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
         foto.setOnClickListener(this);
-        //correoUser.setText(reporteA.getReporteAdopcion().getIdUser());
 
 
         fotoUser.setOnClickListener(this);

@@ -45,7 +45,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
             reporteP = (ReportePerdidas) reporteSeleccionado.getSerializable("reportePerdida");
         }
 
-        fotoUsr = "";
+        //fotoUsr = "";
 
         //Referencia a textviews
         TextView nombreMascota = findViewById(R.id.text_nombre_DRMP);
@@ -88,13 +88,17 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                                 + snapshot.child("noext").getValue(String.class) + ""
                                 + snapshot.child("noint").getValue(String.class) + ", "
                                 + snapshot.child("alcaldia").getValue(String.class);
-                        fotoUsr = snapshot.child("foto").getValue(String.class);
-
+                        if (snapshot.child("foto").getValue(String.class).isEmpty()){
+                            Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+                            fotoUsr = "user";
+                        } else {
+                            fotoUsr = snapshot.child("foto").getValue(String.class);
+                            Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+                        }
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
                         domicilio.setText(dir);
-                        Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                     }
 
                 }
@@ -126,13 +130,18 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                                     + snapshot.child("noext").getValue(String.class) + ""
                                     + snapshot.child("noint").getValue(String.class) + ", "
                                     + snapshot.child("alcaldia").getValue(String.class);
-                            fotoUsr = snapshot.child("foto").getValue(String.class);
+                            if (snapshot.child("foto").getValue(String.class).isEmpty()){
+                                Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+                                fotoUsr = "user";
+                            } else {
+                                fotoUsr = snapshot.child("foto").getValue(String.class);
+                                Glide.with(getApplicationContext()).load(snapshot.child(fotoUsr)).apply(RequestOptions.circleCropTransform()).into(fotoUser);
+                            }
 
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
                             domicilio.setText(dir);
-                            Glide.with(getApplicationContext()).load(fotoUsr).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                         }
                     }
                 }
@@ -154,7 +163,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
         colonia.setText(reporteP.getColonia());
         calle.setText(reporteP.getCalle());
         descripcion.setText(reporteP.getDescripcion());
-        //correoUser.setText(reporteP.getReportePerdidas().getUsuario());
         Glide.with(this).load(reporteP.getFoto()).apply(RequestOptions.circleCropTransform()).into(foto);
         foto.setOnClickListener(this);
 

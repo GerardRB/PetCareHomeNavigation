@@ -179,7 +179,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
             case R.id.id_input_imageRMA:
                 String foto;
                 if (resultUri == null){
-                    foto = "";
+                    foto = "mascota";
                 } else{
                     foto = resultUri.toString();
                 }

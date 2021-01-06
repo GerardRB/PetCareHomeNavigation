@@ -369,7 +369,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
             case R.id.id_input_imageRME:
                 String foto;
                 if (resultUri == null){
-                    foto = "";
+                    foto = "mascota";
                 } else{
                     foto = resultUri.toString();
                 }
