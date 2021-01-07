@@ -3,6 +3,8 @@ package com.example.petcarehome.homenavigation.ui.config.clases_fragmentos;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,10 +20,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +43,8 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Objects;
+
 public class actualizar_datosd extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     EditText nombre_d, apellido_d, calle_d, noext_d, noint_d, tel_d;
     Button actualizarDatos;
@@ -44,6 +53,8 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
     FirebaseStorage firebaseStorage;
     Spinner alcaldia_d;
     FirebaseUser user;
+    ExtendedFloatingActionButton fabAddPhoto;
+    Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +67,46 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
         noext_d = findViewById(R.id.noext_actualizard);
         noint_d = findViewById(R.id.noint_actualizard);
         tel_d = findViewById(R.id.tel_actualizard);
-
+        imageUri = null;
         //Spiner de las alcaldías
         alcaldia_d = findViewById(R.id.delegacion_spinner_actualizard);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.alcaldias, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         alcaldia_d.setAdapter(adapter);
         alcaldia_d.setOnItemSelectedListener(this);
-
-
         actualizarDatos = findViewById(R.id.registrarse2_actualizard);
+
         profileImage = findViewById(R.id.profile_imaged);
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String foto;
+                if (imageUri == null){
+                    foto = "";
+                } else{
+                    foto = imageUri.toString();
+                }
+                Intent intent = new Intent(actualizar_datosd.this, FullScreenImageActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(actualizar_datosd.this, profileImage, Objects.requireNonNull(ViewCompat.getTransitionName(profileImage)));
+                Bundle  bundle = new Bundle();
+                bundle.putString("title", "la mascota");
+                bundle.putString("foto", foto);
+                intent.putExtras(bundle);
+                startActivity(intent, options.toBundle());
+            }
+        });
+
+        fabAddPhoto = findViewById(R.id.fab_addphotoD);
+        fabAddPhoto.setIconResource(R.drawable.ic_cameraadd);
+        fabAddPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Abrir galeria
+                Intent abrirgaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(abrirgaleria, 1000);
+            }
+        });
+
 
 
         profileImage.setOnClickListener(new View.OnClickListener() {
@@ -125,33 +165,25 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
 
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-              //  Uri imageUri = data.getData();
-                //  profileImage.setImageURI(imageUri);
-               // subirImagenFirebase(imageUri);
-                for (int i = 0; i < data.getClipData().getItemCount(); i++) {
-                    CropImage.activity(data.getClipData().getItemAt(i).getUri())
-                            .setGuidelines(CropImageView.Guidelines.ON)
-                            .setRequestedSize(1024, 1024)
-                            .setAspectRatio(3, 3).start(actualizar_datosd.this);
-                }
-
-            } else {
                 CropImage.activity(data.getData())
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setRequestedSize(1024, 1024)
                         .setAspectRatio(3, 3).start(actualizar_datosd.this);
+
             }
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri imageUri = result.getUri();
-                subirImagenFirebase(imageUri);
+                imageUri = result.getUri();
+                //subirImagenFirebase(imageUri);
+                Glide.with(this).load(imageUri).apply(RequestOptions.circleCropTransform()).into(profileImage);
+                fabAddPhoto.setIconResource(R.drawable.ic_editar);
             }
         }
     }
 
-    private void subirImagenFirebase(Uri imageUri) {
+    private void subirImagenFirebase(final DatabaseReference dueno) {
         String idUser = null;
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -167,19 +199,19 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(actualizar_datosd.this, "Imagen cargada", Toast.LENGTH_SHORT).show();
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isSuccessful());
+                Uri downloadUri = uriTask.getResult();
+                dueno.child("foto").setValue(downloadUri.toString(), new DatabaseReference.CompletionListener() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(profileImage);
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        if (databaseError != null){
+                            Toast.makeText(getApplicationContext(), "No se actualizar la foto de perfil", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Foto de perfil actualizada con éxito", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(actualizar_datosd.this, "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -192,6 +224,9 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
         final DatabaseReference duenoReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE)
                 .child(FirebaseReferences.DUENO_REFERENCE).child(user.getUid());
 
+        if (imageUri != null){
+            subirImagenFirebase(duenoReference);
+        }
         duenoReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
