@@ -26,7 +26,7 @@ import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.ayuda;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasenad;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.idioma;
-import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.notificaciones;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.MisReportesFragment;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario_dueno;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.terminos_y_condiciones;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -117,9 +117,9 @@ public class ConfigFragment_dueno extends Fragment implements FragmentOnBackPres
             case R.id.contrasena_menuconfig:
                 getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new cambiar_contrasenad()).commit();
                 break;
-            //Tercer icono, ir a fragmento para manejar las notificaciones
+            //Tercer icono, ir a fragmento para manejar las MisReportesFragment
             case R.id.notificaciones_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new notificaciones()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new MisReportesFragment()).commit();
                 break;
             //Cuarto icono, ir a fragmento que solo tendrá el idioma
             case R.id.idioma_menuconfig:

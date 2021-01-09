@@ -3,12 +3,13 @@ package com.example.petcarehome.homenavigation.Objetos;
 import java.io.Serializable;
 
 public class ReporteAdopcion implements Serializable {
-    private String tipo, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion, foto, idUser;
+    private String idRep, tipo, raza, edad, vacunas, esterilizacion, alcaldia, colonia, calle, descripcion, foto, idUser;
 
     public ReporteAdopcion(){
     }
 
-    public ReporteAdopcion(String tipo, String raza, String edad, String vacunas, String esterilizacion, String alcaldia, String colonia, String calle, String descripcion, String foto, String idUser) {
+    public ReporteAdopcion(String idRep, String tipo, String raza, String edad, String vacunas, String esterilizacion, String alcaldia, String colonia, String calle, String descripcion, String foto, String idUser) {
+        this.idRep = idRep;
         this.tipo = tipo;
         this.raza = raza;
         this.edad = edad;
@@ -20,6 +21,14 @@ public class ReporteAdopcion implements Serializable {
         this.descripcion = descripcion;
         this.foto = foto;
         this.idUser = idUser;
+    }
+
+    public String getIdRep() {
+        return idRep;
+    }
+
+    public void setIdRep(String idRep) {
+        this.idRep = idRep;
     }
 
     public String getTipo() {
@@ -106,7 +115,7 @@ public class ReporteAdopcion implements Serializable {
         return idUser;
     }
 
-    public void setId(String idUser) {
+    public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
 }

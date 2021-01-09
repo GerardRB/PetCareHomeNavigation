@@ -30,10 +30,12 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
 
     ArrayList<ReportePerdidas> listReportesPerdidas;
     Context context;
+    boolean isGeneral;
 
-    public AdapterReportesPerdidas(ArrayList<ReportePerdidas> listReportesPerdidas, Context context) {
+    public AdapterReportesPerdidas(ArrayList<ReportePerdidas> listReportesPerdidas, Context context, boolean isGeneral) {
         this.listReportesPerdidas = listReportesPerdidas;
         this.context = context;
+        this.isGeneral = isGeneral;
     }
 
     @NonNull
@@ -59,6 +61,7 @@ public class AdapterReportesPerdidas extends RecyclerView.Adapter<AdapterReporte
                 Intent intentDetalleRMP = new Intent(context, DetalleReportePerdidasActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("reportePerdida", listReportesPerdidas.get(position));
+                bundle.putBoolean("general", isGeneral);
                 intentDetalleRMP.putExtras(bundle);
                 context.startActivity(intentDetalleRMP);
             }

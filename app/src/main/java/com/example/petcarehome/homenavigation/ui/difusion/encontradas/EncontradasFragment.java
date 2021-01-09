@@ -53,7 +53,7 @@ public class EncontradasFragment extends Fragment {
         RecyclerView recycler = view.findViewById(R.id.recyclerEncontradasId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new AdapterReportesEncontradas(listReportes, getContext());
+        adapter = new AdapterReportesEncontradas(listReportes, getContext(), true);
         recycler.setAdapter(adapter);
 
         filtro = null;

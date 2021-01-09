@@ -470,7 +470,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                     while (!uriTask.isSuccessful());
                     downloadUri = uriTask.getResult();
                     String idUserf = user.getUid();
-                    ReportePerdidas reporteP = new ReportePerdidas(nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), idUserf);
+                    ReportePerdidas reporteP = new ReportePerdidas(idRep, nombreM, tipoM, edadM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), idUserf);
                     //Guardar en base de datos
 
 

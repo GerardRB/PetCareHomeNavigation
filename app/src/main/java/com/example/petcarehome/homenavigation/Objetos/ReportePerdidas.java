@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportePerdidas implements Serializable {
-    private String nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, foto, usuario;
+    private String idRep, nombre, tipo, edad, fecha, hora, alcaldia, colonia, calle, descripcion, foto, idUser;
     //private List<String> fotos;
 
     public ReportePerdidas(){
 
     }
 
-    public ReportePerdidas(String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String foto, String usuario) {
+    public ReportePerdidas(String idRep, String nombre, String tipo, String edad, String fecha, String hora, String alcaldia, String colonia, String calle, String descripcion, String foto, String idUser) {
+        this.idRep = idRep;
         this.nombre = nombre;
         this.tipo = tipo;
         this.edad = edad;
@@ -23,7 +24,15 @@ public class ReportePerdidas implements Serializable {
         this.calle = calle;
         this.descripcion = descripcion;
         this.foto = foto;
-        this.usuario = usuario;
+        this.idUser = idUser;
+    }
+
+    public String getIdRep() {
+        return idRep;
+    }
+
+    public void setIdRep(String idRep) {
+        this.idRep = idRep;
     }
 
     public String getNombre() {
@@ -106,12 +115,12 @@ public class ReportePerdidas implements Serializable {
         this.foto = foto;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getIdUser() {
+        return idUser;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 }
 

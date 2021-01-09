@@ -1,16 +1,22 @@
 package com.example.petcarehome.homenavigation.ui.difusion.adopcion;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -42,8 +48,10 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
         //Recibir reporte Seleccionado
         Bundle reporteSeleccionado = getIntent().getExtras();
         reporteA = null;
+        boolean general = true;
         if (reporteSeleccionado != null){
             reporteA = (ReporteAdopcion) reporteSeleccionado.getSerializable("reporteAdopcion");
+            general = reporteSeleccionado.getBoolean("general");
         }
 
 
@@ -64,6 +72,13 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
         nombreUser = findViewById(R.id.text_nombre_user_DRMA);
         telefonoUser = findViewById(R.id.text_telefono_user_DRMA);
         domicilio = findViewById(R.id.text_domicilio_user_DRMA);
+        Button btnEliminar = findViewById(R.id.id_btn_eliminar_reportea);
+        CardView cardUser = findViewById(R.id.card_user_ra);
+        if (!general){
+            cardUser.setVisibility(View.GONE);
+            btnEliminar.setVisibility(View.VISIBLE);
+            btnEliminar.setOnClickListener(this);
+        }
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference duenoRef = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.DUENO_REFERENCE);
@@ -198,8 +213,58 @@ public class DetalleReporteAdopcionActivity extends AppCompatActivity implements
                 intentUser.putExtras(bundleUser);
                 startActivity(intentUser, optionsUser.toBundle());
                 break;
+            case R.id.id_btn_eliminar_reportea:
+                openDialogEliminar();
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + v.getId());
         }
+    }
+
+    private void openDialogEliminar() {
+        AlertDialog.Builder alerta = new AlertDialog.Builder(this);
+        alerta.setTitle("Elimiar reporte")
+                .setMessage("Al eliminar el reporte, este ya no aparecerá en los resultados de difusión.\n¿Desea eliminar el reporte?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                eliminarReporte();
+                dialog.dismiss();
+            }
+        })
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alerta.show();
+    }
+
+    private void eliminarReporte() {
+        DatabaseReference reporteRef = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.REPORTES_REFERENCE).child(FirebaseReferences.REPORTEADOPCION_REFERENCE).child(reporteA.getIdRep());
+        reporteRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    dataSnapshot.getRef().removeValue(new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            if (databaseError != null){
+                                Toast.makeText(getApplicationContext(), "No se pudo eliminar el reporte", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Reporte eliminado con éxito", Toast.LENGTH_LONG).show();
+                                onBackPressed();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

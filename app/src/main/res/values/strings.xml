@@ -146,6 +146,8 @@
     <string name="hint_comentarios">Comentarios(Opcional)</string>
     <string name="label_calificacion">Calificación:</string>
     <string name="stars_transition">starsTransition</string>
+    <string name="title_btn_eliminar_repr">Eliminar reporte</string>
+    <string name="label_mis_reportes">MIS REPORTES</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION

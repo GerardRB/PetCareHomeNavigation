@@ -295,6 +295,7 @@
                         android:textSize="20sp" />
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/card_user_ra"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -428,6 +429,21 @@
 
                     </androidx.cardview.widget.CardView>
 
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/id_btn_eliminar_reportea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:text="@string/title_btn_eliminar_repr"
+                        android:textStyle="bold"
+                        android:background="@drawable/btn_curve"
+                        android:textColor="#ffffff"
+                        android:onClick="onClick"
+                        tools:ignore="OnClick"
+                        android:visibility="gone"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

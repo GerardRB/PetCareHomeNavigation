@@ -275,7 +275,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                     while(!uriTask.isSuccessful());
                     downloadUri = uriTask.getResult();
                     String idUserf = user.getUid();
-                    ReporteAdopcion reporteA = new ReporteAdopcion(tipoM, razaM, edadM, vacunas, esterilizacion, alcaldiaA, coloniaA, calleA, descripcionA, downloadUri.toString(), idUserf);
+                    ReporteAdopcion reporteA = new ReporteAdopcion(idRep, tipoM, razaM, edadM, vacunas, esterilizacion, alcaldiaA, coloniaA, calleA, descripcionA, downloadUri.toString(), idUserf);
                     //Guardar en base de datos
                     reportesPReference.setValue(reporteA, new DatabaseReference.CompletionListener() {
                         @Override

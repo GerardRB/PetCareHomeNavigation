@@ -25,11 +25,11 @@ import android.widget.Toast;
 import com.example.petcarehome.InicioYRegistro.TipoUserActivity;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.MisReportesFragment;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.ayuda;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasenac;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.idioma;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.mascotas_cuidador;
-import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.notificaciones;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario_cuidador;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.terminos_y_condiciones;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -128,13 +128,13 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
             case R.id.contrasena_menuconfig:
                 getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new cambiar_contrasenac()).commit();
                 break;
-            //Tercer icono, ir a fragmento para manejar las notificaciones
+            //Tercer icono, ir a fragmento para manejar las MisReportesFragment
             case R.id.mascotas_cuidador:
                 getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new mascotas_cuidador()).commit();
                 break;
-            //Tercer icono, ir a fragmento para manejar las notificaciones
+            //Tercer icono, ir a fragmento para manejar las MisReportesFragment
             case R.id.notificaciones_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new notificaciones()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new MisReportesFragment()).commit();
                 break;
             //Cuarto icono, ir a fragmento que solo tendrá el idioma
             case R.id.idioma_menuconfig:

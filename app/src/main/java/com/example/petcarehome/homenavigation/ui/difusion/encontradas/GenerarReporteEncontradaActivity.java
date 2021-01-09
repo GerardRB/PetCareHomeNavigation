@@ -455,7 +455,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                     while (!uriTask.isSuccessful());
                     downloadUri = uriTask.getResult();
                     String idUserf = user.getUid();
-                    ReporteEncontradas reporteE = new ReporteEncontradas(tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), idUserf);
+                    ReporteEncontradas reporteE = new ReporteEncontradas(idRep, tipoM, fechaE, horaE, alcaldiaE, coloniaE, calleE, descripcionE, downloadUri.toString(), idUserf);
                     //Guardar en base de datos
 
 

@@ -57,7 +57,7 @@ public class PerdidasFragment extends Fragment {
         RecyclerView recyclerPerdidas = view.findViewById(R.id.recyclerPerdidasId);
         recyclerPerdidas.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new AdapterReportesPerdidas(listReportes, getContext());
+        adapter = new AdapterReportesPerdidas(listReportes, getContext(), true);
         recyclerPerdidas.setAdapter(adapter);
 
         filtro = null;
