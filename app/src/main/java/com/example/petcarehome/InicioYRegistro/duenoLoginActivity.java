@@ -69,18 +69,27 @@ public class duenoLoginActivity extends AppCompatActivity {
                 } else {
                     String correo = mcorreo.getText().toString();
                     String contra = mcontraseña.getText().toString();
-                    mAuth.signInWithEmailAndPassword(correo, contra).addOnCompleteListener(duenoLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(duenoLoginActivity.this, "Error al inciar sesión", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Intent intent = new Intent(duenoLoginActivity.this, HomeActivity_Dueno.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                    if (correo.isEmpty() || contra.isEmpty()) {
+                        if (correo.isEmpty()) {
+                            mcorreo.setError("Campo obligatorio");
                         }
-                    });
+                        if (contra.isEmpty()) {
+                            mcontraseña.setError("Campo obligatorio");
+                        }
+                    } else {
+                        mAuth.signInWithEmailAndPassword(correo, contra).addOnCompleteListener(duenoLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(duenoLoginActivity.this, "Error al inciar sesión", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Intent intent = new Intent(duenoLoginActivity.this, HomeActivity_Dueno.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        });
+                    }
                 }
             }
         });

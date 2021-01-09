@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/ColorLinea"
             android:paddingRight="50dp"
-            android:text="No. Exterior"
+            android:hint="No. Exterior"
             android:textColor="@color/textogris"></EditText>
 
         <EditText
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/ColorLinea"
             android:paddingRight="50dp"
-            android:text="No. Interior"
+            android:hint="No. Interior"
             android:textColor="@color/textogris"></EditText>
     </LinearLayout>
 

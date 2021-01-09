@@ -66,46 +66,102 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
         mRegistrocuidador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+               // String celPattern = "[55]+[0-9]+";
                 String correo = mcorreo_cuidador.getText().toString();
                 String contrasena = mcontrasena.getText().toString();
 
+                //Objetos para llenar la base de datos
+                String nombre = mnombre_cuidador.getText().toString();
+                String apellido = mapellidos_cuidador.getText().toString();
+                String calle = mcalle_cuidador.getText().toString();
+                String noext = mnoext_cuidador.getText().toString();
+                String noint = mnoint_cuidador.getText().toString();
+                String colonia = mcolonia_cuidador.getText().toString();
+                String alcaldia = spinneralcal.getSelectedItem().toString();
+                //  String correo = mcorreo_dueno.getText().toString();
+               // String contra = mcontrasena.getText().toString();
+                String telefono = mtel_cuidador.getText().toString();
+               // String email = mcorreo_cuidador.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(correo, contrasena).addOnCompleteListener(registroCuidadorActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(registroCuidadorActivity.this, "Error al registrarse", Toast.LENGTH_SHORT).show();
-                        }else{
-                            //Objetos para llenar la base de datos
-                            String nombre = mnombre_cuidador.getText().toString();
-                            String apellido = mapellidos_cuidador.getText().toString();
-                            String calle = mcalle_cuidador.getText().toString();
-                            String noext = mnoext_cuidador.getText().toString();
-                            String noint = mnoint_cuidador.getText().toString();
-                            String colonia = mcolonia_cuidador.getText().toString();
-                            String alcaldia = spinneralcal.getSelectedItem().toString();
-                            //  String correo = mcorreo_dueno.getText().toString();
-                             String contra = mcontrasena.getText().toString();
-                            String telefono = mtel_cuidador.getText().toString();
-                            String email = mcorreo_cuidador.getText().toString();
-
-                            Cuidador Cuidador = new Cuidador(mAuth.getCurrentUser().getUid(), nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Inactivo", "Cuidador", null, null, null, null, contra);
-
-                            //Creando referencia al usuario actual -> a los dueños en la bd
-                            DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("cuidador");
-
-                            //Haciendo que se ordenen por tel e insertando los valores en la BD
-                            currentUserDB.child(mAuth.getCurrentUser().getUid()).setValue(Cuidador);
-
-                            //Si es correcto llevar a otra actividad (login)
-                            Intent intent = new Intent(registroCuidadorActivity.this, HomeActivity_Cuidador.class);
-                            startActivity(intent);
-                            finish();
-                        }
+                if (correo.isEmpty() || contrasena.isEmpty()||nombre.isEmpty()||apellido.isEmpty()||calle.isEmpty()||noext.isEmpty()
+                        ||colonia.isEmpty()||alcaldia.equals("Seleccionar")||telefono.isEmpty()||telefono.length()>11||telefono.length()<9
+                        ||!correo.matches(emailPattern))
+                {
+                    if (correo.isEmpty()) {
+                        mcorreo_cuidador.setError("Campo obligatorio");
                     }
-                });
+                    if (contrasena.isEmpty()) {
+                        mcontrasena.setError("Campo obligatorio");
+                    }
+                    if(nombre.isEmpty()){
+                        mnombre_cuidador.setError("Campo obligatorio");
+                    }
+                    if(apellido.isEmpty()){
+                        mapellidos_cuidador.setError("Campo obligatorio");
+                    }
+                    if(calle.isEmpty()){
+                        mcalle_cuidador.setError("Campo obligatorio");
+                    }
+                    if(noext.isEmpty()){
+                        mnoext_cuidador.setError("Campo obligatorio");
+                    }
+                    if (colonia.isEmpty()){
+                        mcolonia_cuidador.setError("Campo obligatorio");
+                    }
+                    if(alcaldia.equals("Seleccionar")){
+                        Toast.makeText(registroCuidadorActivity.this, "Selecciona una alcadía", Toast.LENGTH_SHORT).show();
+                    }
+                    if (telefono.isEmpty()){
+                        mtel_cuidador.setError("Campo obligatorio");
+                    }
+                    if(telefono.length()>11||telefono.length()<9){
+                        mtel_cuidador.setError("El teléfono debe ser de 10 dígitos");
+                    }
+                    if(!correo.matches(emailPattern)){
+                        mcorreo_cuidador.setError("Correo no válido");
+                    }
+                    /*
+                    if(!telefono.matches(celPattern)){
+                        mtel_cuidador.setError("Teléfono no válido");
+                    }
+                    */
+                }else {
+                    mAuth.createUserWithEmailAndPassword(correo, contrasena).addOnCompleteListener(registroCuidadorActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(registroCuidadorActivity.this, "Error al registrarse", Toast.LENGTH_SHORT).show();
+                            } else {
+                                //Objetos para llenar la base de datos
+                                String nombre = mnombre_cuidador.getText().toString();
+                                String apellido = mapellidos_cuidador.getText().toString();
+                                String calle = mcalle_cuidador.getText().toString();
+                                String noext = mnoext_cuidador.getText().toString();
+                                String noint = mnoint_cuidador.getText().toString();
+                                String colonia = mcolonia_cuidador.getText().toString();
+                                String alcaldia = spinneralcal.getSelectedItem().toString();
+                                //  String correo = mcorreo_dueno.getText().toString();
+                                String contra = mcontrasena.getText().toString();
+                                String telefono = mtel_cuidador.getText().toString();
+                                String email = mcorreo_cuidador.getText().toString();
 
+                                Cuidador Cuidador = new Cuidador(mAuth.getCurrentUser().getUid(), nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Inactivo", "Cuidador", null, null, null, null, contra);
+
+                                //Creando referencia al usuario actual -> a los dueños en la bd
+                                DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("cuidador");
+
+                                //Haciendo que se ordenen por tel e insertando los valores en la BD
+                                currentUserDB.child(mAuth.getCurrentUser().getUid()).setValue(Cuidador);
+
+                                //Si es correcto llevar a otra actividad (login)
+                                Intent intent = new Intent(registroCuidadorActivity.this, HomeActivity_Cuidador.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+                }
             }
         });
     }
