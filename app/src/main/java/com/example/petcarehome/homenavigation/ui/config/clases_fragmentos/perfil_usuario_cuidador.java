@@ -124,7 +124,7 @@ public class perfil_usuario_cuidador extends Fragment {
                 Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), fotoc, Objects.requireNonNull(ViewCompat.getTransitionName(fotoc)));
                 Bundle  bundle = new Bundle();
-                bundle.putString("title", "la mascota");
+                bundle.putString("title", "perfil");
                 bundle.putString("foto", foto);
                 intent.putExtras(bundle);
                 startActivity(intent, options.toBundle());
