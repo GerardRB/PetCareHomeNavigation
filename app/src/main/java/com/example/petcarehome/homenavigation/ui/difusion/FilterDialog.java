@@ -30,11 +30,11 @@ import com.example.petcarehome.R;
 import java.util.Calendar;
 
 public class FilterDialog extends AppCompatDialogFragment {
-    private EditText fecha1, fecha2;
-    private TextView etiFecha1, etiFecha2;
+    //private EditText fecha1, fecha2;
+    //private TextView etiFecha1, etiFecha2;
     private Spinner spinnerMascota, spinnerZona;
-    private DatePickerDialog.OnDateSetListener fecha1SetListener, fecha2SetListener;
-    private CheckBox checkBoxZona, checkBoxTipo, checkBoxFecha;
+    //private DatePickerDialog.OnDateSetListener fecha1SetListener, fecha2SetListener;
+    private CheckBox checkBoxZona, checkBoxTipo; //checkBoxFecha
 
     @NonNull
     @Override
@@ -43,7 +43,7 @@ public class FilterDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_filter, null);
 
-        etiFecha1 = view.findViewById(R.id.label_fecha_del);
+        /*etiFecha1 = view.findViewById(R.id.label_fecha_del);
         etiFecha1.setVisibility(View.GONE);
 
         etiFecha2 = view.findViewById(R.id.label_fecha_al);
@@ -196,8 +196,7 @@ public class FilterDialog extends AppCompatDialogFragment {
                 }
                 fecha2.setText(date);
             }
-        };
-
+        };*/
 
         spinnerMascota = view.findViewById(R.id.dialog_filter_tipo_mascota);
         ArrayAdapter<CharSequence> adapterTipoMascota = ArrayAdapter.createFromResource(getContext(), R.array.combo_tipoRMP, android.R.layout.simple_spinner_item);
@@ -214,7 +213,7 @@ public class FilterDialog extends AppCompatDialogFragment {
         checkBoxZona.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == false){
+                if (!isChecked){
                     spinnerZona.setVisibility(View.GONE);
                 } else{
                     spinnerZona.setVisibility(View.VISIBLE);
@@ -226,7 +225,7 @@ public class FilterDialog extends AppCompatDialogFragment {
         checkBoxTipo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == false){
+                if (!isChecked){
                     spinnerMascota.setVisibility(View.GONE);
                 } else{
                     spinnerMascota.setVisibility(View.VISIBLE);
@@ -235,7 +234,7 @@ public class FilterDialog extends AppCompatDialogFragment {
         });
 
 
-        checkBoxFecha = view.findViewById(R.id.checkBox_fecha);
+        /*checkBoxFecha = view.findViewById(R.id.checkBox_fecha);
         checkBoxFecha.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -251,7 +250,7 @@ public class FilterDialog extends AppCompatDialogFragment {
                     etiFecha2.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        });*/
 
 
         builder.setView(view)
@@ -278,15 +277,15 @@ public class FilterDialog extends AppCompatDialogFragment {
     private void Filtrar() {
         String cad = "Aplicando filtros...";
         String error = "Faltan campos por ingresar.";
-        String tipoF, zonaF, fecha1F, fecha2F;
+        String tipoF, zonaF;// fecha1F, fecha2F;
         boolean e = false;
         Filtro filtro = new Filtro();
         tipoF = spinnerMascota.getSelectedItem().toString();
         zonaF = spinnerZona.getSelectedItem().toString();
-        fecha1F = fecha1.getText().toString();
-        fecha2F = fecha2.getText().toString();
+        /*fecha1F = fecha1.getText().toString();
+        fecha2F = fecha2.getText().toString();*/
 
-        if (checkBoxZona.isChecked() || checkBoxTipo.isChecked() || checkBoxFecha.isChecked()){
+        if (checkBoxZona.isChecked() || checkBoxTipo.isChecked()){ // || checkBoxFecha.isChecked()
             if (checkBoxZona.isChecked()){
                 if (zonaF.equals("Seleccionar")){
                     error += "\n- Seleccione una alcaldía";
@@ -307,7 +306,7 @@ public class FilterDialog extends AppCompatDialogFragment {
                 }
             }
 
-            if (checkBoxFecha.isChecked()){
+            /*if (checkBoxFecha.isChecked()){
                 if (fecha1F.isEmpty() || fecha2F.isEmpty()){
                     error += "\n- Ingrese un intervalo de fechas";
                     e = true;
@@ -316,9 +315,9 @@ public class FilterDialog extends AppCompatDialogFragment {
                     filtro.setFecha2(fecha2F);
                     cad += "\n- DEL: " + fecha1F + " AL: " + fecha2F;
                 }
-            }
+            }*/
 
-            if (e == true){
+            if (e){
                 AlertDialog.Builder alerta = new AlertDialog.Builder(this.getContext());
                 alerta.setMessage(error + "\n Por favor intente de nuevo.").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
