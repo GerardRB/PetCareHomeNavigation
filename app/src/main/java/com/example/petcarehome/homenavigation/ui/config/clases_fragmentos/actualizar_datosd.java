@@ -89,7 +89,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
                 Intent intent = new Intent(actualizar_datosd.this, FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(actualizar_datosd.this, profileImage, Objects.requireNonNull(ViewCompat.getTransitionName(profileImage)));
                 Bundle  bundle = new Bundle();
-                bundle.putString("title", "la mascota");
+                bundle.putString("title", "perfil");
                 bundle.putString("foto", foto);
                 intent.putExtras(bundle);
                 startActivity(intent, options.toBundle());
@@ -130,7 +130,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
                 String name = dataSnapshot.child("nombre").getValue().toString();
                 String lastname = dataSnapshot.child("apellidos").getValue().toString();
                 String street = dataSnapshot.child("calle").getValue().toString();
-                String tel = dataSnapshot.child("telefono").getValue().toString();
+                String tel = dataSnapshot.child("cel").getValue().toString();
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
                 //   String alca = dataSnapshot.child("alcaldia").getValue(String.class);
@@ -234,7 +234,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
                 String name = dataSnapshot.child("nombre").getValue().toString();
                 String lastname = dataSnapshot.child("apellidos").getValue().toString();
                 String street = dataSnapshot.child("correo").getValue().toString();
-                String tel = dataSnapshot.child("telefono").getValue().toString();
+                String tel = dataSnapshot.child("cel").getValue().toString();
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
                 //   String alca = dataSnapshot.child("alcaldia").getValue(String.class);
@@ -263,7 +263,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
 
         //Validaciones
         String mensaje = "Debe seleccionar un campo válido";
-        if (nombre.isEmpty() || apellido.isEmpty() || calle.isEmpty() || noex.isEmpty() || noin.isEmpty() || alcal.equals("Seleccionar")
+        if (nombre.isEmpty() || apellido.isEmpty() || calle.isEmpty() || noex.isEmpty() || alcal.equals("Seleccionar")
                 || tel.isEmpty()) {
             if (nombre.isEmpty()) {
                 nombre_d.setError("Obligatorio");
@@ -277,9 +277,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
             if (noex.isEmpty()) {
                 noext_d.setError("Obligatorio");
             }
-            if (noin.isEmpty()) {
-                noint_d.setError("Obligatorio");
-            }
+
             if (alcal.equals("Seleccionar")) {
                 mensaje += "\nSeleccione una alcaldía";
             }
@@ -294,7 +292,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
             duenoReference.child("noext").getRef().setValue(noex);
             duenoReference.child("noint").getRef().setValue(noin);
             duenoReference.child("alcaldia").getRef().setValue(alcal);
-            duenoReference.child("telefono").getRef().setValue(tel);
+            duenoReference.child("cel").getRef().setValue(tel);
             onBackPressed();
         }
     }

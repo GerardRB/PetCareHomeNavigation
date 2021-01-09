@@ -27,19 +27,9 @@ public class duenoLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dueno_login);
+
         mAuth = FirebaseAuth.getInstance();
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
-                if(usuario!=null){
-                    Intent intent = new Intent(duenoLoginActivity.this, HomeActivity_Dueno.class);
-                    startActivity(intent);
-                    finish();
-                    return;
-                }
-            }
-        };
+
         mcorreo=  findViewById(R.id.correo);
         mcontraseña =  findViewById(R.id.contraseña);
 
@@ -76,17 +66,5 @@ public class duenoLoginActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(firebaseAuthListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAuth.removeAuthStateListener(firebaseAuthListener);
     }
 }

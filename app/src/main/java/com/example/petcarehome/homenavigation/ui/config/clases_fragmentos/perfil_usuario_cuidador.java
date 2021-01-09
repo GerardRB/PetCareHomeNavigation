@@ -92,9 +92,10 @@ public class perfil_usuario_cuidador extends Fragment {
                     String nombre = dataSnapshot.child("nombre").getValue().toString() + " " + dataSnapshot.child("apellidos").getValue().toString();
                     String correo = dataSnapshot.child("correo").getValue().toString();
                     String tel = dataSnapshot.child("telefono").getValue().toString();
-                    String domicilio = dataSnapshot.child("calle").getValue(String.class) + ""
+                    String domicilio = dataSnapshot.child("calle").getValue(String.class) + " "
                             + dataSnapshot.child("noext").getValue(String.class) + " "
                             + dataSnapshot.child("noint").getValue(String.class) + ", "
+                            +dataSnapshot.child("colonia").getValue(String.class)+", "
                             + dataSnapshot.child("alcaldia").getValue(String.class);
                     foto = dataSnapshot.child("foto").getValue(String.class);
 
@@ -105,7 +106,7 @@ public class perfil_usuario_cuidador extends Fragment {
                     correo_userc.setText(correo);
                     tel_userc.setText(tel);
                     domicilio_userc.setText(domicilio);
-                    Glide.with(getContext()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotoc);
+                    Glide.with(getActivity()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotoc);
 
 
               //  }

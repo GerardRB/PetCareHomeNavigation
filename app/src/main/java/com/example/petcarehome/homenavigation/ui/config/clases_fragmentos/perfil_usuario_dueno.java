@@ -62,7 +62,7 @@ public class perfil_usuario_dueno extends Fragment {
         tel_userd = view.findViewById(R.id.tel_usuariod_bd);
         domicilio_userd = view.findViewById(R.id.domicilio_usuariod_bd);
         fotod = view.findViewById(R.id.profile_imaged);
-
+        Actualizard = view.findViewById(R.id.editar_perfil_configd);
         firebaseDatabase = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         foto = "";
@@ -83,10 +83,11 @@ public class perfil_usuario_dueno extends Fragment {
                 String tipo = dataSnapshot.child("tipo").getValue().toString();
                 String nombre = dataSnapshot.child("nombre").getValue().toString() + " " + dataSnapshot.child("apellidos").getValue().toString();
                 String correo = dataSnapshot.child("correo").getValue().toString();
-                String tel = dataSnapshot.child("telefono").getValue().toString();
-                String domicilio = dataSnapshot.child("calle").getValue(String.class) + ""
+                String tel = dataSnapshot.child("cel").getValue().toString();
+                String domicilio = dataSnapshot.child("calle").getValue(String.class) + " "
                         + dataSnapshot.child("noext").getValue(String.class) + " "
                         + dataSnapshot.child("noint").getValue(String.class) + ", "
+                        +dataSnapshot.child("colonia").getValue(String.class)+", "
                         + dataSnapshot.child("alcaldia").getValue(String.class);
                 tipo_userd.setText(tipo);
                 nombre_userd.setText(nombre);
@@ -95,7 +96,7 @@ public class perfil_usuario_dueno extends Fragment {
                 tel_userd.setText(tel);
                 domicilio_userd.setText(domicilio);
                 foto = dataSnapshot.child("foto").getValue(String.class);
-                Glide.with(getContext()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotod);
+                Glide.with(getActivity()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotod);
                 //  }
             }
 

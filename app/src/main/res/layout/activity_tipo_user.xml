@@ -55,4 +55,19 @@
         android:textColor="@android:color/background_light"
         android:text="¿Qué es PetCare?"
         />
+
+    <TextView
+        android:id="@+id/textinvisibled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       >
+
+    </TextView>
+    <TextView
+        android:id="@+id/textinvisiblec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+    </TextView>
 </LinearLayout>

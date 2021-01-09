@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cuidador implements Serializable {
-    String idUser, nombre, apellidos, calle, noext, noint, colonia, alcaldia, telefono, correo, foto, estado, tipo;
+    String idUser, nombre, apellidos, calle, noext, noint, colonia, alcaldia, telefono, correo, foto, estado, tipo, contraseña;
     ArrayList<Mascota> mascotas;
     ArrayList<Calificacion> calificaciones;
     Double lat, lng;
@@ -21,7 +21,7 @@ public class Cuidador implements Serializable {
 
     }
 
-    public Cuidador(String idUser, String nombre, String apellidos, String calle, String noext, String noint, String colonia, String alcaldia, String telefono, String correo, String foto, String estado, String tipo, ArrayList<Mascota> mascotas, ArrayList<Calificacion> calificaciones, Double lat, Double lng) {
+    public Cuidador(String idUser, String nombre, String apellidos, String calle, String noext, String noint, String colonia, String alcaldia, String telefono, String correo, String foto, String estado, String tipo, ArrayList<Mascota> mascotas, ArrayList<Calificacion> calificaciones, Double lat, Double lng, String contraseña) {
         this.idUser = idUser;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -39,6 +39,15 @@ public class Cuidador implements Serializable {
         this.calificaciones = calificaciones;
         this.lat = lat;
         this.lng = lng;
+        this.contraseña = contraseña;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public String getIdUser() {

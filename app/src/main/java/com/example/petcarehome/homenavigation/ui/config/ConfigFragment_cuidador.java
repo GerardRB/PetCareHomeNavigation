@@ -22,12 +22,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.petcarehome.InicioYRegistro.TipoUserActivity;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.ayuda;
-import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasena;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasenac;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.idioma;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.mascotas_cuidador;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.notificaciones;
@@ -36,10 +35,10 @@ import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.termin
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -51,6 +50,7 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
     private FirebaseUser firebaseUser;
     private ImageView imagenHeaderc;
     FirebaseUser user;
+    FirebaseDatabase firebaseDatabase;
     FirebaseStorage firebaseStorage;
     FragmentManager fragmentManager;
     // private TextView textView;
@@ -126,7 +126,7 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
                 break;
             //Segundo icono, ir a fragmento para cambiar la contraseña
             case R.id.contrasena_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new cambiar_contrasena()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos_cuidador, new cambiar_contrasenac()).commit();
                 break;
             //Tercer icono, ir a fragmento para manejar las notificaciones
             case R.id.mascotas_cuidador:
@@ -215,31 +215,50 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
 
         // Mensaje del dialogo
         alertDialog2.setMessage("¿Estás seguro de querer borrar tu cuenta? No podrás recuperarla. " +
-                "Volverás a la pantalla principal y tendrás que crear una nueva.");
+                "Saldrás de la aplicación y tendrás que crear una nueva cuenta.");
 
         // Btn Positivo "Yes"
         alertDialog2.setPositiveButton("SÍ",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        // Lo que se va a ejecutar después de dar sí
                         mAuth = FirebaseAuth.getInstance();
                         firebaseUser = mAuth.getCurrentUser();
-                        // Lo que se va a ejecutar después de dar sí
-                        firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getActivity(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
+                        firebaseDatabase = FirebaseDatabase.getInstance();
 
-                                    Intent i = new Intent(getActivity(),
-                                            TipoUserActivity.class);
-                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(i);
-                                   } else {
-                                    Toast.makeText(getActivity(), "No se pudo borrar el usuario", Toast.LENGTH_SHORT).show();
+                        user = FirebaseAuth.getInstance().getCurrentUser();
+
+                            final DatabaseReference cuidadorReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE)
+                                    .child(FirebaseReferences.CUIDADOR_REFERENCE).child(user.getUid());
+
+                        StorageReference storagePerfilCuidadorReference =
+                                firebaseStorage.getInstance().getReference
+                                        (FirebaseReferences.STORAGE_IMAGENPERFIL_REFERENCE).
+                                        child(FirebaseReferences.STORAGE_IMAGENPERFILCUIDADOR_REFERENCE).child(user.getUid());
+                        
+                            //cuidadorReference.removeValue();
+
+
+                            firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()) {
+
+                                        Toast.makeText(getActivity(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
+
+                                        Intent i = new Intent(getActivity(),
+                                                TipoUserActivity.class);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(i);
+                                    } else {
+                                        Toast.makeText(getActivity(), "No se pudo borrar el usuario", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        //storagePerfilCuidadorReference.delete();
+                        cuidadorReference.removeValue();
                     }
                 });
 

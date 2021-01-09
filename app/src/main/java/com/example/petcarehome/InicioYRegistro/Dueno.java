@@ -3,14 +3,14 @@ package com.example.petcarehome.InicioYRegistro;
 public class Dueno {
 //7 campos a guardar en la bd
 
-String nombre, apellidos, calle, noext, noint, colonia, alcaldia, cel, correo, foto, tipo;
+String nombre, apellidos, calle, noext, noint, colonia, alcaldia, cel, correo, foto, tipo, contraseña;
 
 
     public Dueno(){
 
     }
 
-    public Dueno(String nombre, String apellidos, String calle, String noext, String noint, String colonia, String alcaldia, String cel, String correo, String foto, String tipo) {
+    public Dueno(String nombre, String apellidos, String calle, String noext, String noint, String colonia, String alcaldia, String cel, String correo, String foto, String tipo, String contraseña) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.calle = calle;
@@ -22,6 +22,15 @@ String nombre, apellidos, calle, noext, noint, colonia, alcaldia, cel, correo, f
         this.correo = correo;
         this.foto = foto;
         this.tipo = tipo;
+        this.contraseña = contraseña;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public String getFoto() {

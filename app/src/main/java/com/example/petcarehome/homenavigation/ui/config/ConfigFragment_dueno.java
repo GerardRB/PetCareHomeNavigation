@@ -22,26 +22,29 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.petcarehome.InicioYRegistro.TipoUserActivity;
 import com.example.petcarehome.R;
+import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.ayuda;
-import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasena;
+import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.cambiar_contrasenad;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.idioma;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.notificaciones;
-import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario_cuidador;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.perfil_usuario_dueno;
 import com.example.petcarehome.homenavigation.ui.config.clases_fragmentos.terminos_y_condiciones;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ConfigFragment_dueno extends Fragment implements FragmentOnBackPressedListener, NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout_confi;
     private Toolbar toolbar_confi;
     private ActionBarDrawerToggle actionBarDrawerToggle_confi;
     private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
+    FirebaseUser user;
+    FirebaseDatabase firebaseDatabase;
     FragmentManager fragmentManager;
     // private TextView textView;
 
@@ -84,7 +87,7 @@ public class ConfigFragment_dueno extends Fragment implements FragmentOnBackPres
         if (savedInstanceState == null) {
 
             //Fragmento principal perfil - perfil_usuario_cuidador() = fragmento del perfil, el que se muestra al ir al apartado de configuración
-            getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new perfil_usuario_cuidador()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new perfil_usuario_dueno()).commit();
             navigationView.setCheckedItem(R.id.volver_menuconfig);
 
         }
@@ -112,7 +115,7 @@ public class ConfigFragment_dueno extends Fragment implements FragmentOnBackPres
                 break;
             //Segundo icono, ir a fragmento para cambiar la contraseña
             case R.id.contrasena_menuconfig:
-                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new cambiar_contrasena()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.contenedor_fragmentos, new cambiar_contrasenad()).commit();
                 break;
             //Tercer icono, ir a fragmento para manejar las notificaciones
             case R.id.notificaciones_menuconfig:
@@ -204,38 +207,42 @@ public class ConfigFragment_dueno extends Fragment implements FragmentOnBackPres
 
         // Mensaje del dialogo
         alertDialog2.setMessage("¿Estás seguro de querer borrar tu cuenta? No podrás recuperarla. " +
-                "Volverás a la pantalla principal y tendrás que crear una nueva.");
+                "Saldrás de la aplicación y tendrás que crear una nueva.");
 
         // Btn Positivo "Yes"
         alertDialog2.setPositiveButton("SÍ",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Lo que se va a ejecutar después de dar sí
-                        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                        AuthCredential authCredential = EmailAuthProvider.getCredential("", "");
+                        mAuth = FirebaseAuth.getInstance();
+                        firebaseUser = mAuth.getCurrentUser();
+                        firebaseDatabase = FirebaseDatabase.getInstance();
 
-                        firebaseUser.reauthenticate(authCredential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        final DatabaseReference duenoReference = firebaseDatabase.getReference().child(FirebaseReferences.USERS_REFERENCE)
+                                .child(FirebaseReferences.DUENO_REFERENCE).child(user.getUid());
+
+
+                        firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Intent i = new Intent(getActivity(),
-                                                    TipoUserActivity.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                                                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(i);
-                                            Toast.makeText(getActivity(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(getActivity(), "No se pudo borrar el usuario", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+
+                                if (task.isSuccessful()) {
+
+                                    Toast.makeText(getActivity(), "Usuario eliminado", Toast.LENGTH_SHORT).show();
+
+                                    Intent i = new Intent(getActivity(),
+                                            TipoUserActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(getActivity(), "No se pudo borrar el usuario", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
-
-
+                        duenoReference.removeValue();
                     }
                 });
 

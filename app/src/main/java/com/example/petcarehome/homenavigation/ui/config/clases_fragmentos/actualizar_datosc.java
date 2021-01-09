@@ -90,7 +90,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
                 Intent intent = new Intent(actualizar_datosc.this, FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(actualizar_datosc.this, profileImage, Objects.requireNonNull(ViewCompat.getTransitionName(profileImage)));
                 Bundle  bundle = new Bundle();
-                bundle.putString("title", "la mascota");
+                bundle.putString("title", "perfil");
                 bundle.putString("foto", foto);
                 intent.putExtras(bundle);
                 startActivity(intent, options.toBundle());
@@ -258,7 +258,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
 
         //Validaciones
         String mensaje = "Debe seleccionar un campo válido";
-        if (nombre.isEmpty() || apellido.isEmpty() || calle.isEmpty() || noex.isEmpty() || noin.isEmpty() || alcal.equals("Seleccionar")
+        if (nombre.isEmpty() || apellido.isEmpty() || calle.isEmpty() || noex.isEmpty()  || alcal.equals("Seleccionar")
                 || tel.isEmpty()) {
             if (nombre.isEmpty()) {
                 nombre_c.setError("Obligatorio");
@@ -272,9 +272,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
             if (noex.isEmpty()) {
                 noext_c.setError("Obligatorio");
             }
-            if (noin.isEmpty()) {
-                noint_c.setError("Obligatorio");
-            }
+
             if (alcal.equals("Seleccionar")) {
                 mensaje += "\nSeleccione una alcaldía";
             }

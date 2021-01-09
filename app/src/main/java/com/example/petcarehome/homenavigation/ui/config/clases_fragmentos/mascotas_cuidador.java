@@ -101,6 +101,7 @@ public class mascotas_cuidador extends Fragment {
             public void onClick(View v) {
                 Intent intentFormularioMascotas = new Intent(getContext(), FormularioMascotas.class);
                 startActivity(intentFormularioMascotas);
+
             }
         });
 

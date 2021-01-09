@@ -86,11 +86,11 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
                             String colonia = mcolonia_cuidador.getText().toString();
                             String alcaldia = spinneralcal.getSelectedItem().toString();
                             //  String correo = mcorreo_dueno.getText().toString();
-                            // String contrasena = mcontrasena.getText().toString();
+                             String contra = mcontrasena.getText().toString();
                             String telefono = mtel_cuidador.getText().toString();
                             String email = mcorreo_cuidador.getText().toString();
 
-                            Cuidador Cuidador = new Cuidador(mAuth.getCurrentUser().getUid(), nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Inactivo", "Cuidador", null, null, null, null);
+                            Cuidador Cuidador = new Cuidador(mAuth.getCurrentUser().getUid(), nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Inactivo", "Cuidador", null, null, null, null, contra);
 
                             //Creando referencia al usuario actual -> a los dueños en la bd
                             DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("cuidador");

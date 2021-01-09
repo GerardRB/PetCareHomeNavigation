@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorblanco"
         android:hint=" Contraseña"
+        android:inputType="textPassword"
         android:id="@+id/contraseña"
         android:drawableLeft="@drawable/ic_llave_inteligente"
         android:drawableTint="@color/colorblanco"/>

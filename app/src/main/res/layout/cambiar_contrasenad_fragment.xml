@@ -32,7 +32,7 @@
         android:textColor="@color/colorblanco"
         />
     <EditText
-        android:id="@+id/contrasena_modif"
+        android:id="@+id/contrasena_modifd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Contraseña"
@@ -60,7 +60,7 @@
         android:textColor="@color/colorblanco"
         />
     <EditText
-        android:id="@+id/contrasena_modif2"
+        android:id="@+id/contrasena_modif2d"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Contraseña"
@@ -81,7 +81,7 @@
 
     </LinearLayout>
     <Button
-        android:id="@+id/actualizarContra"
+        android:id="@+id/actualizarContrad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cambiar contraseña"

@@ -45,7 +45,7 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
         mcalle_dueno = findViewById(R.id.calle_dueno);
         mnoext_dueno = findViewById(R.id.noext_dueno);
         mnoint_dueno = findViewById(R.id.noint_dueno);
-        mcalle_dueno = findViewById(R.id.colonia_dueno);
+        mcolonia_dueno = findViewById(R.id.colonia_dueno);
 
         mcorreo_dueno = findViewById(R.id.correo2_dueno);
         mtel_dueno = findViewById(R.id.tel_dueno);
@@ -68,10 +68,10 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
             public void onClick(View v) {
 
                 String correo = mcorreo_dueno.getText().toString();
-                String contrasena = mcontrasena.getText().toString();
+                String mcontrasenad = mcontrasena.getText().toString();
 
 
-                mAuth.createUserWithEmailAndPassword(correo, contrasena).addOnCompleteListener(registroDuenoActivity.this, new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(correo, mcontrasenad).addOnCompleteListener(registroDuenoActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
@@ -89,8 +89,9 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
                             // String contrasena = mcontrasena.getText().toString();
                             String telefono = mtel_dueno.getText().toString();
                             String email = mcorreo_dueno.getText().toString();
+                            String contraseña = mcontrasena.getText().toString();
 
-                            Dueno Dueno = new Dueno(nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Dueno");
+                            Dueno Dueno = new Dueno(nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Dueno", contraseña);
 
                             //Creando referencia al usuario actual -> a los dueños en la bd
                             DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("dueno");

@@ -223,15 +223,18 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
 
             String mensaje = "Faltan campos por ingresar";
             String tipopaseo = paseo.getText().toString();
-            Double prepaseo = Double.parseDouble(preciopaseo.getText().toString());
+            String pretxt = preciopaseo.getText().toString();
+
+
             String comenpaseo = comentariospaseo.getText().toString();
             String tipomasco = spinnermascotas.getSelectedItem().toString();
 
             //Validaciones
-            if(tipomasco.equals("Seleccionar")|| comenpaseo.isEmpty()||comenpaseo.length()<=50) {
-                if (prepaseo.isNaN()) {
-                    preciopaseo.setError("El campo debe ser un número");
+            if(tipomasco.equals("Seleccionar")|| comenpaseo.isEmpty()||comenpaseo.length()<=50||pretxt.isEmpty()) {
+                if(pretxt.isEmpty()){
+                    preciopaseo.setError("Campo obligatorio");
                 }
+
                 if (tipomasco.equals("Seleccionar")) {
                     Toast.makeText(this, "Seleccione un tipo de mascota", Toast.LENGTH_SHORT).show();
                 }
@@ -242,7 +245,7 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
                     comentariospaseo.setError("La descripción debe ser mayor a 50 caracteres");
                 }
             } else {
-
+                Double prepaseo = Double.parseDouble(preciopaseo.getText().toString());
                 Servicio s = new Servicio(tipopaseo, prepaseo, comenpaseo);
                 ArrayList<Servicio> servip = new ArrayList<>();
                 servip.add(s);
@@ -274,14 +277,14 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
         if (estancia.isChecked() == true) {
 
             String tipohospe = estancia.getText().toString();
-            Double prehospe = Double.parseDouble(preciohospedaje.getText().toString());
+
             String comenhospe = comentarioshospedaje.getText().toString();
             String tipomasco = spinnermascotas.getSelectedItem().toString();
-
+            String pretxt = preciohospedaje.getText().toString();
             //Validaciones
-            if(tipomasco.equals("Seleccionar")|| comenhospe.isEmpty()||comenhospe.length()<=50) {
-                if (prehospe.isNaN()) {
-                    preciopaseo.setError("El campo debe ser un número");
+            if(tipomasco.equals("Seleccionar")|| comenhospe.isEmpty()||comenhospe.length()<=50||pretxt.isEmpty()) {
+                if(pretxt.isEmpty()){
+                    preciohospedaje.setError("Campo obligatorio");
                 }
                 if (tipomasco.equals("Seleccionar")) {
                     Toast.makeText(this, "Seleccione un tipo de mascota", Toast.LENGTH_SHORT).show();
@@ -293,7 +296,7 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
                     comentarioshospedaje.setError("La descripción debe ser mayor a 50 caracteres");
                 }
             } else {
-
+                Double prehospe = Double.parseDouble(preciohospedaje.getText().toString());
                 Servicio s = new Servicio(tipohospe, prehospe, comenhospe);
                 ArrayList<Servicio> servih = new ArrayList<>();
                 servih.add(s);
@@ -326,12 +329,14 @@ public class FormularioMascotas extends AppCompatActivity implements AdapterView
         //Crear mascota que tendrá paseo y hospedaje
         if ((paseo.isChecked() == true && estancia.isChecked() == true)) {
             String tipopaseo = paseo.getText().toString();
-            Double prepaseo = Double.parseDouble(preciopaseo.getText().toString());
+
+
             String comenpaseo = comentariospaseo.getText().toString();
             String tipomasco = spinnermascotas.getSelectedItem().toString();
 
             String tipohospe = estancia.getText().toString();
             Double prehospe = Double.parseDouble(preciohospedaje.getText().toString());
+            Double prepaseo = Double.parseDouble(preciopaseo.getText().toString());
             String comenhospe = comentarioshospedaje.getText().toString();
 
 
