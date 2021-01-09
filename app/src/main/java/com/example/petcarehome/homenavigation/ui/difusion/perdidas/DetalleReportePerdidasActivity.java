@@ -29,6 +29,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 
@@ -255,6 +257,19 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                             if (databaseError != null){
                                 Toast.makeText(getApplicationContext(), "No se pudo eliminar el reporte", Toast.LENGTH_LONG).show();
                             } else {
+                                StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(FirebaseReferences.STORAGE_REPORTES_REFERENCE).child(FirebaseReferences.STORAGE_REPORTEPERDIDA_REFERENCE).child(reporteP.getIdUser()).child("img" + reporteP.getIdRep() + ".jpg");
+                                imgRef.delete();
+                                /*.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Imagen eliminada con éxito", Toast.LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Error al eliminar imagen", Toast.LENGTH_LONG).show();
+            }
+        });*/
                                 Toast.makeText(getApplicationContext(), "Reporte eliminado con éxito", Toast.LENGTH_LONG).show();
                                 onBackPressed();
                             }
