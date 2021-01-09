@@ -186,7 +186,7 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                 Intent intent = new Intent(DetalleReportePerdidasActivity.this, FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(DetalleReportePerdidasActivity.this, foto, Objects.requireNonNull(ViewCompat.getTransitionName(foto)));
                 Bundle  bundle = new Bundle();
-                bundle.putString("title", "la mascota");
+                bundle.putString("title", reporteP.getNombre());
                 bundle.putString("foto", reporteP.getFoto());
                 intent.putExtras(bundle);
                 startActivity(intent, options.toBundle());
