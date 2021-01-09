@@ -23,21 +23,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
+        <activity android:name=".homenavigation.ui.mapa.dueno.VerCalificaciones"></activity>
         <activity
             android:name=".homenavigation.ui.difusion.FullScreenImageActivity"
             android:label="Foto"
             android:parentActivityName=".homenavigation.ui.difusion.perdidas.DetalleReportePerdidasActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity">
-
-        </activity>
+            tools:ignore="LockedOrientationActivity"></activity>
         <activity android:name=".homenavigation.ui.mapa.dueno.CuidadorInfoActivity" />
         <activity android:name=".homenavigation.ui.config.clases_fragmentos.FormularioMascotas" />
-        <activity android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosd"></activity>
-        <activity android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosc"
-            android:theme="@style/MaterialAppTheme"/>
-
+        <activity android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosd" />
+        <activity
+            android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosc"
+            android:theme="@style/MaterialAppTheme" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -55,8 +54,9 @@
         <activity android:name=".homenavigation.ui.petfriendly.activities.DetallePetfriendlyActivity" />
         <activity android:name=".homenavigation.ui.petfriendly.activities.AgregarPetfriendlyActivity" />
         <activity android:name=".InicioYRegistro.registroCuidadorActivity" />
-        <activity android:name=".homenavigation.HomeActivity_Cuidador"
-            android:theme="@style/MaterialAppTheme"/>
+        <activity
+            android:name=".homenavigation.HomeActivity_Cuidador"
+            android:theme="@style/MaterialAppTheme" />
         <activity android:name=".InicioYRegistro.registroDuenoActivity" />
         <activity android:name=".InicioYRegistro.cuidadorLoginActivity" />
         <activity android:name=".InicioYRegistro.duenoLoginActivity" />

@@ -130,6 +130,22 @@
     <string name="label_title_DRME">¿Lo reconoces?</string>
     <string name="label_title_DRMA">¿Te interesa adoptar?</string>
     <string name="image_transition">imageTransition</string>
+    <string name="title_btn_evaluar">Calificar cuidador</string>
+    <string name="label_pregunta1">¿Cómo valoraría la atención brindada por parte del cuidador hacia usted?</string>
+    <string name="label_pregunta2">¿Cómo valoraría el trato por parte del cuidador hacia su mascota?</string>
+    <string name="label_pregunta3">Considera que las habilidades del cuidador con las mascotas son:</string>
+    <string name="label_pregunta4">¿Cómo considera la relación entre el servicio ofrecido y el precio?</string>
+    <string name="label_pregunta5">¿Qué tan satisfecho se encuentra con el servicio brindado por el cuidador?</string>
+    <string name="label_pregunta6">¿Desea agregar algún comentario?</string>
+    <string name="label_criterio1">Trato al dueño:</string>
+    <string name="label_criterio2">Trato a la mascota:</string>
+    <string name="label_criterio3">Habilidades del cuidador:</string>
+    <string name="label_criterio4">Precio:</string>
+    <string name="label_criterio5">General:</string>
+    <string name="label_comentarios">Comentarios</string>
+    <string name="hint_comentarios">Comentarios(Opcional)</string>
+    <string name="label_calificacion">Calificación:</string>
+    <string name="stars_transition">starsTransition</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION

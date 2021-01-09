@@ -90,7 +90,7 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
                             String telefono = mtel_cuidador.getText().toString();
                             String email = mcorreo_cuidador.getText().toString();
 
-                            Cuidador Cuidador = new Cuidador(nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "", "Inactivo", "Cuidador", null, null, null, null);
+                            Cuidador Cuidador = new Cuidador(mAuth.getCurrentUser().getUid(), nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Inactivo", "Cuidador", null, null, null, null);
 
                             //Creando referencia al usuario actual -> a los dueños en la bd
                             DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("cuidador");
@@ -102,7 +102,6 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
                             Intent intent = new Intent(registroCuidadorActivity.this, HomeActivity_Cuidador.class);
                             startActivity(intent);
                             finish();
-                            return;
                         }
                     }
                 });

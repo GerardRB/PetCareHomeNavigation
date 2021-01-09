@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".homenavigation.ui.mapa.dueno.VerCalificaciones">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/text_nombre_cuidador"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:text="Nombre Cuidador"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/id_calif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:layout_gravity="center"
+                android:transitionName="@string/stars_transition"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                tools:ignore="MissingConstraints">
+
+
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/label_trato_dueno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="@string/label_criterio1"
+                    />
+
+                <TextView
+                    android:id="@+id/text_cal1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_star"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/label_trato_mascota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="@string/label_criterio2"
+                    />
+
+                <TextView
+                    android:id="@+id/text_cal2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_star"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/label_habilidades"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="@string/label_criterio3"
+                    />
+
+                <TextView
+                    android:id="@+id/text_cal3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_star"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/label_precio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="@string/label_criterio4"
+                    />
+
+                <TextView
+                    android:id="@+id/text_cal4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_star"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/label_general"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="@string/label_criterio5"
+                    />
+
+                <TextView
+                    android:id="@+id/text_cal5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_star"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/id_btn_evaluar_cuidador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/title_btn_evaluar"
+            android:textStyle="bold"
+            android:background="@drawable/btn_curve"
+            android:textColor="#ffffff"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCalificaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

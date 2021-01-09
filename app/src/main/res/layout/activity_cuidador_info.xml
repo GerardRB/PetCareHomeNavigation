@@ -33,6 +33,23 @@
             android:textAlignment="center"
             android:layout_gravity="center_horizontal"/>
 
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/id_calif"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:layout_gravity="center"
+            android:transitionName="@string/stars_transition"/>
+        <TextView
+            android:id="@+id/text_calif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorPrimary"/>
+
         <TextView
             android:id="@+id/label_datos_contacto"
             android:layout_width="wrap_content"
@@ -174,6 +191,7 @@
             android:id="@+id/recyclerMascotasCuidadorInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

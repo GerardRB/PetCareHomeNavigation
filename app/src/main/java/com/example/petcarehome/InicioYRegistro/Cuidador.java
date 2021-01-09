@@ -1,5 +1,6 @@
 package com.example.petcarehome.InicioYRegistro;
 
+import com.example.petcarehome.homenavigation.Objetos.Calificacion;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
 import com.example.petcarehome.homenavigation.Objetos.Mascota;
 import com.example.petcarehome.homenavigation.Objetos.Servicio;
@@ -11,16 +12,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cuidador implements Serializable {
-    String nombre, apellidos, calle, noext, noint, colonia, alcaldia, telefono, correo, foto, comentarios, estado, tipo;
+    String idUser, nombre, apellidos, calle, noext, noint, colonia, alcaldia, telefono, correo, foto, estado, tipo;
     ArrayList<Mascota> mascotas;
-    Double calificacion, lat, lng;
-
+    ArrayList<Calificacion> calificaciones;
+    Double lat, lng;
 
     public Cuidador(){
 
     }
 
-    public Cuidador(String nombre, String apellidos, String calle, String noext, String noint, String colonia, String alcaldia, String telefono, String correo, String foto, String comentarios, String estado, String tipo, ArrayList<Mascota> mascotas, Double calificacion, Double lat, Double lng) {
+    public Cuidador(String idUser, String nombre, String apellidos, String calle, String noext, String noint, String colonia, String alcaldia, String telefono, String correo, String foto, String estado, String tipo, ArrayList<Mascota> mascotas, ArrayList<Calificacion> calificaciones, Double lat, Double lng) {
+        this.idUser = idUser;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.calle = calle;
@@ -31,21 +33,23 @@ public class Cuidador implements Serializable {
         this.telefono = telefono;
         this.correo = correo;
         this.foto = foto;
-        this.comentarios = comentarios;
         this.estado = estado;
         this.tipo = tipo;
         this.mascotas = mascotas;
-        this.calificacion = calificacion;
+        this.calificaciones = calificaciones;
         this.lat = lat;
         this.lng = lng;
     }
 
+    public String getIdUser() {
+        return idUser;
+    }
 
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
 
-
-
-
-        public String getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
@@ -125,20 +129,20 @@ public class Cuidador implements Serializable {
         this.foto = foto;
     }
 
-    public String getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(String comentarios) {
-        this.comentarios = comentarios;
-    }
-
     public String getEstado() {
         return estado;
     }
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public ArrayList<Mascota> getMascotas() {
@@ -149,12 +153,12 @@ public class Cuidador implements Serializable {
         this.mascotas = mascotas;
     }
 
-    public Double getCalificacion() {
-        return calificacion;
+    public ArrayList<Calificacion> getCalificaciones() {
+        return calificaciones;
     }
 
-    public void setCalificacion(Double calificacion) {
-        this.calificacion = calificacion;
+    public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
+        this.calificaciones = calificaciones;
     }
 
     public Double getLat() {
@@ -171,13 +175,5 @@ public class Cuidador implements Serializable {
 
     public void setLng(Double lng) {
         this.lng = lng;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 }
