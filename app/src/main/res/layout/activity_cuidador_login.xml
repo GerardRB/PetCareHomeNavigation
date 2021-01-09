@@ -8,6 +8,13 @@
     android:background="@color/colorPrimary"
     android:gravity="center"
     tools:context=".InicioYRegistro.cuidadorLoginActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CUIDADOR"
+        android:textSize="30sp">
+
+    </TextView>
     <ImageView
         android:layout_width="170dp"
         android:layout_height="170dp"

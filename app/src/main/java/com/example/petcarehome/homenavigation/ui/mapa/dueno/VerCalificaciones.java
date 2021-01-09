@@ -45,6 +45,7 @@ public class VerCalificaciones extends AppCompatActivity implements DialogCalifi
             calificaciones = (ArrayList<Calificacion>) bundleRecibido.getSerializable("lista");
         }
 
+
         setTitle("Calificaciones");
 
 
@@ -100,6 +101,9 @@ public class VerCalificaciones extends AppCompatActivity implements DialogCalifi
         c5.setText(" " +cal5);
 
         Button btnCalificar = findViewById(R.id.id_btn_evaluar_cuidador);
+        if(cuidador.equals("Mis calificaciones")){
+            btnCalificar.setVisibility(View.INVISIBLE);
+        }
         btnCalificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +111,7 @@ public class VerCalificaciones extends AppCompatActivity implements DialogCalifi
                 calificar.show(getSupportFragmentManager().beginTransaction(), "calificar");
             }
         });
+
 
         RecyclerView recyclerCalif = findViewById(R.id.recyclerCalificaciones);
         recyclerCalif.setLayoutManager(new LinearLayoutManager(this));

@@ -35,8 +35,8 @@ public class TipoUserActivity extends AppCompatActivity {
     private FirebaseUser usuario;
     private boolean a, c;
     private String idUser;
-    ArrayList<String> listadueno = new ArrayList<>();
-    ArrayList<String> listacuidador = new ArrayList<>();
+    ArrayList<String> listadueno;
+    ArrayList<String> listacuidador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +53,29 @@ public class TipoUserActivity extends AppCompatActivity {
         invisiblec = findViewById(R.id.textinvisiblec);
 
 
-        a = false;
-        c = false;
+    //    a = false;
+      //  c = false;
     //    Toast.makeText(this, "UID"+usuario.getUid(), Toast.LENGTH_SHORT).show();
         if (usuario!=null) {
-            a = ValidarDueno();
-            c = ValidarCuidador();
+             ValidarDueno();
+             ValidarCuidador();
+        }else{
+            mdueño.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(TipoUserActivity.this, duenoLoginActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+            mcuidador.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i2 = new Intent(TipoUserActivity.this, cuidadorLoginActivity.class);
+                    startActivity(i2);
+                    finish();
+                }
+            });
         }
 
 /*
@@ -80,11 +97,7 @@ public class TipoUserActivity extends AppCompatActivity {
 
  */
 
-
-
-
-
-
+/*
         mdueño.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +115,10 @@ public class TipoUserActivity extends AppCompatActivity {
             }
         });
 
+ */
 
+
+/*
         mcuidador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +134,8 @@ public class TipoUserActivity extends AppCompatActivity {
             }
         });
 
+
+ */
         minfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,8 +144,9 @@ public class TipoUserActivity extends AppCompatActivity {
         });
     }
 
-    private boolean ValidarCuidador() {
+    private void ValidarCuidador() {
 
+        listacuidador = new ArrayList<>();
 
         final DatabaseReference cuidadorRef = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.USERS_REFERENCE)
                 .child(FirebaseReferences.CUIDADOR_REFERENCE);
@@ -140,28 +159,60 @@ public class TipoUserActivity extends AppCompatActivity {
                     if(snapdueno.exists()){
                         if(snapdueno.getKey().equals(usuario.getUid())){
                           String a =   snapdueno.getKey();
-                          invisiblec.setText(a);
+                          listacuidador.add(a);
                         }
                     }
                 }
-            }
+                if(!listacuidador.isEmpty()){
+                llenarcuidador(listacuidador);
+                }else{
+
+                    listacuidador.add("");
+                    llenarcuidador(listacuidador);
+                }
+
+          }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-        Toast.makeText(this, "UID"+invisiblec.getText().toString(), Toast.LENGTH_SHORT).show();
+
+     /*   Toast.makeText(this, "UID"+invisiblec.getText().toString(), Toast.LENGTH_SHORT).show();
 
         if(!invisiblec.getText().toString().isEmpty()){
             return true;
         }else{
             return false;
         }
+
+ */
+
     }
 
-    private boolean ValidarDueno() {
+    private void llenarcuidador(ArrayList<String> listacuidador) {
+      final  String llc = listacuidador.get(0);
 
+        mcuidador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!llc.isEmpty()){
+                    Intent intent = new Intent(TipoUserActivity.this, HomeActivity_Cuidador.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Intent intent = new Intent(TipoUserActivity.this, cuidadorLoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
+
+    private void ValidarDueno() {
+
+        listadueno = new ArrayList<>();
         final DatabaseReference duenoRef = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.USERS_REFERENCE)
                 .child(FirebaseReferences.DUENO_REFERENCE);
 
@@ -173,9 +224,16 @@ public class TipoUserActivity extends AppCompatActivity {
                     if(snapdueno.exists()){
                         if(snapdueno.getKey().equals(usuario.getUid())){
                           String b = snapdueno.getKey();
-                          invisibled.setText(b);
+                            listadueno.add(b);
                         }
                     }
+                }
+                if(!listadueno.isEmpty()){
+                    llenardueño(listadueno);
+                }else{
+
+                    listadueno.add("");
+                    llenardueño(listadueno);
                 }
             }
 
@@ -184,12 +242,28 @@ public class TipoUserActivity extends AppCompatActivity {
 
             }
         });
-        Toast.makeText(this, "UID"+invisibled.getText().toString(), Toast.LENGTH_SHORT).show();
-        if(invisibled.getText().toString().isEmpty()){
-            return true;
-        }else{
-            return false;
-        }
+
+    }
+
+    private void llenardueño(ArrayList<String> listadueno) {
+
+        final  String lld = listadueno.get(0);
+
+        mdueño.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!lld.isEmpty()){
+                    Intent intent = new Intent(TipoUserActivity.this, HomeActivity_Dueno.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Intent intent = new Intent(TipoUserActivity.this, duenoLoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
     }
 
     public void openDialog(){
