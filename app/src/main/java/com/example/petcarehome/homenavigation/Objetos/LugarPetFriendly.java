@@ -107,7 +107,7 @@ public class LugarPetFriendly implements Serializable {
         return Objects.hash(id);
     }
 
-    public static class Resena implements Serializable {
+    public static class Resena implements Serializable, Comparable<Resena> {
         private int estrellas;
         private String comentario;
         private String autor;
@@ -143,6 +143,11 @@ public class LugarPetFriendly implements Serializable {
 
         public void setAutor(String autor) {
             this.autor = autor;
+        }
+
+        @Override
+        public int compareTo(Resena otra) {
+            return this.getEstrellas() - otra.getEstrellas();
         }
     }
 }
