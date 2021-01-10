@@ -3,12 +3,15 @@ package com.example.petcarehome.homenavigation.ui.difusion.adopcion;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -106,6 +109,19 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
 
     }
 
+    //permiso de acceso a multimedia
+    private void getPermissionsReadStorage() {
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+                cargarImagen();
+        } else {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(this),
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        }
+    }
+
     //Acceso a la galería
     private void cargarImagen() {
         Intent intent = new Intent();
@@ -174,7 +190,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                 validarCampos();
                 break;
             case  R.id.fab_addphoto:
-                cargarImagen();
+                getPermissionsReadStorage();
                 break;
             case R.id.id_input_imageRMA:
                 String foto;

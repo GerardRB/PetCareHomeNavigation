@@ -2,8 +2,11 @@ package com.example.petcarehome.InicioYRegistro;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TipoUserActivity extends AppCompatActivity {
     Button mcuidador, mdueño, minfo;
@@ -51,6 +55,8 @@ public class TipoUserActivity extends AppCompatActivity {
         usuario = mAuth.getCurrentUser();
         invisibled = findViewById(R.id.textinvisibled);
         invisiblec = findViewById(R.id.textinvisiblec);
+
+        getPermissionsReadStorage();
 
 
     //    a = false;
@@ -143,6 +149,7 @@ public class TipoUserActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void ValidarCuidador() {
 
@@ -287,6 +294,32 @@ public class TipoUserActivity extends AppCompatActivity {
     }
 
  */
+    /*private void getPermissionsLocation() {
+
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this),
+            android.Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+
+        } else {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(this),
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                44);
+        }
+
+
+    }*/
+
+    private void getPermissionsReadStorage() {
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+
+        } else {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(this),
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        }
+    }
 
 
 
