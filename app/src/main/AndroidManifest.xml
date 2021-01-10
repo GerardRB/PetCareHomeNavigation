@@ -24,14 +24,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
-        <activity android:name=".homenavigation.ui.mapa.dueno.VerCalificaciones"></activity>
+        <activity android:name=".homenavigation.Objetos.TerminosYCondicionesActivity"></activity>
+        <activity android:name=".homenavigation.ui.mapa.dueno.VerCalificaciones" />
         <activity
             android:name=".homenavigation.ui.difusion.FullScreenImageActivity"
             android:label="Foto"
             android:parentActivityName=".homenavigation.ui.difusion.perdidas.DetalleReportePerdidasActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            tools:ignore="LockedOrientationActivity"></activity>
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".homenavigation.ui.mapa.dueno.CuidadorInfoActivity" />
         <activity android:name=".homenavigation.ui.config.clases_fragmentos.FormularioMascotas" />
         <activity android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosd" />

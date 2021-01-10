@@ -149,10 +149,34 @@
         android:hint="Contraseña"
         android:inputType="textPassword" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Al crerar una cuenta estás aceptando nuestros: ">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/terms_registrod"
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Términos y condiciones"
+            android:textColor="@color/colorAccent"
+            >
+
+        </TextView>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/registrarse2_dueno"
-        android:layout_width="125dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@drawable/miboton"

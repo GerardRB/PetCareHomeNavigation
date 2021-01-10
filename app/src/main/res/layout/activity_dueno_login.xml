@@ -8,6 +8,14 @@
     android:background="@color/colorPrimary"
     android:gravity="center"
     tools:context=".InicioYRegistro.duenoLoginActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DUEÑO"
+        android:textSize="30sp"
+        android:textColor="@color/colorblanco">
+
+    </TextView>
     <ImageView
         android:layout_width="170dp"
         android:layout_height="170dp"

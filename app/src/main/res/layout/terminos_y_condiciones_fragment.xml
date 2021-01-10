@@ -1,10 +1,661 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_config2">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TERMINOS Y CONDICIONES"
-        ></TextView>
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Terminos y condiciones de uso"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/colorblanco"
+            android:textSize="20dp"
+            >
+        </TextView>
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="PetCare te da la bienvenida."
+            android:textColor="@color/colorblanco"
+            android:textSize="18dp"
+            android:textStyle="bold">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="PetCare es una aplicación móvil en Android que permite a los usuarios interactuar con un entorno 100% dedicado hacia las mascotas y que brinda un medio para llevar a cabo la búsqueda de cuidadores de mascotas, la difusión de reportes de extravío y adopción de mascotas y la visualización de diversos lugares “Pet Friendly”.">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="1.- Los servicios que proporcionamos">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Nuestra misión es brindarle a la gente un medio de comunicación especializado y enfocado hacia las mascotas, con el fin optimizar y promover la difusión de información de servicios de cuidados de mascotas. A fin de cumplir esta misión, te ofrecemos servicios que se describen a continuación:">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Te proporcionamos una experiencia personalizada.">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:justificationMode="inter_word"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:text="Tu experiencia en PetCare es única y no se parece a la de los demás: desde la búsqueda de cuidadores de mascotas implementando el uso de un mapa para mostrar los resultados de acuerdo a los criterios de búsqueda de tu preferencia como lo pueden ser por tipo de mascota, por tipo de servicio que brindan los cuidadores y/o por la cercanía a tu ubicación en tiempo real, la difusión de reportes de extravío y adopción de mascotas, la visualización de diversos lugares “Pet Friendly” y un apartado dedicado al perfil del usuario."
+            android:textColor="@color/colorblanco"
+            android:textSize="18dp"
+            android:textStyle="normal"></TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Te conectamos con las personas y organizaciones que te interesan.">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Te ayudamos a encontrar y conectarte con personas, grupos y otras entidades con el mismo interés por las mascotas que tú mediante el uso de nuestra aplicación ‘PetCare’. Usamos los datos que tenemos para compartir contigo y con otras personas, por ejemplo, lugares a los que puedes asistir con tu mascota, difundir con la comunidad información acerca de una mascota extraviada o mascotas que se encuentren disponibles para adopción y personas que se encuentren brindado servicios de cuidado de mascotas como lo son paseos y hospedajes. Cuantos más estrechos son los lazos, mejor funcionan las comunidades, y creemos que nuestros servicios son más útiles cuando las personas se conectan con gente, grupos y organizaciones que les interesan.">
+        </TextView>
+
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Investigamos formas de mejorar nuestros servicios.">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Realizamos investigaciones para desarrollar, probar y mejorar nuestros Servicios. Esto incluye analizar los datos que tenemos sobre nuestros usuarios y entender cómo usan las personas nuestros servicios, por ejemplo, realizando encuestas, probando funciones nuevas y solucionando problemas relacionados con ellas. Nuestra Política de datos explica cómo usamos los datos para sustentar estas investigaciones con el fin de desarrollar y mejorar nuestros servicios.">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="2. Tus compromisos con PetCare y nuestra comunidad">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Ofrecemos estos servicios tanto a ti como a otras personas para cumplir nuestra misión. A cambio, necesitamos que asumas los siguientes compromisos:\n">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="¿Quién puede usar PetCare?\n\nCuando las personas asumen la responsabilidad por sus opiniones y acciones, nuestra comunidad es más segura y transparente. Por este motivo, debes cumplir con lo siguiente:\n\n°Utiliza el mismo nombre que usas en la vida cotidiana.\n\n°
+Brinda información precisa sobre ti y tus servicios en caso de ser un cuidador.\n
+\n°No compartas tu contraseña, concedas acceso a tu cuenta de PetCare a otros, ni transfieras a nadie tu cuenta.
+\n\nIntentamos que todos puedan usar PetCare, pero hay algunas excepciones. No podrás usar la plataforma en los siguientes casos:\n\n°Tienes menos de 13 años (o la edad legal mínima para usar nuestros servicios).\n\n°Eres un delincuente condenado por delitos sexuales.\n
+\n°Inhabilitamos previamente tu cuenta porque incumpliste nuestras condiciones o políticas.
+Las leyes aplicables prohíben que recibas nuestros servicios o software.">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="¿Qué contenido puedes compartir y qué actividades puedes realizar en PetCare?">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Queremos que las personas usen PetCare para apoyarse en situaciones complicadas y compartir contenido que les resulte importante, pero sin poner en peligro la seguridad y el bienestar de otros ni la integridad de nuestra comunidad. Por lo tanto, aceptas no participar en las conductas que se describen a continuación (ni ayudar o apoyar a otros a que lo hagan). No puedes usar nuestros servicios para realizar acciones o compartir contenido:\n\n°Que incumplan estas condiciones y políticas que rijan tu uso de PetCare.
+\n\n°Que sean ilegales, engañosos, discriminatorios o fraudulentos.
+\n\n°Que infrinjan o vulneren los derechos de otras personas, incluidos los derechos de propiedad intelectual.
+\n\n°No puedes subir virus o códigos maliciosos, ni realizar actividades que puedan impedir, sobrecargar o afectar el correcto funcionamiento de nuestros servicios, o afectar su aspecto.
+\n\n°No puedes acceder a datos de nuestros servicios ni recopilarlos usando medios automatizados (sin nuestro permiso previo), ni intentar acceder a datos si no tienes permiso para hacerlo.
+\n\n°Podemos eliminar o restringir el acceso a contenido que infrinja estas disposiciones.
+\n\n°Compartiste contenido que infrinja  nuestras condiciones de uso, dañe nuestra comunidad de usuarios; comprometa la integridad o el funcionamiento de alguno de nuestros servicios o interfiera con ellos;  o tengamos prohibido hacerlo por motivos legales.
+\n\n°Para contribuir con nuestra comunidad, te recomendamos que reportes contenido o comportamientos que consideres que infringen tus derechos (incluidos los derechos de propiedad intelectual) o nuestras condiciones y políticas.
+\n\n°También podemos eliminar o restringir el acceso a tu contenido, servicios o información si determinamos que esta medida es razonablemente necesaria para evitar o mitigar repercusiones legales o reglamentarias que resulten adversas para PetCare.">
+
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="3. Los permisos que nos concedes">
+        </TextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Para proporcionar nuestros servicios, necesitamos que nos concedas determinados permisos:\n">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="°Permiso para usar contenido que creas y compartes. Es posible que cierto contenido que compartas o subas, como fotos, esté protegido por leyes de propiedad intelectual.
+Eres el propietario de los derechos de propiedad intelectual (como derechos de autor o marcas comerciales) de todo el contenido que crees y compartas en PetCare. Ninguna disposición en estas Condiciones anula los derechos que tienes sobre tu propio contenido. Puedes compartir libremente tu contenido con quien quieras y donde quieras.
+Si compartes una foto en PetCare, nos concedes permiso para almacenarla, copiarla y compartirla con otros, como proveedores de servicios que usan nuestros servicios. Esta licencia caduca cuando tu contenido se elimina de nuestros sistemas. Puedes eliminar contenido de forma individual o todo junto a la vez eliminando tu cuenta. Obtén más información sobre cómo eliminar tu cuenta. Cuando eliminas contenido, los demás usuarios dejan de verlo. Sin embargo, puede seguir existiendo en otras partes de nuestros sistemas donde:\n">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="+No es posible eliminarlo de forma inmediata debido a limitaciones técnicas (en cuyo caso, tu contenido se eliminará en un plazo máximo de 90 días a partir de la fecha de su eliminación).\n\n+Otros hayan usado tu contenido en virtud de esta licencia y esas personas no lo hayan eliminado (en cuyo caso, esta licencia se seguirá aplicando hasta que el contenido sea eliminado).\n\n+La eliminación inmediata restringiría nuestra capacidad para:\n">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="-Investigar o identificar actividades ilegales o infracciones de nuestras Condiciones o Políticas (por ejemplo, para identificar o investigar el uso indebido de nuestros Productos o sistemas).\n\n-Cumplir con una obligación legal, como la preservación de pruebas.\n\n-Cumplir con una solicitud de una autoridad judicial o administrativa, fuerzas del orden o una agencia gubernamental.">
+        </TextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="En cuyo caso, el contenido se retendrá únicamente durante el tiempo que sea necesario para el fin en cuestión (la duración exacta variará según cada caso).
+En cada uno de los casos anteriores, esta licencia seguirá vigente hasta que el contenido se haya eliminado por completo.\n">
+        </TextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="°Nos concedes permiso para usar tu nombre, foto del perfil e información sobre las acciones que realizas en PetCare. Si cuentas con un perfil de cuidador nos concedes permiso para compartir información personal con la comunidad, con la finalidad de que puedan contactarte en caso de que requieran alguno de los servicios que ofreces en PetCare; al momento de generar un reporte de extravío, de mascota encontrada o de mascota en adopción nos concedes permiso para compartir información personal con la comunidad con el fin de puedan contactarte para proporcionar información sobre el reporte que compartiste.\n">
+        </TextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="°Permiso para actualizar el software que usas o descargas. Si descargas o usas nuestro software, nos concedes permiso para descargar e instalar actualizaciones del software, donde corresponda.\n">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="°Permiso de acceso a tu ubicación en tiempo real. Si cuentas con un perfil de Dueño de mascota, nos concedes permiso para obtener tu ubicación en tiempo real para realizar la búsqueda de cuidadores de mascotas; si cuentas con un perfil de cuidador nos concedes permiso para obtener tu ubicación en tiempo real al momento de permanecer en estado activo o disponible para brindar los servicios que ofreces.\n">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="4. Disposiciones adicionales">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Actualización de nuestras Condiciones">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Trabajamos continuamente para optimizar nuestros servicios y desarrollar nuevas funciones que mejoren nuestros servicios para ti y nuestra comunidad. Por lo tanto, es posible que, de vez en cuando, debamos actualizar estas Condiciones para reflejar con precisión nuestros servicios y prácticas. Solo implementaremos cambios si las disposiciones dejan de ser adecuadas o están incompletas, y si dichos cambios son razonables y tienen en cuenta tus intereses.\n\nEsperamos que sigas utilizando nuestros servicios. No obstante, si no aceptas nuestras Condiciones actualizadas y ya no quieres formar parte de la comunidad de PetCare, puedes eliminar tu cuenta en cualquier momento.\n">
+        </TextView>
+
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Cancelación o inhabilitación de la cuenta.">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Queremos que PetCare sea un lugar donde las personas se sientan bienvenidas y seguras para buscar servicios y para compartir información que tenga que ver con sus mascotas.\n\nSi determinamos que incumpliste nuestras Condiciones o Políticas en reiteradas oportunidades o de una manera notoria o grave, podemos suspender o inhabilitar definitivamente el acceso a tu cuenta.\n\nCuando tomemos tal medida, te avisaremos y explicaremos las opciones que tienes para solicitar una revisión, a menos que, al hacerlo, nos expongamos o expongamos a otros a una responsabilidad legal; dañemos nuestra comunidad de usuarios; comprometamos la integridad o el funcionamiento de alguno de nuestros servicios, sistemas o Productos, o interfiramos con ellos; estemos restringidos por limitaciones técnicas; o tengamos prohibido hacerlo por motivos legales.\n\nPuedes obtener más información sobre lo que puedes hacer si se inhabilitó tu cuenta y cómo ponerte en contacto con nosotros si consideras que inhabilitamos tu cuenta por error.\n">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Límites de responsabilidad">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Nos esforzamos por proporcionar los mejores servicios posibles y definir pautas claras para todos aquellos que los usen. No obstante, nuestros servicios se proporcionan tal como están y no podemos garantizar que siempre serán seguros, nunca tendrán errores o funcionarán sin interrupciones, demoras o imperfecciones. En la medida en que la ley lo permita, también RENUNCIAMOS A TODA GARANTÍA, EXPRESA O IMPLÍCITA, INCLUIDAS LAS GARANTÍAS IMPLÍCITAS DE COMERCIABILIDAD, IDONEIDAD PARA UN FIN PARTICULAR, TÍTULO Y NO INFRACCIÓN. No controlamos ni dirigimos lo que las personas u otros hacen o dicen, ni somos responsables por sus acciones o conductas (dentro o fuera de internet) ni por el contenido que comparten, incluido contenido ofensivo, inapropiado, obsceno, ilegal o cuestionable.\n\nNo podemos predecir cuándo puede surgir un problema con nuestros servicios. En consecuencia, nuestra responsabilidad se limitará al máximo alcance que la ley aplicable permita, y bajo ninguna circunstancia seremos responsables ante ti por la pérdida de ganancias, ingresos o información, ni por daños consecuentes, especiales, indirectos, ejemplares, punitivos o incidentales que surjan a raíz de estas Condiciones o los servicios brindados y contenido compartido por terceros en PetCare, o en relación con ellos, incluso si se nos advirtió sobre la posibilidad de que ocurran dichos daños.\n">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Otras disposiciones">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="1.- Estas Condiciones constituyen la totalidad del acuerdo entre tú y PetCare respecto del uso de nuestros servicios y prevalecen sobre cualquier acuerdo anterior.\n\n 2.- Si accedes a nuestros servicios o los usas para fines comerciales o empresariales distintos a los establecidos, como comprar anuncios, vender productos, desarrollar apps, administrar un grupo o una página para tu negocio quedará totalmente bajo tu responsabilidad, deslinando a PetCare y sus desarrolladores de cualquier conflictos que pudiese surgir.\n\n3.- No transferirás ninguno de tus derechos u obligaciones en virtud de estas Condiciones a ningún tercero sin nuestro consentimiento.\n\n4.- Te informamos que es posible que tengamos que cambiar el nombre de usuario de tu cuenta en determinadas circunstancias. Por ejemplo, si alguien más reclama el nombre de usuario y no parece guardar relación con el nombre que usas en tu vida cotidiana. Te avisaremos con anticipación si tenemos que hacerlo y te explicaremos el motivo.\n\n 5.- Valoramos siempre tus comentarios y cualquier otra sugerencia sobre nuestros productos y servicios. No obstante, te informamos que podemos usarlos sin restricción u obligación alguna de brindarte una compensación, y no tenemos la obligación de mantenerlos en confidencialidad.\n\n6.- Nos reservamos todos los derechos que no te hayamos concedido de forma expresa.\n">
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Política de privacidad"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/colorblanco"
+            android:textSize="20dp"
+            >
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="¿Para qué fines utilizaremos sus datos personales?">
+        </TextView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Los datos personales que recabamos de usted, los utilizaremos para las siguientes finalidades que son necesarias para el servicio que solicita:\n\n°Para fines de contacto.\n\n°Para permitir el registro en la aplicación.\n\n°Para acceder al contenido de la aplicación.\n\n°Sincronizar, compartir y almacenar los datos que el usuario carga o descarga y los datos necesarios para la carga y descarga.\n\nNo vendemos tus datos personales ni compartimos información que te identifique directamente con anunciantes.\n">
+        </TextView>
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="¿Cómo recopilamos y usamos sus datos personales?">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Datos personales significa cualquier información que, ya sea de manera independientemente o junto con otra información, se puede usar para identificar a una persona física. Dichos datos los proporciona el usuario directamente cuando utiliza nuestra aplicación móvil, servicios, o cuando interactúa con nosotros, ya sea al crear una cuenta de PetCare o al ponerse en contacto con nosotros para obtener asistencia.  Los datos personales que recopilamos pueden incluir el nombre, la dirección postal y de correo electrónico, el número de teléfono y la información de inicio de sesión (cuenta y contraseña), según el servicio que utilice.\n">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="¿Cómo revelamos los datos personales?">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="PetCare comparte sus datos personales con la comunidad tal y como se describe en esta Política cuando los servicios son prestados por otros miembros que pertenecen a la comunidad dentro de  PetCare. Por ejemplo, cuando un dueño realiza una búsqueda de un cuidador, PetCare debe compartir los datos personales del cuidador para que sean visualizados los servicios de cuidado.\n\nPara cumplir con las leyes aplicables o responder a procedimientos legales válidos, PetCare también puede divulgar sus datos personales a las autoridades u otros organismos públicos.\n\nPetCare también puede revelar datos cuando corresponda, por ejemplo para la ejecución de los Términos y condiciones y cuando creamos que la divulgación es necesaria o apropiada para evitar daños físicos o pérdidas financieras o en conexión con una investigación de actividad ilegal sospechosa o real.\n\nEs su responsabilidad asegurarse de que todos los datos personales enviados a PetCare sean correctos. PetCare se esfuerza en mantener la precisión y la integridad de los datos personales y a mantener los datos actualizados.\n\nEn la medida requerida por la ley de la jurisdicción correspondiente, el usuario puede (i) tener derecho a acceder a ciertos datos personales, (ii) solicitar que actualicemos o corrijamos las inexactitudes de dichos datos, (iii) oponerse al uso de sus datos personales por nuestra parte, y Su solicitud por escrito puede ser necesaria por cuestiones de seguridad. Podemos rechazar la solicitud si tenemos motivos razonables para creer que la solicitud es fraudulenta, inviable o puede poner en peligro la privacidad de otras personas.\n\nLa seguridad de los datos personales de los usuarios es importante para nosotros. Utilizamos las medidas, administrativas y técnicas apropiadas para proteger los datos personales del acceso no autorizado, la divulgación, el uso, la modificación, el daño o la pérdida. Por ejemplo, utilizamos tecnologías y mecanismos de control de acceso para permitir solo el acceso autorizado a los datos personales.">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="¿Cómo procesamos los datos personales de los menores?">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Nuestra aplicación móvil y servicios están destinados principalmente a adultos. Un menor no debe crear una cuenta de PetCare (dueño o cuidador) sin el consentimiento de un padre o tutor. Si los datos personales de un menor se recopilan con el consentimiento previo de los padres, solo utilizaremos o divulgaremos los datos según lo permita la ley, con el consentimiento explícito de los padres o tutores del menor o cuando sea necesario para la protección del menor. Si recabamos accidentalmente los datos personales de un menor sin el consentimiento previo y verificado de los padres del niño, intentaremos eliminar los datos lo antes posible.">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Proveedores externos y sus servicios">
+        </TextView>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="PetCare no puede controlar las prácticas de privacidad y las políticas de protección de datos de terceros, que no están sujetas a esta Política.\n">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Actualizaciones a esta política">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="PetCare se reserva el derecho de actualizar o cambiar esta Política en cualquier momento. Publicaremos la Política de privacidad más reciente en esta página de producirse cualquier cambio. Si se realizan cambios importantes en la Política de privacidad, podemos notificarlo a través de diferentes canales, por ejemplo a través de un aviso en nuestros sitios web o mediante el envío de un aviso directamente al usuario.">
+        </TextView>
+
+        <TextView
+            android:paddingTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/colorblanco"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="¿Cómo puede ponerse en contacto con nosotros?">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Si tiene preguntas o sugerencias, puede ponerse en contacto con nosotros a través del correo electrónico dvug5124@gmail.com, el cual también podrá encontrar en el apartado de “ayuda” de la aplicación.">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:textStyle="normal"
+            android:textSize="18dp"
+            android:justificationMode="inter_word"
+            android:textColor="@color/colorblanco"
+            android:text="Última actualización: enero 2021"
+            android:paddingBottom="60dp">
+        </TextView>
+
+    </LinearLayout>
+
+</ScrollView>

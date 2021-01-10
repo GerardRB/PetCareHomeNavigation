@@ -5,16 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Xml;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.HomeActivity_Cuidador;
+import com.example.petcarehome.homenavigation.Objetos.TerminosYCondicionesActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class registroCuidadorActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     EditText mnombre_cuidador, mapellidos_cuidador, mcontrasena, mcalle_cuidador,
             mnoext_cuidador, mnoint_cuidador, mcorreo_cuidador, mtel_cuidador, mcolonia_cuidador;
-
+    TextView terms;
     Button mRegistrocuidador;
 
     //Para la base de datos
@@ -53,6 +56,7 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
 
         mRegistrocuidador = findViewById(R.id.registrarse2_dueno);
 
+
         //Spiner de las alcaldías
         final Spinner spinneralcal = findViewById(R.id.delegacion_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.alcaldias, android.R.layout.simple_spinner_item);
@@ -60,6 +64,16 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
         spinneralcal.setAdapter(adapter);
         spinneralcal.setOnItemSelectedListener(this);
 
+        terms = findViewById(R.id.terms_registroc);
+        terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent iterms = new Intent(registroCuidadorActivity.this, TerminosYCondicionesActivity.class);
+                startActivity(iterms);
+
+
+            }
+        });
 
         //---------------------------------------Boton de registro acción....
 
