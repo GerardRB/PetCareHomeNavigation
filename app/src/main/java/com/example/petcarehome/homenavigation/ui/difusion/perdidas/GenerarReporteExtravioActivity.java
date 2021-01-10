@@ -3,14 +3,17 @@ package com.example.petcarehome.homenavigation.ui.difusion.perdidas;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -299,6 +302,19 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         };
     }
 
+    //permiso de acceso a multimedia
+    private void getPermissionsReadStorage() {
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+            cargarImagen();
+        } else {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(this),
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        }
+    }
+
 
 
     //Acceso a la galería
@@ -309,6 +325,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         intent.setType("image/*");
         startActivityForResult(intent, 10);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -373,7 +390,7 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
                 ValidarCampos();
                 break;
             case R.id.fab_addphotoRMP:
-                cargarImagen();
+                getPermissionsReadStorage();
                 break;
             case R.id.id_input_imageRMP:
                 String foto;

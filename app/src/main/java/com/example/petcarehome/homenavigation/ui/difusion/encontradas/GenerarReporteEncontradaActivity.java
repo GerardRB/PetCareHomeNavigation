@@ -3,14 +3,17 @@ package com.example.petcarehome.homenavigation.ui.difusion.encontradas;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -296,6 +299,19 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
 
     }
 
+    //permiso de acceso a multimedia
+    private void getPermissionsReadStorage() {
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+                cargarImagen();
+        } else {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(this),
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        }
+    }
+
     //Acceso a la galería
     private void cargarImagen() {
         Intent intent = new Intent();
@@ -364,7 +380,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                 validarCampos();
                 break;
             case R.id.fab_addphotoRME:
-                cargarImagen();
+               getPermissionsReadStorage();
                 break;
             case R.id.id_input_imageRME:
                 String foto;
