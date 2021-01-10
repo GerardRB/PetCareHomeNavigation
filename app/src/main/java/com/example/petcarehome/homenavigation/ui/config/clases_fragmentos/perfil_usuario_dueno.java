@@ -95,9 +95,16 @@ public class perfil_usuario_dueno extends Fragment {
                 correo_userd.setText(correo);
                 tel_userd.setText(tel);
                 domicilio_userd.setText(domicilio);
-                foto = dataSnapshot.child("foto").getValue(String.class);
-                Glide.with(getActivity()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotod);
+                //foto = dataSnapshot.child("foto").getValue(String.class);
+                //Glide.with(getActivity()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotod);
                 //  }
+                if (dataSnapshot.child("foto").getValue(String.class).isEmpty()){
+                    Glide.with(getContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotod);
+                    foto = "user";
+                }else {
+                    foto = dataSnapshot.child("foto").getValue(String.class);
+                    Glide.with(getContext()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotod);
+                }
             }
 
             @Override

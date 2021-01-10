@@ -166,7 +166,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                 openDialog();
                 break;
             case R.id.fab_location:
-                checkLocationSettings();
+                getLocationPermission();
 
         }
     }
@@ -189,7 +189,7 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
 
     }
 
-    /*
+
     private void getLocationPermission() {
 
         if (ActivityCompat.checkSelfPermission(this.getContext(),
@@ -198,13 +198,13 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
             //mLocationPermissionGranted = true;
             //getDeviceLocation(mLocationPermissionGranted);
             //getCurrentLocation(mLocationPermissionGranted);
-            startLocationUpdates();
+            checkLocationSettings();
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     44);
         }
-    }*/
+    }
 
 
 

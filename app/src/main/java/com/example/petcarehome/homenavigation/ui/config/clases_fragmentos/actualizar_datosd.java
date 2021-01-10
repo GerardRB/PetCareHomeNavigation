@@ -58,6 +58,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
     FirebaseUser user;
     ExtendedFloatingActionButton fabAddPhoto;
     Uri imageUri;
+    private String fotoP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,17 +84,14 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String foto;
-                if (imageUri == null){
-                    foto = "";
-                } else{
-                    foto = imageUri.toString();
+                if (imageUri != null){
+                    fotoP = imageUri.toString();
                 }
                 Intent intent = new Intent(actualizar_datosd.this, FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(actualizar_datosd.this, profileImage, Objects.requireNonNull(ViewCompat.getTransitionName(profileImage)));
                 Bundle  bundle = new Bundle();
                 bundle.putString("title", "perfil");
-                bundle.putString("foto", foto);
+                bundle.putString("foto", fotoP);
                 intent.putExtras(bundle);
                 startActivity(intent, options.toBundle());
             }
@@ -102,17 +100,6 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
         fabAddPhoto = findViewById(R.id.fab_addphotoD);
         fabAddPhoto.setIconResource(R.drawable.ic_cameraadd);
         fabAddPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Abrir galeria
-                Intent abrirgaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(abrirgaleria, 1000);
-            }
-        });
-
-
-
-        profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                getPermissionsReadStorage();
@@ -135,6 +122,14 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
                 //   String alca = dataSnapshot.child("alcaldia").getValue(String.class);
+                if (dataSnapshot.child("foto").getValue(String.class).isEmpty()){
+                    Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(profileImage);
+                    fotoP = "user";
+                }else {
+                    fotoP = dataSnapshot.child("foto").getValue(String.class);
+                    Glide.with(getApplicationContext()).load(fotoP).apply(RequestOptions.circleCropTransform()).into(profileImage);
+                    fabAddPhoto.setIconResource(R.drawable.ic_editar);
+                }
 
                 nombre_d.setText(name);
                 apellido_d.setText(lastname);

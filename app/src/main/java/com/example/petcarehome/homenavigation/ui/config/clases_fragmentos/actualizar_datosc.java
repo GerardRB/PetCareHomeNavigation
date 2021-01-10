@@ -59,6 +59,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
     FirebaseStorage firebaseStorage;
     FirebaseUser user;
     Uri imageUri;
+    private String fotoP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,17 +85,14 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String foto;
-                if (imageUri == null){
-                    foto = "";
-                } else{
-                    foto = imageUri.toString();
+                if (imageUri != null){
+                    fotoP = imageUri.toString();
                 }
                 Intent intent = new Intent(actualizar_datosc.this, FullScreenImageActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(actualizar_datosc.this, profileImage, Objects.requireNonNull(ViewCompat.getTransitionName(profileImage)));
                 Bundle  bundle = new Bundle();
                 bundle.putString("title", "perfil");
-                bundle.putString("foto", foto);
+                bundle.putString("foto", fotoP);
                 intent.putExtras(bundle);
                 startActivity(intent, options.toBundle());
             }
@@ -126,14 +124,23 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
                 String tel = dataSnapshot.child("telefono").getValue().toString();
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
+                //fotop = dataSnapshot.child("foto").getValue(String.class);
                 //   String alca = dataSnapshot.child("alcaldia").getValue(String.class);
-
+                if (dataSnapshot.child("foto").getValue(String.class).isEmpty()){
+                    Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(profileImage);
+                    fotoP = "user";
+                }else {
+                    fotoP = dataSnapshot.child("foto").getValue(String.class);
+                    Glide.with(getApplicationContext()).load(fotoP).apply(RequestOptions.circleCropTransform()).into(profileImage);
+                    fabAddPhoto.setIconResource(R.drawable.ic_editar);
+                }
                 nombre_c.setText(name);
                 apellido_c.setText(lastname);
                 calle_c.setText(street);
                 tel_c.setText(tel);
                 noext_c.setText(noe);
                 noint_c.setText(noi);
+
             }
 
             @Override

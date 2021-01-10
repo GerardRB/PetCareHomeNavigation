@@ -127,14 +127,21 @@ public class perfil_usuario_cuidador extends Fragment {
                 }
                 califfinal.setText(""+calfinal);
                 ratingcuidador.setRating(calfinal);
-                foto = dataSnapshot.child("foto").getValue(String.class);
+                //foto = dataSnapshot.child("foto").getValue(String.class);
                 tipo_userc.setText(tipo);
                 nombre_userc.setText(nombre);
 
                 correo_userc.setText(correo);
                     tel_userc.setText(tel);
                     domicilio_userc.setText(domicilio);
-                    Glide.with(getActivity()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotoc);
+                if (dataSnapshot.child("foto").getValue(String.class).isEmpty()){
+                    Glide.with(getContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoc);
+                    foto = "user";
+                }else {
+                    foto = dataSnapshot.child("foto").getValue(String.class);
+                    Glide.with(getContext()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotoc);
+                }
+                    //Glide.with(getActivity()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotoc);
 
 
               //  }
