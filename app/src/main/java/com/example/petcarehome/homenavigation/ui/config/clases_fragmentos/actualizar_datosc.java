@@ -1,7 +1,9 @@
 package com.example.petcarehome.homenavigation.ui.config.clases_fragmentos;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 
@@ -102,9 +105,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
         fabAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Abrir galeria
-                Intent abrirgaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(abrirgaleria, 1000);
+                getPermissionsReadStorage();
             }
         });
 
@@ -289,6 +290,24 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
             cuidadoReference.child("alcaldia").getRef().setValue(alcal);
             cuidadoReference.child("telefono").getRef().setValue(tel);
             onBackPressed();
+        }
+    }
+
+    private void abrirGeleria(){
+        //Abrir galeria
+        Intent abrirgaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(abrirgaleria, 1000);
+    }
+
+    private void getPermissionsReadStorage() {
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED){
+                abrirGeleria();
+        } else {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(this),
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
         }
     }
 
