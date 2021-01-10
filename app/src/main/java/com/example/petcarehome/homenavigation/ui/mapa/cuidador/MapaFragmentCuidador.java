@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -45,7 +46,6 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -58,27 +58,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class MapaFragmentCuidador extends Fragment implements View.OnClickListener {
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
-    private boolean requestingLocationUpdates, mLocationPermissionGranted;
+    //private boolean requestingLocationUpdates, mLocationPermissionGranted;
     private LocationRequest locationRequest;
-    private ExtendedFloatingActionButton fablocation;
     private SwitchCompat estadoButton;
     private GoogleMap mMap;
-    private Location mLastKnownLocation;
+    //private Location mLastKnownLocation;
 
     private MarkerOptions marker;
 
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference cuidadorRef;
-    private FirebaseUser firebaseUser;
-    private String idCuidador;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+    private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
          * Manipulates the map once available.
@@ -105,7 +103,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_mapa_cuidador, container, false);
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getContext()));
         return root;
     }
 
@@ -120,15 +118,15 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
 
         //Botones flotates referencias y escuchador
-        fablocation = view.findViewById(R.id.fab_location_cuidador);
+        ExtendedFloatingActionButton fablocation = view.findViewById(R.id.fab_location_cuidador);
         fablocation.setOnClickListener(this);
 
         estadoButton = view.findViewById(R.id.switch1);
         estadoButton.setOnClickListener(this);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        idCuidador = firebaseUser.getUid();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String idCuidador = firebaseUser.getUid();
 
         marker = null;
 
@@ -161,6 +159,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -179,7 +178,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             //Verificar que se tenga una ubicación definida para actualizar el estado
             //Si no está definida, se muestra un dialogo que muestra un mensaje al usuario para que obtenga su ubicación
             if (marker == null) {
-                AlertDialog.Builder obtenerUbiError = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder obtenerUbiError = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                 obtenerUbiError.setMessage("Debes obtener tu ubicación antes de cambiar a estado ACTIVO")
                         .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                             @Override
@@ -274,7 +273,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
     private void getLocationPermission() {
 
-        if (ActivityCompat.checkSelfPermission(this.getContext(),
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this.getContext()),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             //mLocationPermissionGranted = true;
@@ -282,7 +281,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             //getCurrentLocation(mLocationPermissionGranted);
             checkLocationSettings();
         } else {
-            ActivityCompat.requestPermissions(getActivity(),
+            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     44);
         }
@@ -301,7 +300,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
     //Actualizar la ubicación en la base de datos cuando se inicia la app y se está en estado activo
     private void getLastLoc() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -336,7 +335,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
         //Verificar la configuracion actual de la ubicación
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
-        SettingsClient client = LocationServices.getSettingsClient(getActivity());
+        SettingsClient client = LocationServices.getSettingsClient(Objects.requireNonNull(getActivity()));
         Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
 
 
@@ -347,7 +346,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
             }
         });
 
-        task.addOnFailureListener(getActivity(), new OnFailureListener() {
+        task.addOnFailureListener(Objects.requireNonNull(getActivity()), new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if (e instanceof ResolvableApiException) {
@@ -382,7 +381,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
     //Iniciar los servicios de actualizacion de ubicación
     private void startLocationUpdates(LocationRequest locationRequest) {
         //revision de permisos
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
