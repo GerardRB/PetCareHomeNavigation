@@ -252,7 +252,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
 
     //Borrar la ubicacion en la base de datos
     private void deleteLocationFB() {
-        cuidadorRef.child(FirebaseReferences.CUIDADOR_LATITUD_REFERENCE).setValue(null, new DatabaseReference.CompletionListener() {
+        cuidadorRef.child(FirebaseReferences.CUIDADOR_LATITUD_REFERENCE).removeValue( new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError != null) {
@@ -260,7 +260,7 @@ public class MapaFragmentCuidador extends Fragment implements View.OnClickListen
                 }
             }
         });
-        cuidadorRef.child(FirebaseReferences.CUIDADOR_LONGITUD_REFERENCE).setValue(null, new DatabaseReference.CompletionListener() {
+        cuidadorRef.child(FirebaseReferences.CUIDADOR_LONGITUD_REFERENCE).removeValue( new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (databaseError != null) {
