@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.HomeActivity_Dueno;
+import com.example.petcarehome.homenavigation.Objetos.TerminosYCondicionesActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -65,6 +66,8 @@ TextView terms;
         terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent iterms = new Intent(registroDuenoActivity.this, TerminosYCondicionesActivity.class);
+                startActivity(iterms);
 
             }
         });

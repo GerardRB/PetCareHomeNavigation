@@ -68,6 +68,9 @@ public class registroCuidadorActivity extends AppCompatActivity implements Adapt
         terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent iterms = new Intent(registroCuidadorActivity.this, TerminosYCondicionesActivity.class);
+                startActivity(iterms);
+
 
             }
         });

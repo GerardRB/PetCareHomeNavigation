@@ -12,6 +12,5 @@ public class TerminosYCondicionesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terminos_y_condiciones);
-
     }
 }
