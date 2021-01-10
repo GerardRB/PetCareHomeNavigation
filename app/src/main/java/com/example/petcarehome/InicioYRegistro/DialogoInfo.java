@@ -15,9 +15,8 @@ public class DialogoInfo extends AppCompatDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //final Dialog dialog = new Dialog();
-        builder.setTitle("¿PetCare?")
-                .setMessage("PetCare es una aplicación móvil que brinda el medio para la búsqueda de un servicio de cuidado para mascotas. " +
-                        "¡Aquí podrás encontrar a tu cuidador ideal! :) ")
+        builder.setTitle("¿Quiénes somos ?")
+                .setMessage("PetCare es una app que permite a los usuarios interactuar con un entorno 100% dedicado hacia las mascotas y que brinda un medio para llevar a cabo la búsqueda de cuidadores de mascotas, la difusión de reportes de extravío y adopción de mascotas y la visualización de diversos lugares “Pet Friendly”.\n")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
