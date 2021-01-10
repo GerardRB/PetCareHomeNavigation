@@ -66,21 +66,30 @@ public class cuidadorLoginActivity extends AppCompatActivity {
 
                 String correo = mcorreo.getText().toString();
                 String contra = mcontraseña.getText().toString();
-                if (mAuth.getCurrentUser() != null) {
-                    alertHayUsuario();
+                if (correo.isEmpty() || contra.isEmpty()) {
+                    if (correo.isEmpty()) {
+                        mcorreo.setError("Campo obligatorio");
+                    }
+                    if (contra.isEmpty()) {
+                        mcontraseña.setError("Campo obligatorio");
+                    }
                 } else {
-                    mAuth.signInWithEmailAndPassword(correo, contra).addOnCompleteListener(cuidadorLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(cuidadorLoginActivity.this, "Error al inciar sesión", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Intent intent = new Intent(cuidadorLoginActivity.this, HomeActivity_Cuidador.class);
-                                startActivity(intent);
-                                finish();
+                    if (mAuth.getCurrentUser() != null) {
+                        alertHayUsuario();
+                    } else {
+                        mAuth.signInWithEmailAndPassword(correo, contra).addOnCompleteListener(cuidadorLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(cuidadorLoginActivity.this, "Error al inciar sesión", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Intent intent = new Intent(cuidadorLoginActivity.this, HomeActivity_Cuidador.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
         });

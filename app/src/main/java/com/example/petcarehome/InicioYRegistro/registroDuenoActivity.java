@@ -66,48 +66,103 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
         mRegistroDueno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 String correo = mcorreo_dueno.getText().toString();
                 String mcontrasenad = mcontrasena.getText().toString();
-
-
-                mAuth.createUserWithEmailAndPassword(correo, mcontrasenad).addOnCompleteListener(registroDuenoActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(registroDuenoActivity.this, "Error al registrarse", Toast.LENGTH_SHORT).show();
-                        }else{
-                            //Objetos para llenar la base de datos
-                            String nombre = mnombre_dueno.getText().toString();
-                            String apellido = mapellidos_dueno.getText().toString();
-                            String calle = mcalle_dueno.getText().toString();
-                            String noext = mnoext_dueno.getText().toString();
-                            String noint = mnoint_dueno.getText().toString();
-                            String colonia = mcolonia_dueno.getText().toString();
-                            String alcaldia = spinneralcal.getSelectedItem().toString();
-                            //  String correo = mcorreo_dueno.getText().toString();
-                            // String contrasena = mcontrasena.getText().toString();
-                            String telefono = mtel_dueno.getText().toString();
-                            String email = mcorreo_dueno.getText().toString();
-                            String contraseña = mcontrasena.getText().toString();
-
-                            Dueno Dueno = new Dueno(nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Dueno", contraseña);
-
-                            //Creando referencia al usuario actual -> a los dueños en la bd
-                            DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("dueno");
-
-                            //Haciendo que se ordenen por tel e insertando los valores en la BD
-                            currentUserDB.child(mAuth.getCurrentUser().getUid()).setValue(Dueno);
-
-                            //Si es correcto llevar a otra actividad (login)
-                            Intent intent = new Intent(registroDuenoActivity.this, HomeActivity_Dueno.class);
-                            startActivity(intent);
-                            finish();
-                            return;
-                        }
+                //Objetos para llenar la base de datos
+                String nombre = mnombre_dueno.getText().toString();
+                String apellido = mapellidos_dueno.getText().toString();
+                String calle = mcalle_dueno.getText().toString();
+                String noext = mnoext_dueno.getText().toString();
+                String noint = mnoint_dueno.getText().toString();
+                String colonia = mcolonia_dueno.getText().toString();
+                String alcaldia = spinneralcal.getSelectedItem().toString();
+                //  String correo = mcorreo_dueno.getText().toString();
+                // String contrasena = mcontrasena.getText().toString();
+                String telefono = mtel_dueno.getText().toString();
+                //String email = mcorreo_dueno.getText().toString();
+              //  String contraseña = mcontrasena.getText().toString();
+                if (correo.isEmpty() || mcontrasenad.isEmpty()||nombre.isEmpty()||apellido.isEmpty()||calle.isEmpty()||noext.isEmpty()
+                        ||colonia.isEmpty()||alcaldia.equals("Seleccionar")||telefono.isEmpty()||telefono.length()>11||telefono.length()<9
+                        ||!correo.matches(emailPattern))
+                {
+                    if (correo.isEmpty()) {
+                        mcorreo_dueno.setError("Campo obligatorio");
                     }
-                });
+                    if (mcontrasenad.isEmpty()) {
+                        mcontrasena.setError("Campo obligatorio");
+                    }
+                    if(nombre.isEmpty()){
+                        mnombre_dueno.setError("Campo obligatorio");
+                    }
+                    if(apellido.isEmpty()){
+                        mapellidos_dueno.setError("Campo obligatorio");
+                    }
+                    if(calle.isEmpty()){
+                        mcalle_dueno.setError("Campo obligatorio");
+                    }
+                    if(noext.isEmpty()){
+                        mnoext_dueno.setError("Campo obligatorio");
+                    }
+                    if (colonia.isEmpty()){
+                        mnoint_dueno.setError("Campo obligatorio");
+                    }
+                    if(alcaldia.equals("Seleccionar")){
+                        Toast.makeText(registroDuenoActivity.this, "Selecciona una alcadía", Toast.LENGTH_SHORT).show();
+                    }
+                    if (telefono.isEmpty()){
+                        mtel_dueno.setError("Campo obligatorio");
+                    }
+                    if(telefono.length()>11||telefono.length()<9){
+                        mtel_dueno.setError("El teléfono debe ser de 10 dígitos");
+                    }
+                    if(!correo.matches(emailPattern)){
+                        mcorreo_dueno.setError("Correo no válido");
+                    }
+                    /*
+                    if(!telefono.matches(celPattern)){
+                        mtel_cuidador.setError("Teléfono no válido");
+                    }
+                    */
+                }
+                else {
+                    mAuth.createUserWithEmailAndPassword(correo, mcontrasenad).addOnCompleteListener(registroDuenoActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(registroDuenoActivity.this, "Error al registrarse", Toast.LENGTH_SHORT).show();
+                            } else {
+                                //Objetos para llenar la base de datos
+                                String nombre = mnombre_dueno.getText().toString();
+                                String apellido = mapellidos_dueno.getText().toString();
+                                String calle = mcalle_dueno.getText().toString();
+                                String noext = mnoext_dueno.getText().toString();
+                                String noint = mnoint_dueno.getText().toString();
+                                String colonia = mcolonia_dueno.getText().toString();
+                                String alcaldia = spinneralcal.getSelectedItem().toString();
+                                //  String correo = mcorreo_dueno.getText().toString();
+                                // String contrasena = mcontrasena.getText().toString();
+                                String telefono = mtel_dueno.getText().toString();
+                                String email = mcorreo_dueno.getText().toString();
+                                String contraseña = mcontrasena.getText().toString();
 
+                                Dueno Dueno = new Dueno(nombre, apellido, calle, noext, noint, colonia, alcaldia, telefono, email, "", "Dueno", contraseña);
+
+                                //Creando referencia al usuario actual -> a los dueños en la bd
+                                DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("usuario").child("dueno");
+
+                                //Haciendo que se ordenen por tel e insertando los valores en la BD
+                                currentUserDB.child(mAuth.getCurrentUser().getUid()).setValue(Dueno);
+
+                                //Si es correcto llevar a otra actividad (login)
+                                Intent intent = new Intent(registroDuenoActivity.this, HomeActivity_Dueno.class);
+                                startActivity(intent);
+                                finish();
+                                return;
+                            }
+                        }
+                    });
+                }
             }
         });
     }

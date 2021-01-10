@@ -21,8 +21,8 @@
         ¡-->
         <item
             android:id="@+id/notificaciones_menuconfig"
-            android:icon="@drawable/ic_notificacion_configuracion"
-            android:title="Notificaciones" />
+            android:icon="@drawable/ic_reporte_config"
+            android:title="Mis reportes" />
         <item
             android:id="@+id/idioma_menuconfig"
             android:icon="@drawable/ic_lenguaje_configuracion"
