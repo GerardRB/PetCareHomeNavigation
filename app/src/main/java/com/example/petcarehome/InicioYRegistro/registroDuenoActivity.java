@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.petcarehome.R;
@@ -26,7 +27,7 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
     EditText mnombre_dueno, mapellidos_dueno, mcontrasena, mcalle_dueno,
             mnoext_dueno, mnoint_dueno, mcorreo_dueno, mtel_dueno, mcolonia_dueno;
     Button mRegistroDueno;
-
+TextView terms;
     //Para la base de datos
     FirebaseAuth mAuth;
 
@@ -60,6 +61,13 @@ public class   registroDuenoActivity extends AppCompatActivity implements Adapte
         spinneralcal.setAdapter(adapter);
         spinneralcal.setOnItemSelectedListener(this);
 
+        terms = findViewById(R.id.terms_registrod);
+        terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         //---------------------------------------Boton de registro acción....
 
