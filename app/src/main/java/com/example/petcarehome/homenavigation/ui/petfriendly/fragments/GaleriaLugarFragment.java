@@ -6,7 +6,10 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -92,7 +95,12 @@ public class GaleriaLugarFragment extends Fragment {
     private void dispatchTakePictureIntent() {
         try {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            Intent chooser = Intent.createChooser(galleryIntent, "Seleccione fuente");
+            chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePictureIntent });
+            startActivityForResult(chooser, REQUEST_IMAGE_CAPTURE);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "No es posible agregar la foto", Toast.LENGTH_LONG).show();
@@ -106,8 +114,24 @@ public class GaleriaLugarFragment extends Fragment {
             mDialog = ProgressDialog.show(getContext(), "",
                     "Guardando imagen", true);
 
-            Bundle extras = data.getExtras();
-            Bitmap bitmap = (Bitmap) extras.get("data");
+            Bitmap bitmap;
+            Uri selectedImage = data.getData();
+            if (selectedImage != null) {
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+
+                bitmap = BitmapFactory.decodeFile(filePath);
+            } else {
+                Bundle extras = data.getExtras();
+                bitmap = (Bitmap) extras.get("data");
+            }
+
             final String nombreArchivo = UUID.randomUUID().toString();
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();

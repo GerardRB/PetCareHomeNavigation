@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="text" />
 
         <RatingBar
             android:id="@+id/rating_resena"
@@ -74,12 +74,14 @@
             android:id="@+id/button_tomar_foto_lugar_petfriendly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorAccent"
             android:text="@string/label_tomar_foto" />
 
         <Button
             android:id="@+id/button_agregar_lugar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/colorAccent"
             android:text="@string/label_agregar_lugar" />
     </LinearLayout>
 
