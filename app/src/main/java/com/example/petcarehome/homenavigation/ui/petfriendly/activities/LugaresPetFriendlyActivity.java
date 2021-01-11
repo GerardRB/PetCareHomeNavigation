@@ -23,6 +23,7 @@ import android.widget.EditText;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.CategoriaLugar;
 import com.example.petcarehome.homenavigation.ui.petfriendly.adapters.LugaresAdapter;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,7 +54,7 @@ public class LugaresPetFriendlyActivity extends AppCompatActivity {
         grid.setAdapter(adaptador);
         adaptador.conectar();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        ExtendedFloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
