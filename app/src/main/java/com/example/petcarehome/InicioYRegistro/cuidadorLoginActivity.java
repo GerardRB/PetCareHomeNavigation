@@ -124,7 +124,7 @@ public class cuidadorLoginActivity extends AppCompatActivity {
                         AlertDialog.Builder alertDialog3 = new
                                 AlertDialog.Builder(
                                 cuidadorLoginActivity.this);
-                        alertDialog3.setMessage("No podrás iniciar sesión o registrar una nueva cuenta como cuidador hasta que finalices la sesión actual..\nIntenta ingresar como Dueño");
+                        alertDialog3.setMessage("No podrás iniciar sesión o registrar una nueva cuenta como cuidador hasta que finalices la sesión actual.\nIntenta ingresar como Dueño");
                         alertDialog3.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
