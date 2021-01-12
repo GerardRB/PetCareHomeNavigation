@@ -452,7 +452,9 @@ public class GenerarReporteExtravioActivity extends AppCompatActivity implements
         descripcionE = descripcion.getText().toString();
 
 
-        if(nombreM.isEmpty() || tipoM.equals("Seleccionar") || edadM.isEmpty() || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE.equals("Seleccionar") || descripcionE.isEmpty()){
+        if(nombreM.isEmpty() || tipoM.equals("Seleccionar") || edadM.isEmpty() || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE.equals("Seleccionar") || descripcionE.isEmpty() || resultUri == null){
+            if (resultUri == null)
+                mensaje += "\nSeleccione una imagen de la galería";
             if(nombreM.isEmpty())
                 nombre.setError("Obligatorio");
             if (tipoM.equals("Seleccionar"))

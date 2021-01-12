@@ -438,7 +438,9 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
         calleE = calle.getText().toString();
         descripcionE = descripcion.getText().toString();
 
-        if(tipoM.equals("Seleccionar") || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE.equals("Seleccionar") || descripcionE.isEmpty()){
+        if(tipoM.equals("Seleccionar") || fechaE.isEmpty() || horaE.isEmpty() || alcaldiaE.equals("Seleccionar") || descripcionE.isEmpty() || resultUri == null){
+            if (resultUri == null)
+                mensaje += "\nSeleccione una imagen de la galería";
             if (tipoM.equals("Seleccionar"))
                 mensaje += "\nSeleccione un tipo de mascota";
             if (fechaE.isEmpty())
