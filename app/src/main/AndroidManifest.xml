@@ -55,6 +55,7 @@
         <activity android:name=".homenavigation.ui.petfriendly.activities.LugaresPetFriendlyActivity" />
         <activity android:name=".homenavigation.ui.petfriendly.activities.DetallePetfriendlyActivity" />
         <activity android:name=".homenavigation.ui.petfriendly.activities.AgregarPetfriendlyActivity" />
+        <activity android:name=".homenavigation.ui.petfriendly.activities.AgregarResenaActivity" />
         <activity android:name=".InicioYRegistro.registroCuidadorActivity" />
         <activity
             android:name=".homenavigation.HomeActivity_Cuidador"
