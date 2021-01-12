@@ -253,6 +253,8 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
 
         //validacion
         if(tipoM.equals("Seleccionar") || razaM.isEmpty() || edadM.isEmpty() || vacunas.equals("Seleccionar") || esterilizacion.equals("Seleccionar") || alcaldiaA.equals("Seleccionar") || descripcionA.isEmpty() || resultUri == null){
+            if (resultUri == null)
+                mensaje += "\nSeleccione una imagen de la galería";
             if (tipoM.equals("Seleccionar"))
                 mensaje += "\nSeleccione un tipo de mascota";
             if (razaM.isEmpty())
@@ -267,8 +269,6 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                 mensaje += "\nSeleccione una alcaldía";
             if (descripcionA.isEmpty())
                 descripcion.setError("Obligatorio");
-            if (resultUri == null)
-                mensaje += "\nSeleccione una imagen de la galería";
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
 
