@@ -60,6 +60,7 @@
         android:id="@+id/textinvisibled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
        >
 
     </TextView>
@@ -67,6 +68,7 @@
         android:id="@+id/textinvisiblec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         >
 
     </TextView>
