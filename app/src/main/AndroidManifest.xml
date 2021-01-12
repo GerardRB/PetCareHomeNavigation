@@ -21,7 +21,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
         <activity android:name=".homenavigation.Objetos.TerminosYCondicionesActivity"></activity>
@@ -65,7 +64,7 @@
         <activity android:name=".InicioYRegistro.duenoLoginActivity" />
         <activity
             android:name=".InicioYRegistro.TipoUserActivity"
-            android:label="Bienvenido"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity">
