@@ -603,11 +603,12 @@ public class MapaFragmentDueno extends Fragment implements View.OnClickListener 
                                     Mascota mascota = snapMascota.getValue(Mascota.class);
                                     listMascotas.add(mascota);
                                 }
-                            }
+                            }/*
                             if (!listMascotas.isEmpty()){
                                 cuidador.setMascotas(listMascotas);
                                 //listCuidadores.add(cuidador);
-                            }
+                            }*/
+                            cuidador.setMascotas(listMascotas);
                             listCuidadores.add(cuidador);
                         }
                     }

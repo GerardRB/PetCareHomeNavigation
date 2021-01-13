@@ -1,10 +1,13 @@
 package com.example.petcarehome.homenavigation.ui.mapa.dueno;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +20,25 @@ import com.example.petcarehome.homenavigation.Objetos.Calificacion;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class VerCalificaciones extends AppCompatActivity implements DialogCalificacionListener{
 
     private String cuidador;
+    private ProgressDialog calificando;
+    private ArrayList<Calificacion> listCal;
+    private DatabaseReference cuidadorRef;
+    private AdapterCalificaciones adapter;
+    private RatingBar calificacion;
+    private float suma1, suma2, suma3, suma4, suma5, cal1, cal2, cal3, cal4, cal5, sumagen, calgen;
+    private TextView c1, c2, c3, c4, c5;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -35,27 +49,44 @@ public class VerCalificaciones extends AppCompatActivity implements DialogCalifi
         //Recibir reporte Seleccionado
         Bundle bundleRecibido = getIntent().getExtras();
         String titulo = null;
+        boolean isGeneral = true;
         cuidador = null;
         ArrayList<Calificacion> calificaciones = new ArrayList<>();
-        Float calif = null;
+        suma1 = 0;
+        suma2 = 0;
+        suma3 = 0;
+        suma4 = 0;
+        suma5 = 0;
+        sumagen = 0;
+        cal1 = 0;
+        cal2 = 0;
+        cal3 = 0;
+        cal4 = 0;
+        cal5 = 0;
+        calgen = 0;
+        //Float calif = null;
         if (bundleRecibido != null){
             titulo = bundleRecibido.getString("title");
-            calif = bundleRecibido.getFloat("calif");
+            //calif = bundleRecibido.getFloat("calif");
             cuidador = bundleRecibido.getString("idCuidador");
-            calificaciones = (ArrayList<Calificacion>) bundleRecibido.getSerializable("lista");
+            //calificaciones = (ArrayList<Calificacion>) bundleRecibido.getSerializable("lista");
+            isGeneral = bundleRecibido.getBoolean("general");
         }
 
+        listCal = new ArrayList<>();
+        cuidadorRef = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE).child(cuidador).child("calificaciones");
 
         setTitle("Calificaciones");
 
 
-        RatingBar calificacion;
-        calificacion = findViewById(R.id.id_calif);
-        if (calif != null){
-            calificacion.setRating(calif);
-        }
 
-        TextView nombre, c1, c2, c3, c4, c5;
+
+        calificacion = findViewById(R.id.id_calif);
+        /*if (calif != null){
+            calificacion.setRating(calif);
+        }*/
+
+        TextView nombre;
         nombre = findViewById(R.id.text_nombre_cuidador);
         if (titulo != null){
             nombre.setText(titulo);
@@ -67,42 +98,16 @@ public class VerCalificaciones extends AppCompatActivity implements DialogCalifi
         c4 = findViewById(R.id.text_cal4);
         c5 = findViewById(R.id.text_cal5);
 
-        float suma1, suma2, suma3, suma4, suma5, cal1, cal2, cal3, cal4, cal5;
-        suma1 = 0;
-        suma2 = 0;
-        suma3 = 0;
-        suma4 = 0;
-        suma5 = 0;
-        cal1 = 0;
-        cal2 = 0;
-        cal3 = 0;
-        cal4 = 0;
-        cal5 = 0;
+        //float suma1, suma2, suma3, suma4, suma5, cal1, cal2, cal3, cal4, cal5, sumagen, calgen;
 
-        if (!calificaciones.isEmpty()){
-            for (int i = 0; i<calificaciones.size(); i++){
-                suma1 += calificaciones.get(i).getC1();
-                suma2 += calificaciones.get(i).getC2();
-                suma3 += calificaciones.get(i).getC3();
-                suma4 += calificaciones.get(i).getC4();
-                suma5 += calificaciones.get(i).getC5();
-            }
-            cal1  = suma1 / calificaciones.size();
-            cal2  = suma2 / calificaciones.size();
-            cal3  = suma3 / calificaciones.size();
-            cal4  = suma4 / calificaciones.size();
-            cal5  = suma5 / calificaciones.size();
-        }
 
-        c1.setText(" " + cal1);
-        c2.setText(" " + cal2);
-        c3.setText(" " + cal3);
-        c4.setText("" + cal4);
-        c5.setText(" " +cal5);
+
+
+
 
         Button btnCalificar = findViewById(R.id.id_btn_evaluar_cuidador);
-        if(cuidador.equals("Mis calificaciones")){
-            btnCalificar.setVisibility(View.INVISIBLE);
+        if(!isGeneral){
+            btnCalificar.setVisibility(View.GONE);
         }
         btnCalificar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,17 +120,98 @@ public class VerCalificaciones extends AppCompatActivity implements DialogCalifi
 
         RecyclerView recyclerCalif = findViewById(R.id.recyclerCalificaciones);
         recyclerCalif.setLayoutManager(new LinearLayoutManager(this));
-        AdapterCalificaciones adapter = new AdapterCalificaciones(calificaciones, this);
+        adapter  = new AdapterCalificaciones(listCal, this);
         recyclerCalif.setAdapter(adapter);
+        llenarCalificaciones();
 
+    }
+
+    private void llenarCalificaciones() {
+        cuidadorRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listCal.clear();
+                suma1 = 0;
+                suma2 = 0;
+                suma3 = 0;
+                suma4 = 0;
+                suma5 = 0;
+                sumagen = 0;
+                cal1 = 0;
+                cal2 = 0;
+                cal3 = 0;
+                cal4 = 0;
+                cal5 = 0;
+                calgen = 0;
+                for (DataSnapshot snapCalif:
+                        dataSnapshot.getChildren()) {
+                    if (snapCalif.exists()){
+                        Calificacion calN = snapCalif.getValue(Calificacion.class);
+                        listCal.add(calN);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+                if (!listCal.isEmpty()){
+                    for (int i = 0; i<listCal.size(); i++){
+                        suma1 += listCal.get(i).getC1();
+                        suma2 += listCal.get(i).getC2();
+                        suma3 += listCal.get(i).getC3();
+                        suma4 += listCal.get(i).getC4();
+                        suma5 += listCal.get(i).getC5();
+                        sumagen += listCal.get(i).getCalificacion();
+                    }
+                    cal1  = suma1 / listCal.size();
+                    cal2  = suma2 / listCal.size();
+                    cal3  = suma3 / listCal.size();
+                    cal4  = suma4 / listCal.size();
+                    cal5  = suma5 / listCal.size();
+                    calgen = sumagen / listCal.size();
+                    DecimalFormat calFormat = new DecimalFormat();
+                    calFormat.setMaximumFractionDigits(1);
+
+                    c1.setText(calFormat.format(cal1));
+                    c2.setText(calFormat.format(cal2));
+                    c3.setText(calFormat.format(cal3));
+                    c4.setText(calFormat.format(cal4));
+                    c5.setText(calFormat.format(cal5));
+                    calificacion.setRating(calgen);
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
     @Override
     public void onReturnCalif(Calificacion calificacion) {
+        calificando = new ProgressDialog(VerCalificaciones.this);
+        calificando.show();
+        calificando.setContentView(R.layout.progress_calificacion);
+        calificando.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
         FirebaseUser dueno = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference cuidadorRef = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE).child(cuidador).child("calificaciones").child(dueno.getUid());
-        cuidadorRef.setValue(calificacion);
+
+        cuidadorRef.child(dueno.getUid()).setValue(calificacion, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError != null){
+                    calificando.dismiss();
+                    Toast.makeText(getApplicationContext(), "Error al calificar\nInténtelo nuevamente", Toast.LENGTH_LONG).show();
+                } else {
+                    calificando.dismiss();
+                    Toast.makeText(getApplicationContext(), "Gracias por calificar al cuidador", Toast.LENGTH_LONG).show();
+                    //onBackPressed();
+                }
+            }
+        });
 
         //Toast.makeText(this, "Calif: " + calificacion.getCalificacion() + "\nComentarios: " + calificacion.getComentarios(), Toast.LENGTH_LONG).show();
     }
