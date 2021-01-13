@@ -37,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -125,7 +126,11 @@ public class perfil_usuario_cuidador extends Fragment {
                     }
                     calfinal = calfinal/listcalificacion.size();
                 }
-                califfinal.setText(""+calfinal);
+
+                DecimalFormat calFormat = new DecimalFormat();
+                calFormat.setMaximumFractionDigits(1);
+
+                califfinal.setText(calFormat.format(calfinal));
                 ratingcuidador.setRating(calfinal);
                 //foto = dataSnapshot.child("foto").getValue(String.class);
                 tipo_userc.setText(tipo);
@@ -184,9 +189,10 @@ public class perfil_usuario_cuidador extends Fragment {
                         }
                         Bundle bundle = new Bundle();
                         bundle.putString("title",nombre);
-                        bundle.putFloat("calif", calfinal);
-                        bundle.putString("idCuidador", "Mis calificaciones");
-                        bundle.putSerializable("lista", listcalificacion);
+                        //bundle.putFloat("calif", calfinal);
+                        bundle.putString("idCuidador", user.getUid());
+                        bundle.putBoolean("general", false);
+                        //bundle.putSerializable("lista", listcalificacion);
                         intent.putExtras(bundle);
                         startActivity(intent, options.toBundle());
 

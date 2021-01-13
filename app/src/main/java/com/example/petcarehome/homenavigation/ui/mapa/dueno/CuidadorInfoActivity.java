@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,7 +44,7 @@ import java.util.Objects;
 public class CuidadorInfoActivity extends AppCompatActivity {
 
     private ImageView fotoCuidador;
-    private TextView nombreCuidadorTV, emailTV, telefonoTV, distanciaTV, calNum;
+    private TextView nombreCuidadorTV, emailTV, telefonoTV, distanciaTV, calNum, sinServicios;
     private RecyclerView recyclerMascotas;
     private RatingBar calificacion;
 
@@ -52,10 +53,9 @@ public class CuidadorInfoActivity extends AppCompatActivity {
     private Cuidador cuidador;
     private Double lat, lng;
     private ArrayList<Mascota> listMascotas;
-    private ArrayList<Calificacion> listCalificaciones;
     private AdapterMascotas adapterMascotas;
     private String fotoc;
-    private Float cal;
+    private double cal, sumagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class CuidadorInfoActivity extends AppCompatActivity {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        listCalificaciones = new ArrayList<>();
+        cal = 0;
 
         //Recibir Cuidador
         Bundle cuidadorSeleccionado = getIntent().getExtras();
@@ -83,14 +83,19 @@ public class CuidadorInfoActivity extends AppCompatActivity {
         fotoCuidador = findViewById(R.id.id_fotoCuidador);
         calificacion = findViewById(R.id.id_calif);
         calNum = findViewById(R.id.text_calif);
+        sinServicios = findViewById(R.id.id_label_sin_servicios);
 
-        //Construir Recycler
         listMascotas = cuidador.getMascotas();
+        if (listMascotas.isEmpty()){
+            sinServicios.setVisibility(View.VISIBLE);
+        }
+        //Construir Recycler
         recyclerMascotas = findViewById(R.id.recyclerMascotasCuidadorInfo);
         recyclerMascotas.setLayoutManager(new LinearLayoutManager(this));
 
         adapterMascotas = new AdapterMascotas(listMascotas, this);
         recyclerMascotas.setAdapter(adapterMascotas);
+
 
         //llenar los Textviews
         nombreCuidadorTV.setText(cuidador.getNombre() + " " + cuidador.getApellidos());
@@ -123,20 +128,9 @@ public class CuidadorInfoActivity extends AppCompatActivity {
         distanciaTV.setText(formatDistancia.format(dist) + "Km");
 
 
-        if (cuidador.getCalificaciones() != null){
-            listCalificaciones = cuidador.getCalificaciones();
-        }
 
+        calcularCalificacion();
 
-        if (!listCalificaciones.isEmpty()){
-            //llenar el rating bar
-            cal = calcularCalificacion(listCalificaciones);
-        } else {
-            cal = Float.valueOf(0);
-        }
-
-        calificacion.setRating(cal);
-        calNum.setText(""+cal);
 
 
 
@@ -148,8 +142,9 @@ public class CuidadorInfoActivity extends AppCompatActivity {
                 Bundle  bundle = new Bundle();
                 bundle.putString("title", cuidador.getNombre() + " " + cuidador.getApellidos());
                 bundle.putString("idCuidador", cuidador.getIdUser());
-                bundle.putFloat("calif", cal);
-                bundle.putSerializable("lista", listCalificaciones);
+                bundle.putBoolean("general", true);
+                //bundle.putFloat("calif", cal);
+                //bundle.putSerializable("lista", listCalificaciones);
                 intentCalif.putExtras(bundle);
                 startActivity(intentCalif, options.toBundle());
             }
@@ -160,17 +155,45 @@ public class CuidadorInfoActivity extends AppCompatActivity {
 
     }
 
-    private float calcularCalificacion(ArrayList<Calificacion> calificaciones) {
+    private void calcularCalificacion() {
+        DatabaseReference cuidadorRef = FirebaseDatabase.getInstance().getReference().child(FirebaseReferences.USERS_REFERENCE).child(FirebaseReferences.CUIDADOR_REFERENCE).child(cuidador.getIdUser()).child("calificaciones");
+        cuidadorRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //listCal.clear();
+                int count = 0;
+                sumagen = 0;
+                cal = 0;
+                for (DataSnapshot snapCalif:
+                        dataSnapshot.getChildren()) {
+                    if (snapCalif.exists()){
+                        sumagen += snapCalif.child("calificacion").getValue(Double.class);
+                        count++;
+                        //listCal.add(calN);
+                    }
+                }
+                if (count != 0){
+                    cal = sumagen / count;
+                    DecimalFormat calFormat = new DecimalFormat();
+                    calFormat.setMaximumFractionDigits(1);
 
-        float suma, prom;
-        suma = 0;
-        for (int i = 0; i < calificaciones.size(); i++ ){
-            suma += calificaciones.get(i).getCalificacion();
-        }
+                    calificacion.setRating((float) cal);
+                    calNum.setText(calFormat.format(cal));
+                } else {
+                    calificacion.setRating(0);
+                    calNum.setText("Sin calificaciones");
+                }
 
-        prom = suma / calificaciones.size();
 
-        return prom;
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 }

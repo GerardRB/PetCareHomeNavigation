@@ -151,6 +151,8 @@
     <string name="label_mis_reportes">MIS REPORTES</string>
     <string name="subiendo_rep">Generando reporte</string>
     <string name="label_autor">Subido por:</string>
+    <string name="calificando_cuidador">Calificando</string>
+    <string name="label_sin_servicios">Sin servicios todavía</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION
