@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-//import android.app.ProgressDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -55,7 +55,7 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
     private EditText raza, edad, colonia, calle, descripcion;
     private ImageView imageView;
     private ExtendedFloatingActionButton fabAddPhoto;
-    //ProgressDialog progressDialog;
+    ProgressDialog subiendo;
 
     private Uri resultUri;
     //private ArrayList<Uri> listImagesRec;
@@ -274,10 +274,10 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
 
-            /*progressDialog = new ProgressDialog(this);
-            progressDialog.setContentView(R.layout.progress_reporte);
-            //progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            progressDialog.show();*/
+            subiendo = new ProgressDialog(GenerarReporteAdopcionActivity.this);
+            subiendo.show();
+            subiendo.setContentView(R.layout.progress_reporte);
+            subiendo.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null){
@@ -303,9 +303,10 @@ public class GenerarReporteAdopcionActivity extends AppCompatActivity implements
                         @Override
                         public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                             if (databaseError != null){
-                                Toast.makeText(getApplicationContext(), "No se pudo generar el reporte", Toast.LENGTH_LONG).show();
+                                subiendo.dismiss();
+                                Toast.makeText(getApplicationContext(), "No se pudo generar el reporte\nInténtalo nuevamente", Toast.LENGTH_LONG).show();
                             } else {
-                                //progressDialog.dismiss();
+                                subiendo.dismiss();
                                 Toast.makeText(getApplicationContext(), "Reporte generado con éxito", Toast.LENGTH_LONG).show();
                                 onBackPressed();
                             }

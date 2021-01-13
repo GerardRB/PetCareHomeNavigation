@@ -11,6 +11,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,6 +35,7 @@ import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.ui.difusion.FullScreenImageActivity;
+import com.example.petcarehome.homenavigation.ui.difusion.adopcion.GenerarReporteAdopcionActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -60,6 +62,7 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
     private TimePickerDialog.OnTimeSetListener horaSetListener;
     private ImageView imageView;
     private ExtendedFloatingActionButton fabAddPhoto;
+    private ProgressDialog subiendo;
 
     private Uri resultUri;
     //private ArrayList<Uri> listImagesRec;
@@ -454,6 +457,12 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
             Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
         } else {
 
+            subiendo = new ProgressDialog(GenerarReporteEncontradaActivity.this);
+            subiendo.show();
+            subiendo.setContentView(R.layout.progress_reporte);
+            subiendo.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+
             //Referencia al usuario actual
             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null){
@@ -481,8 +490,10 @@ public class GenerarReporteEncontradaActivity extends AppCompatActivity implemen
                         @Override
                         public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                             if (databaseError != null){
-                                Toast.makeText(getApplicationContext(), "No se pudo generar el reporte", Toast.LENGTH_LONG).show();
+                                subiendo.dismiss();
+                                Toast.makeText(getApplicationContext(), "No se pudo generar el reporte\nInténtalo nuevamente", Toast.LENGTH_LONG).show();
                             } else {
+                                subiendo.dismiss();
                                 Toast.makeText(getApplicationContext(), "Reporte generado con éxito", Toast.LENGTH_LONG).show();
                                 onBackPressed();
                             }
