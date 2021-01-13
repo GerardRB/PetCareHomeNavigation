@@ -80,6 +80,9 @@ public class perfil_usuario_dueno extends Fragment {
         duenoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (getActivity() == null) {
+                    return;
+                }
                 String tipo = dataSnapshot.child("tipo").getValue().toString();
                 String nombre = dataSnapshot.child("nombre").getValue().toString() + " " + dataSnapshot.child("apellidos").getValue().toString();
                 String correo = dataSnapshot.child("correo").getValue().toString();
