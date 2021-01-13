@@ -17,9 +17,6 @@ import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.ReporteAdopcion;
 import com.example.petcarehome.homenavigation.Objetos.ReporteEncontradas;
 import com.example.petcarehome.homenavigation.Objetos.ReportePerdidas;
-import com.example.petcarehome.homenavigation.ui.difusion.adopcion.AdapterReportesAdopcion;
-import com.example.petcarehome.homenavigation.ui.difusion.encontradas.AdapterReportesEncontradas;
-import com.example.petcarehome.homenavigation.ui.difusion.perdidas.AdapterReportesPerdidas;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,9 +32,8 @@ public class MisReportesFragment extends Fragment {
     private ArrayList<ReporteEncontradas> listEncontradas;
     private ArrayList<ReporteAdopcion> listAdopcion;
 
-    private AdapterReportesPerdidas adapterPerdidas;
-    private AdapterReportesEncontradas adapterEncontradas;
-    private AdapterReportesAdopcion adapterAdopcion;
+
+    private AdapterMisReportes adapterMisReportes;
 
     @Nullable
     @Override
@@ -50,30 +46,29 @@ public class MisReportesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final SwipeRefreshLayout swipeRefresh;
-        RecyclerView recyclerPerdidas, recyclerEncontradas, recyclerAdopcion;
+        RecyclerView recyclerMisReportes;
 
         swipeRefresh = view.findViewById(R.id.swipeRefreshMisReportes);
 
-        recyclerPerdidas = view.findViewById(R.id.recyclerMisPerdidas);
-        recyclerEncontradas = view.findViewById(R.id.recyclerMisEncontradas);
-        recyclerAdopcion = view.findViewById(R.id.recyclerMisAdopcion);
-
-        recyclerPerdidas.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerEncontradas.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerAdopcion.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerMisReportes = view.findViewById(R.id.recyclerMisReportes);
+        recyclerMisReportes.setLayoutManager(new LinearLayoutManager(getContext()));
 
         listPerdidas = new ArrayList<>();
         listEncontradas = new ArrayList<>();
         listAdopcion = new ArrayList<>();
 
-        adapterPerdidas= new AdapterReportesPerdidas(listPerdidas, getContext(), false);
-        recyclerPerdidas.setAdapter(adapterPerdidas);
+        adapterMisReportes = new AdapterMisReportes(listPerdidas, listEncontradas, listAdopcion, getContext());
+        recyclerMisReportes.setAdapter(adapterMisReportes);
 
-        adapterEncontradas = new AdapterReportesEncontradas(listEncontradas, getContext(), false);
-        recyclerEncontradas.setAdapter(adapterEncontradas);
 
-        adapterAdopcion = new AdapterReportesAdopcion(listAdopcion, getContext(), false);
-        recyclerAdopcion.setAdapter(adapterAdopcion);
+        //adapterPerdidas= new AdapterReportesPerdidas(listPerdidas, getContext(), false);
+        //recyclerPerdidas.setAdapter(adapterPerdidas);
+
+        //adapterEncontradas = new AdapterReportesEncontradas(listEncontradas, getContext(), false);
+        //recyclerEncontradas.setAdapter(adapterEncontradas);
+
+        //adapterAdopcion = new AdapterReportesAdopcion(listAdopcion, getContext(), false);
+        //recyclerAdopcion.setAdapter(adapterAdopcion);
 
         llenarReportes();
 
@@ -106,7 +101,7 @@ public class MisReportesFragment extends Fragment {
                         }
                     }
                 }
-                adapterPerdidas.notifyDataSetChanged();
+                adapterMisReportes.notifyDataSetChanged();
             }
 
             @Override
@@ -130,7 +125,7 @@ public class MisReportesFragment extends Fragment {
                         }
                     }
                 }
-                adapterEncontradas.notifyDataSetChanged();
+                adapterMisReportes.notifyDataSetChanged();
             }
 
             @Override
@@ -153,7 +148,7 @@ public class MisReportesFragment extends Fragment {
                         }
                     }
                 }
-                adapterAdopcion.notifyDataSetChanged();
+                adapterMisReportes.notifyDataSetChanged();
             }
 
             @Override

@@ -59,7 +59,7 @@ public class AdopcionFragment extends Fragment {
         RecyclerView recycler = view.findViewById(R.id.recyclerAdopcionId);
         recycler.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
 
-        adapter = new AdapterReportesAdopcion(listReportes, getContext(), true);
+        adapter = new AdapterReportesAdopcion(listReportes, getContext());
         recycler.setAdapter(adapter);
 
         filtro = null;
