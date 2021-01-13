@@ -81,7 +81,7 @@ public class EncontradasFragment extends Fragment {
 
         if (filtrada){
             //Llenar lista desde la base con filtro
-            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
+            reportePerdidaReference.limitToLast(50).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listReportes.clear();
@@ -119,7 +119,7 @@ public class EncontradasFragment extends Fragment {
             });
         } else {
             //Llenar lista desde la base sin filtro
-            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
+            reportePerdidaReference.limitToLast(50).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listReportes.clear();

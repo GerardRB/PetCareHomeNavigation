@@ -149,6 +149,8 @@
     <string name="stars_transition">starsTransition</string>
     <string name="title_btn_eliminar_repr">Eliminar reporte</string>
     <string name="label_mis_reportes">MIS REPORTES</string>
+    <string name="subiendo_rep">Subiendo reporte...</string>
+    <string name="label_autor">Subido por:</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION
