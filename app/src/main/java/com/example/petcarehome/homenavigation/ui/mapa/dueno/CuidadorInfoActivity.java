@@ -43,7 +43,7 @@ import java.util.Objects;
 public class CuidadorInfoActivity extends AppCompatActivity {
 
     private ImageView fotoCuidador;
-    private TextView nombreCuidadorTV, emailTV, telefonoTV, domicilioTV, distanciaTV, calNum;
+    private TextView nombreCuidadorTV, emailTV, telefonoTV, distanciaTV, calNum;
     private RecyclerView recyclerMascotas;
     private RatingBar calificacion;
 
@@ -79,7 +79,6 @@ public class CuidadorInfoActivity extends AppCompatActivity {
         nombreCuidadorTV = findViewById(R.id.text_nombre_cuidador);
         emailTV = findViewById(R.id.text_email_cuidador);
         telefonoTV = findViewById(R.id.text_telefono_cuidador);
-        domicilioTV = findViewById(R.id.text_domicilio_cuidador);
         distanciaTV = findViewById(R.id.text_distancia);
         fotoCuidador = findViewById(R.id.id_fotoCuidador);
         calificacion = findViewById(R.id.id_calif);
@@ -97,9 +96,6 @@ public class CuidadorInfoActivity extends AppCompatActivity {
         nombreCuidadorTV.setText(cuidador.getNombre() + " " + cuidador.getApellidos());
         emailTV.setText(cuidador.getCorreo());
         telefonoTV.setText(cuidador.getTelefono());
-        String dom = cuidador.getCalle() + " " + cuidador.getNoext() + " " + cuidador.getNoint() + ", " + cuidador.getColonia() +
-                ", " + cuidador.getAlcaldia();
-        domicilioTV.setText(dom);
         fotoc = cuidador.getFoto();
         if (fotoc.isEmpty()){
             Glide.with(this).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoCuidador);

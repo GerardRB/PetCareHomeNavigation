@@ -30,12 +30,10 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
 
     ArrayList<ReporteEncontradas> listReportesEncontradas;
     private final Context context;
-    private boolean isGeneral;
 
-    public AdapterReportesEncontradas(ArrayList<ReporteEncontradas> listReportesEncontradas, Context context, boolean isGeneral) {
+    public AdapterReportesEncontradas(ArrayList<ReporteEncontradas> listReportesEncontradas, Context context) {
         this.listReportesEncontradas = listReportesEncontradas;
         this.context = context;
-        this.isGeneral = isGeneral;
     }
 
     @NonNull
@@ -60,7 +58,7 @@ public class AdapterReportesEncontradas extends RecyclerView.Adapter<AdapterRepo
                 Intent intentDetalleRMP = new Intent(context, DetalleReporteEncontradaActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("reporteEncontrada", listReportesEncontradas.get(position));
-                bundle.putBoolean("general", isGeneral);
+                bundle.putBoolean("general", true);
                 intentDetalleRMP.putExtras(bundle);
                 context.startActivity(intentDetalleRMP);
             }

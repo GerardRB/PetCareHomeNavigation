@@ -37,9 +37,9 @@ import java.util.Objects;
 public class DetalleReportePerdidasActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ReportePerdidas reporteP;
-    private TextView correoUser, nombreUser, telefonoUser, domicilio;
+    private TextView correoUser, nombreUser, telefonoUser;
     private ImageView foto, fotoUser;
-    private String fotoUsr, nom, corr, tel, dir;
+    private String fotoUsr, nom, corr, tel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
         correoUser = findViewById(R.id.text_email_user_DRMP);
         nombreUser = findViewById(R.id.text_nombre_user_DRMP);
         telefonoUser = findViewById(R.id.text_telefono_user_DRMP);
-        domicilio = findViewById(R.id.text_domicilio_user_DRMP);
         Button btnEliminar = findViewById(R.id.id_btn_eliminar_reportep);
         CardView cardUser = findViewById(R.id.card_user_rp);
         if (!general){
@@ -101,10 +100,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                         nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                         corr = snapshot.child("correo").getValue(String.class);
                         tel = snapshot.child("telefono").getValue(String.class);
-                        dir = snapshot.child("calle").getValue(String.class) + ""
-                                + snapshot.child("noext").getValue(String.class) + ""
-                                + snapshot.child("noint").getValue(String.class) + ", "
-                                + snapshot.child("alcaldia").getValue(String.class);
                         if (snapshot.child("foto").getValue(String.class).isEmpty()){
                             Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                             fotoUsr = "user";
@@ -115,7 +110,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
-                        domicilio.setText(dir);
                     }
 
                 }
@@ -143,10 +137,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                             nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                             corr = snapshot.child("correo").getValue(String.class);
                             tel = snapshot.child("telefono").getValue(String.class);
-                            dir = snapshot.child("calle").getValue(String.class) + ""
-                                    + snapshot.child("noext").getValue(String.class) + ""
-                                    + snapshot.child("noint").getValue(String.class) + ", "
-                                    + snapshot.child("alcaldia").getValue(String.class);
                             if (snapshot.child("foto").getValue(String.class).isEmpty()){
                                 Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                                 fotoUsr = "user";
@@ -158,7 +148,6 @@ public class DetalleReportePerdidasActivity extends AppCompatActivity implements
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
-                            domicilio.setText(dir);
                         }
                     }
                 }

@@ -38,8 +38,8 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
 
     private ReporteEncontradas reporteE;
     private ImageView foto, fotoUser;
-    private TextView nombreUser, telefonoUser, domicilio, correoUser;
-    private String nom, corr, tel, dir, fotoUsr;
+    private TextView nombreUser, telefonoUser, correoUser;
+    private String nom, corr, tel, fotoUsr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,6 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
         //foto = findViewById(R.id.id_imageDRME);
         nombreUser = findViewById(R.id.text_nombre_user_DRME);
         telefonoUser = findViewById(R.id.text_telefono_user_DRME);
-        domicilio = findViewById(R.id.text_domicilio_user_DRME);
         Button btnEliminar = findViewById(R.id.id_btn_eliminar_reportee);
         CardView cardUser = findViewById(R.id.card_user_re);
         if (!general){
@@ -97,10 +96,6 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
                         nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                         corr = snapshot.child("correo").getValue(String.class);
                         tel = snapshot.child("telefono").getValue(String.class);
-                        dir = snapshot.child("calle").getValue(String.class) + ""
-                                + snapshot.child("noext").getValue(String.class) + ""
-                                + snapshot.child("noint").getValue(String.class) + ", "
-                                + snapshot.child("alcaldia").getValue(String.class);
                         if (snapshot.child("foto").getValue(String.class).isEmpty()){
                             Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                             fotoUsr = "user";
@@ -111,7 +106,6 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
                         nombreUser.setText(nom);
                         correoUser.setText(corr);
                         telefonoUser.setText(tel);
-                        domicilio.setText(dir);
                     }
                 }
             }
@@ -138,10 +132,6 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
                             nom = snapshot.child("nombre").getValue(String.class) + " " + snapshot.child("apellidos").getValue(String.class);
                             corr = snapshot.child("correo").getValue(String.class);
                             tel = snapshot.child("telefono").getValue(String.class);
-                            dir = snapshot.child("calle").getValue(String.class) + ""
-                                    + snapshot.child("noext").getValue(String.class) + ""
-                                    + snapshot.child("noint").getValue(String.class) + ", "
-                                    + snapshot.child("alcaldia").getValue(String.class);
                             if (snapshot.child("foto").getValue(String.class).isEmpty()){
                                 Glide.with(getApplicationContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotoUser);
                                 fotoUsr = "user";
@@ -152,7 +142,6 @@ public class DetalleReporteEncontradaActivity extends AppCompatActivity implemen
                             nombreUser.setText(nom);
                             correoUser.setText(corr);
                             telefonoUser.setText(tel);
-                            domicilio.setText(dir);
                         }
                     }
                 }

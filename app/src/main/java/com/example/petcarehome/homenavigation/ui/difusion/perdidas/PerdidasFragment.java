@@ -57,7 +57,7 @@ public class PerdidasFragment extends Fragment {
         RecyclerView recyclerPerdidas = view.findViewById(R.id.recyclerPerdidasId);
         recyclerPerdidas.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new AdapterReportesPerdidas(listReportes, getContext(), true);
+        adapter = new AdapterReportesPerdidas(listReportes, getContext());
         recyclerPerdidas.setAdapter(adapter);
 
         filtro = null;
@@ -90,7 +90,7 @@ public class PerdidasFragment extends Fragment {
 
         if (filtrada){
             //Llenar lista desde la base con filtro
-            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
+            reportePerdidaReference.limitToLast(50).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listReportes.clear();
@@ -128,7 +128,7 @@ public class PerdidasFragment extends Fragment {
             });
         } else {
             //Llenar lista desde la base sin filtro
-            reportePerdidaReference.limitToLast(5).addValueEventListener(new ValueEventListener() {
+            reportePerdidaReference.limitToLast(50).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listReportes.clear();

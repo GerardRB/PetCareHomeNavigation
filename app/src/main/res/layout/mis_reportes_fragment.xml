@@ -28,19 +28,10 @@
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerMisPerdidas"
+                    android:id="@+id/recyclerMisReportes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerMisEncontradas"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerMisAdopcion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
