@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,10 +34,16 @@ public class AdapterCalificaciones extends RecyclerView.Adapter<AdapterCalificac
         return new ViewHolderCalificaciones(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AdapterCalificaciones.ViewHolderCalificaciones holder, int position) {
         holder.cal.setText("" + listCalif.get(position).getCalificacion());
-        holder.com.setText(listCalif.get(position).getComentarios());
+        if(listCalif.get(position).getComentarios().isEmpty()){
+            holder.com.setText("Sin comentarios");
+        } else {
+            holder.com.setText(listCalif.get(position).getComentarios());
+        }
+
     }
 
     @Override
