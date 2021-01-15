@@ -98,6 +98,9 @@ public class perfil_usuario_cuidador extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
               //  for (DataSnapshot snapshot:
                 //        dataSnapshot.getChildren()) {
+                if (getActivity() == null) {
+                    return;
+                }
                     String tipo = dataSnapshot.child("tipo").getValue().toString();
                     String nombre = dataSnapshot.child("nombre").getValue().toString() + " " + dataSnapshot.child("apellidos").getValue().toString();
                     String correo = dataSnapshot.child("correo").getValue().toString();

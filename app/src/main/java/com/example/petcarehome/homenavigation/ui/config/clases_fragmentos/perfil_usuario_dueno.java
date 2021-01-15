@@ -80,6 +80,9 @@ public class perfil_usuario_dueno extends Fragment {
         duenoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (getActivity() == null) {
+                    return;
+                }
                 String tipo = dataSnapshot.child("tipo").getValue().toString();
                 String nombre = dataSnapshot.child("nombre").getValue().toString() + " " + dataSnapshot.child("apellidos").getValue().toString();
                 String correo = dataSnapshot.child("correo").getValue().toString();
@@ -99,11 +102,11 @@ public class perfil_usuario_dueno extends Fragment {
                 //Glide.with(getActivity()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotod);
                 //  }
                 if (dataSnapshot.child("foto").getValue(String.class).isEmpty()){
-                    Glide.with(getContext()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotod);
+                    Glide.with(getActivity()).load(R.drawable.ic_user).apply(RequestOptions.circleCropTransform()).into(fotod);
                     foto = "user";
                 }else {
                     foto = dataSnapshot.child("foto").getValue(String.class);
-                    Glide.with(getContext()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotod);
+                    Glide.with(getActivity()).load(foto).apply(RequestOptions.circleCropTransform()).into(fotod);
                 }
             }
 

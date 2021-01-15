@@ -95,7 +95,7 @@ public class cambiar_contrasenad extends Fragment {
                                 if (contraseñaconfirm.isEmpty()) {
                                     contra2.setError("Campo obligatorio");
                                 }
-                                if (!contraseña.equals(contraseñaconfirm)){
+                                if (!contraseña.matches(contraseñaconfirm)){
                                     message += "\nIngrese de nuevo las contraseñas";
                                 }
                             }
@@ -111,7 +111,7 @@ public class cambiar_contrasenad extends Fragment {
                                 }
                             });
                         }else{
-                            Toast.makeText(getActivity(), "Error de autenticación", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Error, intenta más tarde :(", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
