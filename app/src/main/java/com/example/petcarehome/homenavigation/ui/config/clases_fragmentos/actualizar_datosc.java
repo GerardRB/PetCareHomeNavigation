@@ -50,7 +50,7 @@ import java.lang.ref.ReferenceQueue;
 import java.util.Objects;
 
 public class actualizar_datosc extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    EditText nombre_c, apellido_c, calle_c, noext_c, noint_c, tel_c;
+    EditText nombre_c, apellido_c, calle_c, colonia_c, noext_c, noint_c, tel_c;
     Button actualizarDatos;
     ImageView profileImage;
     ExtendedFloatingActionButton fabAddPhoto;
@@ -68,6 +68,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
         nombre_c = findViewById(R.id.nombre_actualizarc);
         apellido_c = findViewById(R.id.apellidos_actualizarc);
         calle_c = findViewById(R.id.calle_actualizarc);
+        colonia_c = findViewById(R.id.colonia_actualizarc);
         noext_c = findViewById(R.id.noext_actualizarc);
         noint_c = findViewById(R.id.noint_actualizarc);
         tel_c = findViewById(R.id.tel_actualizarc);
@@ -121,6 +122,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
                 String name = dataSnapshot.child("nombre").getValue().toString();
                 String lastname = dataSnapshot.child("apellidos").getValue().toString();
                 String street = dataSnapshot.child("calle").getValue().toString();
+                String colonia = dataSnapshot.child("colonia").getValue().toString();
                 String tel = dataSnapshot.child("telefono").getValue().toString();
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
@@ -137,6 +139,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
                 nombre_c.setText(name);
                 apellido_c.setText(lastname);
                 calle_c.setText(street);
+                colonia_c.setText(colonia);
                 tel_c.setText(tel);
                 noext_c.setText(noe);
                 noint_c.setText(noi);
@@ -237,6 +240,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
                 String name = dataSnapshot.child("nombre").getValue().toString();
                 String lastname = dataSnapshot.child("apellidos").getValue().toString();
                 String street = dataSnapshot.child("calle").getValue().toString();
+                String colonia = dataSnapshot.child("colonia").getValue().toString();
                 String tel = dataSnapshot.child("telefono").getValue().toString();
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
@@ -245,6 +249,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
                 nombre_c.setText(name);
                 apellido_c.setText(lastname);
                 calle_c.setText(street);
+                colonia_c.setText(colonia);
                 tel_c.setText(tel);
                 noext_c.setText(noe);
                 noint_c.setText(noi);
@@ -259,6 +264,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
         String nombre = nombre_c.getText().toString();
         String apellido = apellido_c.getText().toString();
         String calle = calle_c.getText().toString();
+        String col = colonia_c.getText().toString();
         String noex = noext_c.getText().toString();
         String noin = noint_c.getText().toString();
         String alcal = alcaldia_c.getSelectedItem().toString();
@@ -266,7 +272,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
 
         //Validaciones
         String mensaje = "Debe seleccionar un campo válido";
-        if (nombre.isEmpty() || apellido.isEmpty() || calle.isEmpty() || noex.isEmpty()  || alcal.equals("Seleccionar")
+        if (nombre.isEmpty() || apellido.isEmpty() || calle.isEmpty() || col.isEmpty()|| noex.isEmpty()  || alcal.equals("Seleccionar")
                 || tel.isEmpty()) {
             if (nombre.isEmpty()) {
                 nombre_c.setError("Obligatorio");
@@ -276,6 +282,9 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
             }
             if (calle.isEmpty()) {
                 calle_c.setError("Obligatorio");
+            }
+            if(col.isEmpty()){
+                colonia_c.setError("Obligatorio");
             }
             if (noex.isEmpty()) {
                 noext_c.setError("Obligatorio");
@@ -292,6 +301,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
             cuidadoReference.child("nombre").getRef().setValue(nombre);
             cuidadoReference.child("apellidos").getRef().setValue(apellido);
             cuidadoReference.child("calle").getRef().setValue(calle);
+            cuidadoReference.child("colonia").getRef().setValue(col);
             cuidadoReference.child("noext").getRef().setValue(noex);
             cuidadoReference.child("noint").getRef().setValue(noin);
             cuidadoReference.child("alcaldia").getRef().setValue(alcal);
