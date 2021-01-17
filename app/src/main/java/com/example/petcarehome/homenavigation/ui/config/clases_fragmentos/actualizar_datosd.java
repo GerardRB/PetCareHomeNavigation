@@ -118,7 +118,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
                 String name = dataSnapshot.child("nombre").getValue().toString();
                 String lastname = dataSnapshot.child("apellidos").getValue().toString();
                 String street = dataSnapshot.child("calle").getValue().toString();
-                String tel = dataSnapshot.child("cel").getValue().toString();
+                String tel = dataSnapshot.child("telefono").getValue().toString();
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
                 //   String alca = dataSnapshot.child("alcaldia").getValue(String.class);
@@ -229,8 +229,8 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
 
                 String name = dataSnapshot.child("nombre").getValue().toString();
                 String lastname = dataSnapshot.child("apellidos").getValue().toString();
-                String street = dataSnapshot.child("correo").getValue().toString();
-                String tel = dataSnapshot.child("cel").getValue().toString();
+                String street = dataSnapshot.child("calle").getValue().toString();
+                String tel = dataSnapshot.child("telefono").getValue().toString();
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
                 //   String alca = dataSnapshot.child("alcaldia").getValue(String.class);
@@ -288,7 +288,7 @@ public class actualizar_datosd extends AppCompatActivity implements AdapterView.
             duenoReference.child("noext").getRef().setValue(noex);
             duenoReference.child("noint").getRef().setValue(noin);
             duenoReference.child("alcaldia").getRef().setValue(alcal);
-            duenoReference.child("cel").getRef().setValue(tel);
+            duenoReference.child("telefono").getRef().setValue(tel);
             onBackPressed();
         }
     }

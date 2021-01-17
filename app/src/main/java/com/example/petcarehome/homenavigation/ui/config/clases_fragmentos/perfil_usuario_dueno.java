@@ -86,7 +86,7 @@ public class perfil_usuario_dueno extends Fragment {
                 String tipo = dataSnapshot.child("tipo").getValue().toString();
                 String nombre = dataSnapshot.child("nombre").getValue().toString() + " " + dataSnapshot.child("apellidos").getValue().toString();
                 String correo = dataSnapshot.child("correo").getValue().toString();
-                String tel = dataSnapshot.child("cel").getValue().toString();
+                String tel = dataSnapshot.child("telefono").getValue().toString();
                 String domicilio = dataSnapshot.child("calle").getValue(String.class) + " "
                         + dataSnapshot.child("noext").getValue(String.class) + " "
                         + dataSnapshot.child("noint").getValue(String.class) + ", "
