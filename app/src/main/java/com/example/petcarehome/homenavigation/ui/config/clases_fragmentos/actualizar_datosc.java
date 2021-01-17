@@ -236,7 +236,7 @@ public class actualizar_datosc extends AppCompatActivity implements AdapterView.
 
                 String name = dataSnapshot.child("nombre").getValue().toString();
                 String lastname = dataSnapshot.child("apellidos").getValue().toString();
-                String street = dataSnapshot.child("correo").getValue().toString();
+                String street = dataSnapshot.child("calle").getValue().toString();
                 String tel = dataSnapshot.child("telefono").getValue().toString();
                 String noi = dataSnapshot.child("noint").getValue().toString();
                 String noe = dataSnapshot.child("noext").getValue(String.class);
