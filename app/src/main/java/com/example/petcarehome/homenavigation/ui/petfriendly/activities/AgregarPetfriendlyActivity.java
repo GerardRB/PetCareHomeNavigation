@@ -84,6 +84,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String nombre = ((EditText) findViewById(R.id.edit_text_nombre_lugar)).getText().toString();
                 String descripcion = ((EditText) findViewById(R.id.edit_text_descripcion_lugar)).getText().toString();
+                String direccion = ((EditText) findViewById(R.id.edit_text_direccion_lugar)).getText().toString();
                 Integer estrellas = (int) ((RatingBar) findViewById(R.id.rating_resena)).getRating();
 
                 if (nombre.isEmpty()) {
@@ -103,6 +104,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
 
                 subirFotoOGuardarLugar(nombre,
                         descripcion,
+                        direccion,
                         estrellas,
                         mInputStream);
             }
@@ -191,7 +193,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
         }
     }
 
-    private void subirFotoOGuardarLugar(String nombre, String descripcion, int estrellas, InputStream streamFoto) {
+    private void subirFotoOGuardarLugar(String nombre, String descripcion, String direccion, int estrellas, InputStream streamFoto) {
         final DatabaseReference ref = mLugaresPetfriendlyRef.push();
         final LugarPetFriendly lugar = new LugarPetFriendly(ref.getKey());
         Log.d(TAG, "Agregando lugar " + lugar.getId());
@@ -199,6 +201,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
         lugar.setDescripcion(descripcion);
         lugar.setEstrellas(estrellas);
         lugar.setCategoria(mCategoria.getId());
+        lugar.setDireccion(direccion);
         lugar.getResenas().add(new LugarPetFriendly.Resena(estrellas, descripcion, "Usuario PetFriendly"));
 
         if (streamFoto != null) {

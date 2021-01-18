@@ -62,6 +62,20 @@
             android:ems="10"
             android:inputType="text" />
 
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_direccion_lugar" />
+
+        <EditText
+            android:id="@+id/edit_text_direccion_lugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text" />
+
         <RatingBar
             android:id="@+id/rating_resena"
             android:layout_width="wrap_content"

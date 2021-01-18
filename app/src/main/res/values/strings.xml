@@ -107,6 +107,7 @@
     <string name="button_ok">Aceptar</string>
     <string name="label_nombre_lugar">Nombre</string>
     <string name="label_descripcion_lugar">Descripción</string>
+    <string name="label_direccion_lugar">Dirección</string>
     <string name="label_comentario">Comentario</string>
     <string name="label_tomar_foto">Agregar foto</string>
     <string name="label_cambiar_foto_lugar">Cambiar foto</string>

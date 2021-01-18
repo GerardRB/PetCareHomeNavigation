@@ -76,6 +76,12 @@ public class DescripcionLugarFragment extends Fragment {
         TextView descripcion = view.findViewById(R.id.detalles_descripcion);
         descripcion.setText(mLugar.getDescripcion());
 
+        TextView tvDireccion = view.findViewById(R.id.detalles_direccion);
+        String sDireccion = mLugar.getDireccion();
+        if (sDireccion != null && !sDireccion.isEmpty()) {
+            tvDireccion.setText(sDireccion);
+        }
+
         Button botonBorrar = view.findViewById(R.id.detalles_boton_borrar);
         botonBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
