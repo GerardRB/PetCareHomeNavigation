@@ -141,7 +141,7 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ItemHold
         }
 
         public void descargar() {
-            Log.d(TAG, "Cargando foto: " + mImagen);
+            Log.d(TAG, "Cargando foto (Galeria): " + mKey + "/" + mImagen);
             StorageReference ref = mStorage
                     .child(FirebaseReferences.STORAGE_GALERIA_LUGAR)
                     .child(mKey)

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -158,6 +159,7 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
         private static final String TAG = "ItemHolder";
         private TextView nombreView;
         private ImageView imagenView;
+        private RatingBar ratingView;
         private LugarPetFriendly mLugar;
         private StorageReference mStorage;
         private Context mContext;
@@ -172,6 +174,7 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
             this.mStorage = storage;
             this.nombreView = itemView.findViewById(R.id.text_nombre_lugar);
             this.imagenView = itemView.findViewById(R.id.imagen_lugar);
+            this.ratingView = itemView.findViewById(R.id.rating);
             this.mListener = listener;
 
             nombreView.setOnClickListener(this);
@@ -181,6 +184,8 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
         public void setLugar(LugarPetFriendly lugar) {
             mLugar = lugar;
             nombreView.setText(mLugar.getNombre());
+            ratingView.setRating(mLugar.getEstrellas());
+            ratingView.setVisibility(View.VISIBLE);
             descargarFoto(lugar.getFoto());
         }
 
@@ -189,6 +194,7 @@ public class LugaresAdapter extends RecyclerView.Adapter<LugaresAdapter.ItemHold
             if (archivo != null) {
                 StorageReference ref = mStorage
                         .child(FirebaseReferences.STORAGE_FOTO_LUGAR_PETFRIENDLY)
+                        .child(mLugar.getId())
                         .child(archivo);
                 Glide.with(mContext)
                         .load(ref)

@@ -25,6 +25,6 @@ public class FirebaseReferences {
     final public static String MASCOTAS_CUIDADOR_REFERENCE = "mascotas";
     // Cosas para petfriendly
     final public static String LUGARES_PET_FRIENDLY_REFERENCE = "lugaresPetFriendly";
-    final public static String STORAGE_GALERIA_LUGAR = "galeriasPetFriendly";
+    final public static String STORAGE_GALERIA_LUGAR = "fotosLugares";
     public static final String STORAGE_FOTO_LUGAR_PETFRIENDLY = "fotosLugares";
 }

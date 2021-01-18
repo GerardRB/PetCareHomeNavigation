@@ -202,9 +202,12 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
         lugar.getResenas().add(new LugarPetFriendly.Resena(estrellas, descripcion, "Usuario PetFriendly"));
 
         if (streamFoto != null) {
-            String archivoFoto = lugar.getId() + ".jpeg";
-            StorageReference fotoRef = mStorage.child(FirebaseReferences.STORAGE_FOTO_LUGAR_PETFRIENDLY).child(archivoFoto);
+            String archivoFoto = "portada.jpeg";
+            StorageReference fotoRef = mStorage.child(FirebaseReferences.STORAGE_FOTO_LUGAR_PETFRIENDLY)
+                    .child(lugar.getId())
+                    .child(archivoFoto);
             lugar.setFoto(archivoFoto);
+            lugar.getFotosGaleria().add(archivoFoto);
 
             UploadTask uploadTask = fotoRef.putStream(streamFoto);
             uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {

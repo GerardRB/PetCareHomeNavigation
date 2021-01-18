@@ -62,7 +62,9 @@ public class DescripcionLugarFragment extends Fragment {
 
         ImageView imagenView = view.findViewById(R.id.detalles_imagen);
         if (mLugar.getFoto() != null) {
-            StorageReference ref = mStorage.child(FirebaseReferences.STORAGE_FOTO_LUGAR_PETFRIENDLY).child(mLugar.getFoto());
+            StorageReference ref = mStorage.child(FirebaseReferences.STORAGE_FOTO_LUGAR_PETFRIENDLY)
+                    .child(mLugar.getId())
+                    .child(mLugar.getFoto());
             Glide.with(getContext())
                     .load(ref)
                     .into(imagenView);
