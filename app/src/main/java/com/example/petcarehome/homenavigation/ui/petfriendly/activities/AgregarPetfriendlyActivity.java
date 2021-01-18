@@ -87,9 +87,33 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
                 String direccion = ((EditText) findViewById(R.id.edit_text_direccion_lugar)).getText().toString();
                 Integer estrellas = (int) ((RatingBar) findViewById(R.id.rating_resena)).getRating();
 
-                if (nombre.isEmpty()) {
+                if (nombre.isEmpty() || nombre.length() > 100) {
                     mDialog = new AlertDialog.Builder(AgregarPetfriendlyActivity.this)
-                            .setMessage("El lugar debe tener un nombre")
+                            .setMessage("El lugar debe tener un nombre y debe ser menor a 100 caracteres")
+                            .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    mDialog.dismiss();
+                                }
+                            }).show();
+                    return;
+                }
+
+                if (descripcion.length() > 300) {
+                    mDialog = new AlertDialog.Builder(AgregarPetfriendlyActivity.this)
+                            .setMessage("La descripcion no puede contener mas de 300 caracteres")
+                            .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    mDialog.dismiss();
+                                }
+                            }).show();
+                    return;
+                }
+
+                if (direccion.length() > 300) {
+                    mDialog = new AlertDialog.Builder(AgregarPetfriendlyActivity.this)
+                            .setMessage("La direccion no puede contener mas de 300 caracteres")
                             .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

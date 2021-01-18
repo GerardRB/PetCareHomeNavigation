@@ -64,9 +64,9 @@ public class AgregarResenaActivity extends AppCompatActivity {
                 String comentario = mEditTextComentario.getText().toString();
                 Integer estrellas = mRatingResena.getNumStars();
 
-                if (comentario.isEmpty()) {
+                if (comentario.isEmpty() || comentario.length() > 400) {
                     mDialog = new AlertDialog.Builder(AgregarResenaActivity.this)
-                            .setMessage("Debe escribir un comentario")
+                            .setMessage("Debe escribir un comentario y no puede ser mayor 400 caracteres")
                             .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
