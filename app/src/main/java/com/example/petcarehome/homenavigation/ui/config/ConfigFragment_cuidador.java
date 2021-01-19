@@ -215,7 +215,7 @@ public class ConfigFragment_cuidador extends Fragment implements FragmentOnBackP
 
         // Mensaje del dialogo
         alertDialog2.setMessage("¿Estás seguro de querer borrar tu cuenta? No podrás recuperarla. " +
-                "Saldrás de la aplicación y tendrás que crear una nueva cuenta.");
+                "Para usar la aplicación tendrás que crear una nueva cuenta.");
 
         // Btn Positivo "Yes"
         alertDialog2.setPositiveButton("SÍ",
