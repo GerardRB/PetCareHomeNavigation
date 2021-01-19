@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.petcarehome">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -23,7 +24,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MaterialAppTheme">
-        <activity android:name=".homenavigation.Objetos.TerminosYCondicionesActivity"></activity>
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".homenavigation.ui.petfriendly.activities.BuscarDireccionActivity"
+            android:label="@string/title_activity_buscar_direccion"></activity>
+        <activity android:name=".homenavigation.Objetos.TerminosYCondicionesActivity" />
         <activity android:name=".homenavigation.ui.mapa.dueno.VerCalificaciones" />
         <activity
             android:name=".homenavigation.ui.difusion.FullScreenImageActivity"
@@ -38,18 +55,6 @@
         <activity
             android:name=".homenavigation.ui.config.clases_fragmentos.actualizar_datosc"
             android:theme="@style/MaterialAppTheme" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
         <activity android:name=".homenavigation.ui.petfriendly.activities.AgregarCategoriaActivity" />
         <activity android:name=".homenavigation.ui.petfriendly.activities.LugaresPetFriendlyActivity" />
         <activity android:name=".homenavigation.ui.petfriendly.activities.DetallePetfriendlyActivity" />

@@ -10,7 +10,7 @@ public class LugarPetFriendly implements Serializable {
     private String descripcion;
     private String foto;
     private String categoria;
-    private String direccion;
+    private String latlng;
     private int estrellas;
     private ArrayList<Resena> resenas;
     private ArrayList<String> fotosGaleria;
@@ -91,12 +91,12 @@ public class LugarPetFriendly implements Serializable {
         this.categoria = categoria;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getLatlng() {
+        return latlng;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setLatlng(String latlng) {
+        this.latlng = latlng;
     }
 
     @Override

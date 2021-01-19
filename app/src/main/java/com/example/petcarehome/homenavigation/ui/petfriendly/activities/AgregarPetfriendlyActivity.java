@@ -43,6 +43,7 @@ import java.io.InputStream;
 
 public class AgregarPetfriendlyActivity extends AppCompatActivity {
     private static final String TAG = "AregarPetfriendly";
+    private static final int CAMBIO_DIRECCION = 11;
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
     private CategoriaLugar mCategoria;
@@ -51,6 +52,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
     private Dialog mDialog;
     private ByteArrayInputStream mInputStream;
     private DatabaseReference mLugaresPetfriendlyRef;
+    private String mLatLng;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -84,7 +86,6 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String nombre = ((EditText) findViewById(R.id.edit_text_nombre_lugar)).getText().toString();
                 String descripcion = ((EditText) findViewById(R.id.edit_text_descripcion_lugar)).getText().toString();
-                String direccion = ((EditText) findViewById(R.id.edit_text_direccion_lugar)).getText().toString();
                 Integer estrellas = (int) ((RatingBar) findViewById(R.id.rating_resena)).getRating();
 
                 if (nombre.isEmpty() || nombre.length() > 100) {
@@ -111,26 +112,23 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (direccion.length() > 300) {
-                    mDialog = new AlertDialog.Builder(AgregarPetfriendlyActivity.this)
-                            .setMessage("La direccion no puede contener mas de 300 caracteres")
-                            .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    mDialog.dismiss();
-                                }
-                            }).show();
-                    return;
-                }
-
                 mDialog = ProgressDialog.show(AgregarPetfriendlyActivity.this, "",
                         "Guardando lugar", true);
 
                 subirFotoOGuardarLugar(nombre,
                         descripcion,
-                        direccion,
+                        mLatLng,
                         estrellas,
                         mInputStream);
+            }
+        });
+
+        Button botonBuscarDireccion = findViewById(R.id.boton_buscar_direccion);
+        botonBuscarDireccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AgregarPetfriendlyActivity.this, BuscarDireccionActivity.class);
+                startActivityForResult(intent, CAMBIO_DIRECCION);
             }
         });
     }
@@ -181,9 +179,14 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG*/, bos);
             byte[] bitmapData = bos.toByteArray();
             mInputStream = new ByteArrayInputStream(bitmapData);
-        } else if (resultCode != RESULT_OK) {
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
             mBotonAgregar.setEnabled(true);
             Toast.makeText(AgregarPetfriendlyActivity.this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
+        } else if (requestCode == CAMBIO_DIRECCION && resultCode == RESULT_OK) {
+            String latlng = data.getExtras().getString("latlng");
+            if (latlng != null) {
+                mLatLng = latlng;
+            }
         }
     }
 
@@ -225,7 +228,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
         lugar.setDescripcion(descripcion);
         lugar.setEstrellas(estrellas);
         lugar.setCategoria(mCategoria.getId());
-        lugar.setDireccion(direccion);
+        lugar.setLatlng(direccion);
         lugar.getResenas().add(new LugarPetFriendly.Resena(estrellas, descripcion, "Usuario PetFriendly"));
 
         if (streamFoto != null) {

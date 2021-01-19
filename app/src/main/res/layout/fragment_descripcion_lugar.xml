@@ -27,24 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textAlignment="center"
                 android:text="Lugar PetFriendly"
                 android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/detalles_descripcion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="30dp"
-                android:text="Descripcion"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/detalles_direccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="30dp"
-                android:text="Sin dirección"
-                android:textAlignment="center" />
 
             <RatingBar
                 android:id="@+id/detalles_rating"
@@ -58,6 +43,20 @@
                 android:progress="0"
                 android:rating="0"
                 android:stepSize="1" />
+
+            <TextView
+                android:id="@+id/detalles_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:text="Descripcion"
+                android:textAlignment="center" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                 />
 
             <Button
                 android:id="@+id/detalles_boton_borrar"

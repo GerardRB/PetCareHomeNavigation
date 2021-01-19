@@ -34,6 +34,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
+        <RatingBar
+            android:id="@+id/rating_resena"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="1" />
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
@@ -60,29 +68,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:layout_marginBottom="20dp"
             android:inputType="text" />
 
-        <TextView
-            android:id="@+id/textView4"
+        <Button
+            android:id="@+id/boton_buscar_direccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/label_direccion_lugar" />
-
-        <EditText
-            android:id="@+id/edit_text_direccion_lugar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text" />
-
-        <RatingBar
-            android:id="@+id/rating_resena"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:rating="0"
-            android:stepSize="1" />
+            android:text="Cambiar locacion"
+            app:backgroundTint="@color/colorAccent"
+            />
 
         <Button
             android:id="@+id/button_tomar_foto_lugar_petfriendly"

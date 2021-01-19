@@ -108,6 +108,7 @@
     <string name="label_nombre_lugar">Nombre</string>
     <string name="label_descripcion_lugar">Descripción</string>
     <string name="label_direccion_lugar">Dirección</string>
+    <string name="fab_busqueda_direccion">Buscar dirección</string>
     <string name="label_comentario">Comentario</string>
     <string name="label_tomar_foto">Agregar foto</string>
     <string name="label_cambiar_foto_lugar">Cambiar foto</string>
@@ -154,6 +155,7 @@
     <string name="label_autor">Subido por:</string>
     <string name="calificando_cuidador">Calificando</string>
     <string name="label_sin_servicios">Sin servicios todavía</string>
+    <string name="title_activity_buscar_direccion">Map</string>
 
     <!--
              STRINGS DEL HOME NAVIGATION
