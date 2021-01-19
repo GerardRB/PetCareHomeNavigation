@@ -207,7 +207,7 @@ public class ConfigFragment_dueno extends Fragment implements FragmentOnBackPres
 
         // Mensaje del dialogo
         alertDialog2.setMessage("¿Estás seguro de querer borrar tu cuenta? No podrás recuperarla. " +
-                "Saldrás de la aplicación y tendrás que crear una nueva.");
+                "Para usar la aplicación tendrás que crear una nueva cuenta.");
 
         // Btn Positivo "Yes"
         alertDialog2.setPositiveButton("SÍ",
