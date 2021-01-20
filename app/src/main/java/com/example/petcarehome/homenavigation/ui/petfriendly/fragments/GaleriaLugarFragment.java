@@ -135,7 +135,7 @@ public class GaleriaLugarFragment extends Fragment {
             final String nombreArchivo = UUID.randomUUID().toString();
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG*/, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90 /*ignored for PNG*/, bos);
             byte[] bitmapData = bos.toByteArray();
             ByteArrayInputStream inputStream = new ByteArrayInputStream(bitmapData);
             StorageReference fotoRef = mStorage

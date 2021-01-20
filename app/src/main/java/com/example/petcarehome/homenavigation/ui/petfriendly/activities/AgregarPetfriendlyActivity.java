@@ -176,7 +176,7 @@ public class AgregarPetfriendlyActivity extends AppCompatActivity {
             }
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG*/, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90 /*ignored for PNG*/, bos);
             byte[] bitmapData = bos.toByteArray();
             mInputStream = new ByteArrayInputStream(bitmapData);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE) {

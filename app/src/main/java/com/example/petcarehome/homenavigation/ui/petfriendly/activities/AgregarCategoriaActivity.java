@@ -101,7 +101,7 @@ public class AgregarCategoriaActivity extends AppCompatActivity {
             Bitmap bitmap = (Bitmap) extras.get("data");
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG*/, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90 /*ignored for PNG*/, bos);
             byte[] bitmapData = bos.toByteArray();
             mInputStream = new ByteArrayInputStream(bitmapData);
         } else if (resultCode != RESULT_OK) {
