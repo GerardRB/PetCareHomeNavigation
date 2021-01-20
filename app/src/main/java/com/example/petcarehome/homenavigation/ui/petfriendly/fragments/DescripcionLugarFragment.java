@@ -87,6 +87,7 @@ public class DescripcionLugarFragment extends Fragment {
         descripcion.setText(mLugar.getDescripcion());
 
         MapView map = view.findViewById(R.id.map);
+        map.setVisibility(View.GONE);
         String sLatLng = mLugar.getLatlng();
         Log.d(DescripcionLugarFragment.class.getCanonicalName(), "LATLNG: " + sLatLng);
         if (sLatLng != null && !sLatLng.isEmpty()) {
