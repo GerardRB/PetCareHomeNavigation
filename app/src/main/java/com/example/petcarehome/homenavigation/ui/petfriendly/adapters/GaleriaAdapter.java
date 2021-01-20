@@ -1,6 +1,7 @@
 package com.example.petcarehome.homenavigation.ui.petfriendly.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +17,13 @@ import com.bumptech.glide.Glide;
 import com.example.petcarehome.R;
 import com.example.petcarehome.homenavigation.Objetos.FirebaseReferences;
 import com.example.petcarehome.homenavigation.Objetos.LugarPetFriendly;
+import com.example.petcarehome.homenavigation.ui.petfriendly.activities.FotoGaleriaActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -94,6 +97,7 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ItemHold
                 .child(mLugar.getId())
                 .child("galeria")
                 .orderByKey();
+
         mQuery.addChildEventListener(mListener);
     }
 
@@ -113,6 +117,20 @@ public class GaleriaAdapter extends RecyclerView.Adapter<GaleriaAdapter.ItemHold
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         holder.setImagen(mImagenes.get(position));
+
+        final int pos = position;
+        holder.imagenView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String imagen = mImagenes.get(pos);
+                String key = mLugar.getId();
+
+                Intent intent = new Intent(mContext, FotoGaleriaActivity.class);
+                intent.putExtra("imagen", imagen);
+                intent.putExtra("key", key);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
