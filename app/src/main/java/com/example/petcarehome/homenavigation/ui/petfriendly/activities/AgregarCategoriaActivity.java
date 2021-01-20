@@ -10,7 +10,10 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -81,12 +84,18 @@ public class AgregarCategoriaActivity extends AppCompatActivity {
 
     private void dispatchTakePictureIntent() {
         try {
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             mBotonAgregar.setEnabled(false);
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            Intent chooser = Intent.createChooser(galleryIntent, "Seleccione fuente");
+            chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePictureIntent });
+            startActivityForResult(chooser, REQUEST_IMAGE_CAPTURE);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
+            Toast.makeText(AgregarCategoriaActivity.this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -97,16 +106,31 @@ public class AgregarCategoriaActivity extends AppCompatActivity {
             mBotonAgregar.setEnabled(true);
             mBotonFoto.setText(getText(R.string.label_cambiar_foto_lugar));
 
-            Bundle extras = data.getExtras();
-            Bitmap bitmap = (Bitmap) extras.get("data");
+            Bitmap bitmap;
+            Uri selectedImage = data.getData();
+            if (selectedImage != null) {
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+
+                bitmap = BitmapFactory.decodeFile(filePath);
+            } else {
+                Bundle extras = data.getExtras();
+                bitmap = (Bitmap) extras.get("data");
+            }
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90 /*ignored for PNG*/, bos);
             byte[] bitmapData = bos.toByteArray();
             mInputStream = new ByteArrayInputStream(bitmapData);
-        } else if (resultCode != RESULT_OK) {
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
             mBotonAgregar.setEnabled(true);
-            Toast.makeText(this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
+            Toast.makeText(AgregarCategoriaActivity.this, "No es posible agregar la foto", Toast.LENGTH_LONG).show();
         }
     }
 

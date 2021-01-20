@@ -86,6 +86,9 @@ public class DescripcionLugarFragment extends Fragment {
         TextView descripcion = view.findViewById(R.id.detalles_descripcion);
         descripcion.setText(mLugar.getDescripcion());
 
+        TextView estrellas = view.findViewById(R.id.detalles_rating_numero);
+        estrellas.setText(String.format("Promedio: %d/5", mLugar.getEstrellas()));
+
         MapView map = view.findViewById(R.id.map);
         map.setVisibility(View.GONE);
         String sLatLng = mLugar.getLatlng();

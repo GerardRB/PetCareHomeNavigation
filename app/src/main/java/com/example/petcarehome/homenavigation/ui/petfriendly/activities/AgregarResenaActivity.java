@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AgregarResenaActivity extends AppCompatActivity {
     private static final String TAG = AgregarResenaActivity.class.getCanonicalName();
@@ -62,7 +64,7 @@ public class AgregarResenaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String comentario = mEditTextComentario.getText().toString();
-                Integer estrellas = mRatingResena.getNumStars();
+                Integer estrellas = (int) mRatingResena.getRating();
 
                 if (comentario.isEmpty() || comentario.length() > 400) {
                     mDialog = new AlertDialog.Builder(AgregarResenaActivity.this)
@@ -83,9 +85,25 @@ public class AgregarResenaActivity extends AppCompatActivity {
                     mLugar.setResenas(new ArrayList<LugarPetFriendly.Resena>());
 
                 mLugar.getResenas().add(new LugarPetFriendly.Resena(estrellas, comentario, "Usuario PetFriendly"));
+
+                actualizarCalificacion(mLugar, estrellas);
                 agregarResena(mLugar);
             }
         });
+    }
+
+    private void actualizarCalificacion(LugarPetFriendly mLugar, int actual) {
+        int suma = actual;
+        for (LugarPetFriendly.Resena resena : mLugar.getResenas()) {
+            suma += resena.getEstrellas();
+        }
+
+        float promedio = 0;
+        if (mLugar.getResenas().size() > 0) {
+            promedio = suma / mLugar.getResenas().size();
+        }
+
+        mLugar.setEstrellas((int) promedio);
     }
 
     public void agregarResena(LugarPetFriendly lugar) {
